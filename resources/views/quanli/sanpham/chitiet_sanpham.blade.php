@@ -18,7 +18,7 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
 						<ol class="breadcrumb">
-						  <li><a href="home-admin.php">Quản lí sản phẩm</a></li>
+						  <li><a href="{{asset('quanli/ql-sanpham')}}">Quản lí sản phẩm</a></li>
 						  <li class="active">Chi tiết sản phẩm</li>
 						</ol>
 					</div>
@@ -129,7 +129,7 @@
 						</div>
 
 						<div class="col-md-12 col-sm-12">
-							<a href="{{back()}}" id="btn-link" class="btn btn-primary btn-lg">Quay lại</a>
+							<a href="" id="btn-link" class="btn btn-primary btn-lg">Quay lại</a>
 						</div>
 					</form>
 				</div>

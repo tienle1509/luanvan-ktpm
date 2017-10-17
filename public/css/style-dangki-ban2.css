@@ -1,0 +1,55 @@
+.header {
+	height: 100px;
+	background-color: #FBF6FB;
+	box-shadow: 0 4px 4px -2px rgba(0,0,0,.15);	
+}
+
+.header .container-header {
+	padding: 20px 60px 0px 60px;
+}
+
+.header .container-header .text-right {
+	padding-top: 13px;
+	float: right;
+}
+
+.header .container-header .text-right i {
+	font-size: 16px;
+}
+
+.header .container-header .text-right span {
+	font-size: 18px;
+}
+
+.panel-xacthuc {
+	width: 500px;
+	height: 350px;
+	margin-top: 70px;
+	background-color: #FBF6FB;
+	padding: 30px;
+	text-align: center;
+}
+
+.panel-xacthuc p {
+	font-size: 16px;
+	padding: 5px;
+}
+
+#form-xacthuc input {
+	text-align: center;
+}
+
+#form-xacthuc button {
+	margin-bottom: 20px;
+	margin-top: 10px;
+	width: 200px;
+}
+
+#form-xacthuc a {
+	text-decoration: none;
+}
+
+.footer {
+	font-size: 12px;
+	margin-top: 140px;
+}

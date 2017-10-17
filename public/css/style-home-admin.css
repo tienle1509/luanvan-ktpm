@@ -291,6 +291,11 @@ body {
 }
 
 
+/*Chỉnh sửa lịch form tìm kiếm*/
+#form-searchOrder .date{
+	z-index: 0;
+}
+
 
 /* table đơn hàng admin*/
 #table-donhang-admin {
@@ -359,8 +364,17 @@ body {
 	color: #5D5D5D;
 }
 
+#table-detailOrder {
+	font-size: 14px;
+}
+
 #table-detailOrder .img-detailOrder {
 	width: 12%;
+}
+
+#table-detailOrder img {
+	width: 100px;
+	height: 100px;
 }
 
 #table-detailOrder .name-detailOrder {
@@ -420,6 +434,10 @@ body {
 	margin-top: 0px;
 }
 
+#form-addPromotion .date {
+	z-index: -1;
+}
+
 #form-addPromotion .title {
 	margin-bottom: 30px;
 	padding-top: 5px;
@@ -444,9 +462,9 @@ body {
 	font-size: 15px;
 }
 
-#table-listProduct .img-pro img {
-	width: 80px;
-	height: 80px;
+#table-listProduct img {
+	width: 100px;
+	height: 100px;
 }
 
 #table-listProduct th{
