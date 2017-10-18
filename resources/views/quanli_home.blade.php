@@ -50,7 +50,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>                        
 		      </button>
-		      <a class="navbar-brand" href="{{asset('')}}" target="_blank">Hệ Thống Quản Lí - Website Thương Mại Điện Mobile Store</a>
+		      <a class="navbar-brand" href="{{asset('home')}}" target="_blank">Hệ Thống Quản Lí - Website Thương Mại Điện Mobile Store</a>
 		    </div>
 		    <ul class="nav navbar-nav navbar-right">
 		        <button class="btndrop">

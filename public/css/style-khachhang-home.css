@@ -1,0 +1,417 @@
+.container {
+	width: 1210px;
+}
+
+header {
+	background-color: #FBF6FB;
+}
+
+/* Sub nav, menu */
+.submenu {
+	width: 808px;
+	background-color: #FBF6FB;
+}
+
+.submenu>li>a {
+	padding: 3px;
+	color: #696969;
+	font-size: 13px;
+	padding-right: 20px;
+}
+
+.submenu>li>a:hover, .btndrop:hover, .btndrop:focus {
+	background-color: #FBF6FB;
+	color: #2930FF;
+}
+
+.submenu .fa-handshake-o, .submenu .fa-phone-square, .submenu .fa-list-alt {
+	color: #2930FF;
+	font-size: 16px;
+}
+
+ .submenu .fa-user, .submenu .fa-user-plus {
+ 	color: #2930FF;
+	font-size: 15px;
+ }
+
+.btndrop{
+	border: none;
+	outline: none; 
+	background-color: #FBF6FB;
+	color: #696969;
+	font-size: 13px;
+	padding-right: 20px;
+	margin-top: 2px;
+}
+
+/* Tùy chỉnh dropdown CSKH */
+.dropdown-menu>li{
+	text-indent: -7px;
+	font-size: 12px;
+	margin: 3px;
+}
+
+.dropdown-menu>li>a:hover{
+	color: #84079A;
+}
+
+/* Form kiểm tra đơn hàng */
+#form-ktdonhang{
+	padding: 10px;
+	width: 200px;
+}
+
+/* Form Đăng kí thành viên */
+#form-dangki>.form-group>label{
+	font-weight: normal;
+}
+
+.btnmodal:focus{
+	background-color: #FBF6FB;
+	color: #696969;
+}
+
+/* Thay đổi vị trí hiển thị của modal*/
+.modal-content{
+	border-radius: 0px;
+}
+
+.modal-dialog{
+	padding-top: 60px;
+}
+
+/* Button Close modal */
+.close1{
+	border: 1px solid #DA0000;
+	float: right;
+	background-color: #FFFFFF;
+	outline: none;
+}
+
+.close1 > span {
+	color: #DA0000;
+}
+
+
+/* Tùy chỉnh button */
+.btntim{
+	background-color: #9D3CAE;
+	color: #FFFFFF;
+	font-size: 12px;
+}
+
+.btntim:hover, .btntim:focus {
+	color: #FFFFFF;
+}
+
+
+
+/* CỐ ĐỊNH THANH MAIN MENU */
+.affix {
+	width: 100%;
+	z-index: 2;
+	top: 0px;
+	box-shadow: 2px 2px 2px #B4AEAE;
+	background-color: #FBF6FB;
+}
+
+
+
+
+
+/* Main Nav */
+#top-nav{
+	height: 70px;
+	background-color: #FBF6FB;
+	border-radius: 0px;
+	margin-bottom: 0px;
+}
+
+#top-nav #logo {
+	height: 50px;
+	width: 160px;
+	margin-top: -5px;
+	margin-left: 20px;
+	position: relative;
+}
+
+/* Input group Search */
+#mainnav{
+	padding-top: 10px;
+	padding-left: 205px;
+	margin-left: 40px;
+}
+
+#mainnav input {
+	width: 395px;
+	height: 37px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+	outline: none;
+	padding-left: 10px;
+	border: 2px solid #A633D7;
+	border-right-style: none;
+	font-size: 13px;
+	background-color: #FBF6FB;
+	margin-right: -5px;
+}
+
+#mainnav select {
+	height: 37px;
+	outline: none;
+	border-top: 2px solid #A633D7;
+	border-bottom: 2px solid #A633D7;
+	border-left-style: 1px solid #F0F0F0;
+	font-size: 13px;
+	background-color: #FBF6FB;
+	padding: 0px 10px 0px 5px;
+}
+
+
+
+#mainnav .btn-search {
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border: 2px solid #A633D7;
+	border-left-style: none;
+	background-color: #A633D7;
+	outline: none;
+}
+
+#mainnav .btn-search > span {
+	color: #FFFFFF;
+	font-size: 19px;
+}
+
+/* Nav Right bao gồm Cart, yêu thích */
+/* Button Cart */
+.nav-right .btn-cart{
+	margin-right: 30px;
+	outline: none;
+	border: none;
+	font-size: 14px;
+	border-radius: 3px;
+	padding: 6px;
+	background-color: #A633D7;
+	color: #FFFFFF;
+}
+
+.nav-right .btn-cart:hover {
+	background-color: #8523AC;
+}
+
+.btn-cart .fa-shopping-cart {
+	font-size: 22px;
+	color: #FFFFFF;
+}
+
+.btn-cart .badge {
+	margin-top: -5px;
+	margin-left: -10px;
+	color: #8523AC;
+	background-color: #FFFFFF;
+}
+
+/* Button Yêu thích */
+.nav-right .btn-yeuthich{
+	background-color: #FBF6FB;
+	border: 1px solid #D5CDD5;
+	outline: none;
+	font-size: 14px;
+	padding: 6px;
+	border-radius: 3px;
+	outline: none;
+	margin-right: 5px;
+}
+
+.btn-yeuthich:hover {
+	background-color: #FF9FFF;
+	border: 1px solid #A633D7;
+}
+
+.btn-yeuthich .fa-heart-o {
+	font-size: 18px;
+}
+
+.btn-yeuthich .badge {
+	background-color: #8523AC;
+	border-color: #A633D7;
+	margin-top: -5px;
+}
+
+
+
+
+/* Giỏ hàng */
+#modalCart .fa-shopping-cart {
+	font-size: 24px;
+	color: #2930FF;
+}
+
+#modalCart .modal-dialog {
+	width: 800px;
+}
+
+#modalCart .modal-content {
+	max-height: 485px;
+}
+
+#modalCart .modal-body {
+	background-color: #F4F4F4;
+}
+
+#modalCart .modal-header .close1,  #modalCart .modal-header .modal-title {
+	margin: -5px;
+}
+
+/* Tùy chỉnh danh sách sản phẩm trong giỏ hàng */
+.modal-body  .list-cart{
+	margin: -8px;
+	padding: 5px;
+	background-color: #FFFFFF;
+	border-radius: 3px;
+	border: 1px solid #DBD6D6;}
+
+	/* Chỉnh dòng header */
+.modal-body .title-cart {
+	padding: 5px;
+	background-color: #EEEDED;
+	margin-top: -5px;
+	margin-right: -5px;
+	margin-left: -5px;
+}
+	/* Chỉnh hiển thị 1 dòng chi tiết sản phẩm */
+.modal-body .detail-cart {
+	border-bottom: 1px dashed #DBD6D6;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	padding-left: 5px;
+}
+	/* Tạo hộp danh sách và hiển thị scrollbar */
+.modal-body .box-scroll {
+	max-height: 280px;
+	font-size: 12px;
+	overflow-x: hidden;
+	margin-right: -5px;
+	margin-left: -5px;
+}
+	/* Chỉnh ảnh */
+.box-scroll #imageProduct {
+	width: 70px;
+	height: 70px;
+}
+	/* Chỉnh tên, sản phẩm yêu thích */
+.box-scroll .ten-sp {
+	float: right;
+	width: 270px;
+	margin-top: 5px;	
+}
+
+.box-scroll .ten-sp a {
+	font-size: 13px;
+	color: #2930FF;
+}
+
+.box-scroll .ten-sp a:hover {
+	color: #590A95;
+}
+
+.box-scroll .gia-cart {
+	text-align: right;
+	margin-top: 20px;
+	font-size: 13px;
+}
+
+.box-scroll .sl-cart{
+	margin-top: 20px;
+	text-align: center;
+}
+
+.box-scroll .xoasp-cart {
+	color: #DA0000;
+	padding-left: 60px;
+	font-size: 19px;
+}
+
+.box-scroll .xoasp-cart button {
+	border: none;
+	background-color: #FFFFFF;
+	margin-top: 14px;
+	outline: none;
+}
+
+/* Footer của giỏ hàng */
+.modal-footer .label-thanhtien {
+	font-weight: normal;
+}
+
+.modal-footer .label-tong {
+	font-size: 16px;
+	color: #DA0000;
+	width: 150px;
+}
+
+.modal-footer .label-vat {
+	font-size: 13px;
+	margin-top: -5px;
+}
+
+.footer-cart {
+	margin: 5px;
+}
+
+.footer-cart .tieptuc-cart {
+	float: left;
+	font-size: 16px;
+	
+}
+
+.footer-cart span:hover {
+	color:  #2930FF;
+}
+
+.footer-cart .thanhtoan-cart {
+	font-size: 14px;
+}
+
+
+
+body {
+	background-color: #FBF6FB;
+}
+
+
+
+
+
+
+
+
+/* Footer*/
+.footer .container{
+	background-color: #F2F2F2;	
+	border-top: 1px solid #DEDEDE;
+	padding-top: 20px;
+}
+
+.footer {
+	background-color: #F2F2F2;	
+	border-top: 1px solid #DEDEDE;
+	margin-top: 50px;
+}
+
+.footer .col-md-3 a {
+	display: block;
+	padding: 3px;
+	text-decoration: none;
+	color: #635E63;
+	font-size: 14px;
+}
+
+.footer .col-md-3 a:hover {
+	color: #2930FF;
+}
+
+.diachi {
+	padding-bottom: 30px;
+}

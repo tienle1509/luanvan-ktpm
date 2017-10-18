@@ -54,7 +54,7 @@
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse" role="navigation">
 		  	<div class="navbar-header">
-		      <a class="navbar-brand" target="_blank" href="{{asset('')}}">Hệ Thống Quản Lí - Website Thương Mại Điện Tử Mobile Store</a>
+		      <a class="navbar-brand" target="_blank" href="{{asset('home')}}">Hệ Thống Quản Lí - Website Thương Mại Điện Tử Mobile Store</a>
 		    </div>		   
 		</nav>
 

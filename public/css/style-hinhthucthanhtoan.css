@@ -1,0 +1,382 @@
+.header {
+	height: 100px;
+	background-color: #FBF6FB;
+	box-shadow: 0 4px 4px -2px rgba(0,0,0,.15);
+}
+
+.header .container-header {
+	padding-top: 20px;
+}
+
+.header .container-header .text-right {
+	padding-top: 13px;
+	float: right;
+}
+
+.header .container-header .text-right i {
+	font-size: 16px;
+}
+
+.header .container-header .text-right span {
+	font-size: 18px;
+}
+
+.header .container-header .text-right a {
+	font-size: 15px;
+	text-decoration: none;
+	color: red;
+	outline: none;
+}
+
+/* Button Close modal */
+.close1{
+	border: 1px solid #DA0000;
+	float: right;
+	background-color: #FFFFFF;
+	outline: none;
+}
+
+.close1 > span {
+	color: #DA0000;
+}
+
+/* Tùy chỉnh button */
+.btntim{
+	background-color: #9D3CAE;
+	color: #FFFFFF;
+	font-size: 12px;
+}
+
+.btntim:hover, .btntim:focus {
+	color: #FFFFFF;
+}
+
+/* Thay đổi vị trí hiển thị của modal*/
+.modal-content{
+	border-radius: 0px;
+}
+
+.modal-dialog{
+	padding-top: 60px;
+}
+
+
+/* Body */
+body {
+	background-color: #FBF6FB;
+}
+
+.panel-step {
+	background-color: #FFFFFF;
+	margin-top: 2px;
+}
+
+.step {
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 3px;
+	border: 1px solid #A7A7A7;
+	padding: 4px;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	text-align: center;
+}
+
+.step .step2{
+	padding: 10px 0px 10px 20px;;
+	background-color: #484BF5;
+	border-radius: 4px;	
+}
+
+.step .step2 .badge {
+	background-color: #3BBA28!important;
+	font-size: 14px;	
+}
+
+.step .step1, .step .step3 {
+	padding: 10px 0px 10px 20px;;
+	background-color: #F1F1F1;
+	border-radius: 4px;	
+	color: #7E7E7F;
+}
+
+/* Tùy chỉnh địa chỉ giao hàng*/
+.body {
+	background-color: #FFFFFF;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+.col-md-8 button {
+	width: 25%;
+}
+
+.panel-thanhtoan {
+	border: 1px solid #9A9A9A;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+
+.panel-thanhtoan .thongtingiao {
+	padding: 10px 0px 10px 16px;
+}
+
+.panel-thanhtoan .thaydoi {
+	text-align: right;
+	margin-top: 5px;
+}
+
+.panel-thanhtoan .thaydoi a {
+	text-decoration: none;
+}
+
+.panel-thanhtoan .title-thanhtoan {
+	background-color: #D9D9DB;
+	padding: 5px 0px 2px 16px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom: 1px solid #9A9A9A;
+}
+
+.ht-thanhtoan {
+	padding-top: 10px;
+	margin-bottom: -10px;
+}
+
+.ht-thanhtoan .col-md-1 {
+	text-align: center;
+	padding: 28px 10px 0px 30px;
+}
+
+.ht-thanhtoan .col-md-11 .table .row-img {
+	text-align: center;
+	width: 15%;
+}
+
+
+
+
+
+
+
+
+
+
+/* Panel đơn hàng */
+.title-donhang {
+	font-size: 17px;
+	background-color: #D9D9DB;
+	padding: 13px 10px 9px 16px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	margin-left: 0px;
+	border-top: 1px solid #9A9A9A;
+	border-left: 1px solid #9A9A9A;
+	border-right: 1px solid #9A9A9A;
+}
+
+.panel-donhang .title-donhang a {
+	text-decoration: none;
+	font-size: 14px;
+	padding-top: 4px;
+	float: right;
+}
+
+.content-donhang {
+	margin-left: 0px;
+	max-height: 250px;
+	font-size: 12px;
+	overflow-x: hidden;
+	border: 1px solid #9A9A9A;
+}
+
+.content-donhang .chitietsp {
+	padding: 5px;
+	border-bottom: 1px dashed #DBD6D6;
+}
+
+.content-donhang .chitietsp img {
+	width: 55px;
+	height: 50px;
+}
+
+.content-donhang .chitietsp .col-md-5, .content-donhang .chitietsp .col-md-4 {
+	padding-top: 5px;
+	text-align: center;
+}
+
+
+/* Tổng tiền */
+.tongtien {
+	border-bottom: 1px solid #9A9A9A;
+	border-left: 1px solid #9A9A9A;
+	border-right: 1px solid #9A9A9A; 
+	margin-left: 0px;
+	background-color: #F3F3F3;
+}
+
+.tongtien hr {
+	border: 1px solid #E5E6E5;
+
+}
+
+.label-tamtinh, .label-gia {
+	padding: 5px 0px 2px 0px;
+}
+
+.label-phi {
+	padding: 2px;
+	color: #08BD21;
+	font-size: 13px;
+	margin-bottom: -12px;
+}
+
+.tong {
+	margin: -5px 0px 0px 0px;
+}
+
+.tong .col-md-5 {
+	font-size: 16px;
+}
+
+.tong .col-md-7 {
+	color: red;
+	font-size: 18px;
+	margin-top: -2px;
+}
+
+
+/* Giỏ hàng */
+#modalCart .fa-shopping-cart {
+	font-size: 24px;
+	color: #2930FF;
+}
+
+#modalCart .modal-dialog {
+	width: 800px;
+}
+
+#modalCart .modal-content {
+	max-height: 485px;
+}
+
+#modalCart .modal-body {
+	background-color: #F4F4F4;
+}
+
+#modalCart .modal-header .close1,  #modalCart .modal-header .modal-title {
+	margin: -5px;
+}
+
+/* Tùy chỉnh danh sách sản phẩm trong giỏ hàng */
+.modal-body  .list-cart{
+	margin: -8px;
+	padding: 5px;
+	background-color: #FFFFFF;
+	border-radius: 3px;
+	border: 1px solid #DBD6D6;}
+
+	/* Chỉnh dòng header */
+.modal-body .title-cart {
+	padding: 5px;
+	background-color: #EEEDED;
+	margin-top: -5px;
+	margin-right: -5px;
+	margin-left: -5px;
+}
+	/* Chỉnh hiển thị 1 dòng chi tiết sản phẩm */
+.modal-body .detail-cart {
+	border-bottom: 1px dashed #DBD6D6;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	padding-left: 5px;
+}
+	/* Tạo hộp danh sách và hiển thị scrollbar */
+.modal-body .box-scroll {
+	max-height: 280px;
+	font-size: 12px;
+	overflow-x: hidden;
+	margin-right: -5px;
+	margin-left: -5px;
+}
+	/* Chỉnh ảnh */
+.box-scroll #imageProduct {
+	width: 70px;
+	height: 70px;
+}
+	/* Chỉnh tên, sản phẩm yêu thích */
+.box-scroll .ten-sp {
+	float: right;
+	width: 270px;
+	margin-top: 5px;	
+}
+
+.box-scroll .ten-sp a {
+	font-size: 13px;
+	color: #2930FF;
+}
+
+.box-scroll .ten-sp a:hover {
+	color: #590A95;
+}
+
+.box-scroll .gia-cart {
+	text-align: right;
+	margin-top: 20px;
+	font-size: 13px;
+}
+
+.box-scroll .sl-cart{
+	margin-top: 20px;
+	text-align: center;
+}
+
+.box-scroll .xoasp-cart {
+	color: #DA0000;
+	padding-left: 60px;
+	font-size: 19px;
+}
+
+.box-scroll .xoasp-cart button {
+	border: none;
+	background-color: #FFFFFF;
+	margin-top: 14px;
+	outline: none;
+}
+
+/* Footer của giỏ hàng */
+.modal-footer .label-thanhtien {
+	font-weight: normal;
+}
+
+.modal-footer .label-tong {
+	font-size: 16px;
+	color: #DA0000;
+	width: 150px;
+}
+
+.modal-footer .label-vat {
+	font-size: 13px;
+	margin-top: -5px;
+}
+
+.footer-cart {
+	margin: 5px;
+}
+
+.footer-cart .tieptuc-cart {
+	float: left;
+	font-size: 16px;
+	
+}
+
+.footer-cart span:hover {
+	color:  #2930FF;
+}
+
+.footer-cart .thanhtoan-cart {
+	font-size: 14px;
+} /* End giỏ hàng */

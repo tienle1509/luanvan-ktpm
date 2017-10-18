@@ -127,7 +127,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>                        
 		      </button>
-		      <a class="navbar-brand" href="{{asset('')}}">
+		      <a class="navbar-brand" href="{{asset('home')}}">
 		      	<img src="{{asset('public/img/logo-home-ban.png')}}">
 		      </a>
 		    </div>

@@ -181,18 +181,39 @@ Route::group(['prefix'=>'nguoiban'], function(){
 
 
 /*---------------GIAO DIỆN KHÁCH HÀNG---------------------------------*/
-
-
-
-//-------------------------------------------------------------------------------------
-Route::get('demo', function () {
-	return view('nguoiban_home');
+Route::get('home',function(){
+	return view('khachhang.home');
+});
+Route::get('chitiet-danhmuc',function(){
+	return view('khachhang.chitiet_danhmuc');
+});
+Route::get('chitiet-sanpham',function(){
+	return view('khachhang.chitiet_sanpham');
+});
+Route::get('donhang',function(){
+	return view('khachhang.donhang');
+});
+Route::get('nhap-thongtin-donhang', function(){
+	return view('khachhang.nhap_thongtin_donhang');
+});
+Route::get('hinhthucthanhtoan', function(){
+	return view('khachhang.hinhthucthanhtoan');
+});
+Route::get('dathang-thanhcong',function(){
+	return view('khachhang.dathang_thanhcong');
 });
 
+//-------------------------------------------------------------------------------------
 Route::get('demo1', function () {
-	return view('nguoiban.sanpham');
+	return view('khachhang.home');
 });
 
 Route::get('demo2', function () {
-	return view('nguoiban.sanpham.sanpham_home');
+	$a = DB::table('san_pham')->join('nguoi_ban','manb','=','nguoi_ban.manb')->get();
+
+	echo '<pre>';
+	print_r($a);
+	echo '</pre>';
 });
+
+
