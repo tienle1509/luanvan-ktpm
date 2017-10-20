@@ -31,6 +31,7 @@ Route::group(['prefix'=>'quanli','middleware'=>'auth'],function(){
 
 
 
+
 /*--------------------GIAO DIỆN QUẢN LÍ----------------------------*/
 
 Route::group(['prefix'=>'quanli'], function(){
