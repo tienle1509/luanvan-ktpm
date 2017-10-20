@@ -39,6 +39,40 @@
 </head>
 
 <body>
+	<!-- Modal editPass -->
+			<div id="modalEditPass" class="modal fade">
+			  <div class="modal-dialog modal-sm">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			        <h4 class="modal-title" align="center"><b>Cài đặt tài khoản</b></h4>
+			      </div>
+			      <div class="modal-body">
+			        <form id="formEditPass" role="form">
+					  <div class="form-group">
+					    <label>Mã quản lí</label>
+					    <input type="text" class="form-control" readonly="" value="NB001">
+					  </div>
+					  <div class="form-group">
+					    <label>Địa chỉ email</label>
+					    <input type="text" class="form-control" value="nguyenvana0947@gmail.com">
+					  </div>
+					  <div class="form-group">
+					    <label>Mật khẩu</label>
+					    <input type="password" class="form-control" placeholder="Nhập mật khẩu">
+					  </div>
+					  <div class="form-group">
+					    <label>Xác nhận mật khẩu</label>
+					    <input type="password" class="form-control" placeholder="Nhập lại mật khẩu">
+					  </div>
+					  <div class="text-center">
+				        <button type="button" class="btn btn-primary">Lưu Thay Đổi</button>
+				      </div>				  
+					</form>
+			      </div>		      
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal edit pass-->
 
 	<div class="wrapper">
 		<nav id="navbar" class="navbar">
@@ -53,9 +87,16 @@
 		      <a class="navbar-brand" href="{{asset('home')}}" target="_blank">Hệ Thống Quản Lí - Website Thương Mại Điện Mobile Store</a>
 		    </div>
 		    <ul class="nav navbar-nav navbar-right">
-		        <button class="btndrop">
-		          	<span class="fa fa-user"></span>&nbsp;&nbsp;Nguyễn Văn A
-		        </button>
+		        <li class="dropdown">
+		          <button class="btndrop dropdown-toggle" data-toggle="dropdown">
+		          	<span class="fa fa-user"></span>&nbsp;&nbsp;Nguyễn Văn A&nbsp;
+		          	<span class="caret"></span>
+		          </button>
+		          <ul class="dropdown-menu">
+		           	<li><a href="#" data-toggle="modal" data-target="#modalEditPass"><span class="fa fa-plus"></span>&nbsp;&nbsp;Cài đặt tài khoản</a></li>
+		            <li><a href="{{ asset('quanli/dangnhap') }}"><span class="fa fa-power-off"></span>&nbsp;&nbsp;Đăng xuất</a></li>
+		          </ul>
+		        </li>
 		    </ul>
 		    <div class="collapse navbar-collapse" id="myNavbar">
 		     	<ul class="nav navbar-nav side-nav">	     		

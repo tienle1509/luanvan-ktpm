@@ -43,7 +43,6 @@
 	    	background-color: #F2F2F2;
 	    	box-shadow: 0px 1px 5px rgba(0,0,0,0.5);
 	    }
-
 	    
 	</style>
 
@@ -60,17 +59,33 @@
 
 
 		<div class="container-fluid">
+			@if(count($errors) > 0)
+				  	<div class="alert alert-danger" role="alert">
+				  		<strong>Lỗi !</strong> Đã xảy ra lỗi, vui lòng kiểm tra lại.<br><br>
+				  		<ul>
+						  	@foreach($errors->all() as $error)
+						  		<li> {{ $error }}</li>					  			
+						  	@endforeach
+						</ul>
+				  	</div>
+			@endif
+
 			<div class="panel-login container">
 				<div class="text-center"><img src="{{asset('public/img/iconuser.png')}}"></div>
-				<form id="form-login" role="form">
+				<form id="form-login" role="form" action="" method="post">
+
+				  <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+
 				  <div class="form-group">
 				    <label>Tên người dùng</label>
-				    <input type="email" class="form-control" id="" placeholder="Nhập địa chỉ email">
+				    <input type="text" class="form-control" name="txtEmail" placeholder="Nhập địa chỉ email" value="{{ old('txtEmail') }}">
 				  </div>
 				  <div class="form-group">
 				    <label>Mật khẩu</label>
-				    <input type="password" class="form-control" id="" placeholder="Nhập mật khẩu">
-				  </div>
+				    <input type="password" class="form-control" name="txtMatKhau" placeholder="Nhập mật khẩu">
+				  </div>			  
+
+
 				  <button type="submit" class="btn btn-primary btn-block btn-lg">Đăng nhập</button>
 				</form>
 			</div>

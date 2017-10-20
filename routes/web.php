@@ -15,20 +15,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*--------------------GIAO DIỆN QUẢN LÍ----------------------------*/
+/*--------Đăng nhập, Đăng xuất người quản lí--------------*/
+Route::get('dangnhap', 'Auth\LoginController@getDangNhapQuanLi')->name("login");;
+Route::post('dangnhap', 'Auth\LoginController@postDangNhapQuanLi');
 
-//Đăng nhập quản lí
-Route::get('quanli/dangnhap', function(){
-	return view('auth/dangnhap_quanli');
+Route::get('quanli/dangxuat', ['uses'=>'Auth\LoginController@getDangXuatQuanLi']);
+
+Route::group(['middleware' => 'auth'],function(){
+	Route::group(['prefix'=>'quanli'], function(){
+		Route::get('ql-sanpham', function (){
+			return view('quanli.sanpham.sanpham_home');
+		});
+	}); 
 });
 
+
+
+
+/*--------------------GIAO DIỆN QUẢN LÍ----------------------------*/
 
 Route::group(['prefix'=>'quanli'], function(){
 
 	//Quản lí sản phẩm
-	Route::get('ql-sanpham', function (){
+	/*Route::get('ql-sanpham', function (){
 		return view('quanli.sanpham.sanpham_home');
-	});
+	}); */
 	Route::group(['prefix'=>'ql-sanpham'], function(){
 		Route::get('duyet-sanpham', function () {
 			return view('quanli.sanpham.duyet_sanpham');
@@ -84,14 +95,22 @@ Route::group(['prefix'=>'quanli'], function(){
 	});
 });
 
+/*------------------Đăng nhập, đăng xuất nhà bán hàng------------------*/
+//Route::get('nguoiban/dangnhap', ['uses'=>'LoginNguoiBanController@getDangNhapNguoiBan']);
+//Route::post('nguoiban/postdangnhap', ['uses'=>'LoginNguoiBanController@postDangNhapNguoiBan']);
+
+
+
+//Route::group(['prefix'=>'nguoiban'], function(){
+	//Route::get('ql-sanpham', function(){
+	//	return view('nguoiban.sanpham.sanpham_home');
+	//});
+//});
+
+
+
 
 /*--------------------------GIAO DIỆN NHÀ BÁN HÀNG-------------------------------*/
-//Đăng nhập bán hàng
-Route::get('nguoiban/dangnhap', function(){
-	return view('auth.dangnhap_ban');
-});
-
-
 
 Route::group(['prefix'=>'nguoiban'], function(){
 	//Đăng kí bán hàng
@@ -108,9 +127,9 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	});
 
 	//Quản lí sản phẩm
-	Route::get('ql-sanpham', function(){
+/*	Route::get('ql-sanpham', function(){
 		return view('nguoiban.sanpham.sanpham_home');
-	});
+	}); */
 	Route::group(['prefix'=>'ql-sanpham'], function(){
 		Route::get('them-sanpham', function(){
 			return view('nguoiban.sanpham.them_sanpham');

@@ -24,6 +24,35 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">
 
 
+	<script type="text/javascript">
+		//Đăng nhập người bán thông quan ajax
+		$(document).ready(function(){
+			$('#btnDangNhap').click(function(){
+				//Lấy dữ liệu gửi qua ajax
+				var url = "http://localhost/luanvan-ktpm/nguoiban/postdangnhap";
+				var _token = $("form[name='formLogin']").find("input[name='_token']").val();
+				var email = $('#emailLogin').val();
+				var password = $('#matkhauLogin').val();
+
+				//Truyền dữ liệu qua ajax
+				$.ajax({
+					url : url,
+					type : "POST",
+					dataType : "JSON",
+					data : {"_token":_token, "email":email, "password": password},
+					success : function(result){
+						if(!result.success){
+							alert('Thất bại');
+						}else{
+							alert('Thành công');
+						}
+					}
+				});				
+			});
+		});
+	</script>
+
+
 </head>
 
 <body>
@@ -40,17 +69,20 @@
 		      <div class="modal-body">
 		      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 		        <h4 class="modal-title">Đăng nhập</h4>
-		        <form id="login" role="form">
+		        <form name="formLogin" role="form" action="{{ action('LoginNguoiBanController@postDangNhapNguoiBan') }}" method="post">
+
+		       	  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 				  <div class="form-group">
 				    <label>Email</label>
-				    <input type="email" class="form-control" id="email" placeholder="Nhập địa chỉ email">
+				    <input type="email" name="txtEmail" class="form-control" id="emailLogin" placeholder="Nhập địa chỉ email">
 				  </div>
 				  <div class="form-group">
 				    <label>Mật khẩu</label>
-				    <input type="password" class="form-control" id="matkhau" placeholder="Nhập mật khẩu">
+				    <input type="password" name="txtMatKhau" class="form-control" id="matkhauLogin" placeholder="Nhập mật khẩu">
 				  </div>
 				</form>
-				<button type="submit" class="btn btn-danger btn-lg">ĐĂNG NHẬP</button>
+				<button id="btnDangNhap" type="button" class="btn btn-danger btn-lg">ĐĂNG NHẬP</button>
 		        Bạn chưa có shop? <a href="" data-dismiss="modal">Đăng kí</a>
 		      </div>
 		    </div><!-- /.modal-content -->

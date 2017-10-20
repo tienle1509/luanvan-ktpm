@@ -11,12 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(QuanLiSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }
 
 
-class QuanLiSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -25,13 +25,16 @@ class QuanLiSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('nguoi_quanli')->insert([
+        DB::table('users')->insert([
         	array(
-        		'maql'=>'QL001',
-        		'tenql'=>'Lê Thị Cẩm Tiên',
-        		'email'=>'tienb1304736@student.ctu.edu.vn',
-        		'matkhau'=>Hash::make('tienb1304736')
+        		'mataikhoan'=>'QL002',
+        		'tentaikhoan'=>'Lê Thúy Hằng',
+        		'email'=>'hang1029@gmail.com',
+        		'password'=>Hash::make('hang12345'),
+                'quyen'=>'3'
         	)
         ]);
     }
 }
+
+

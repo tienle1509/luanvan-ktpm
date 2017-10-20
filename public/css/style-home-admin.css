@@ -29,6 +29,18 @@ body {
 	padding: 12px;
 }
 
+#navbar .navbar-right .btndrop:hover,
+ #navbar .navbar-right .btndrop:focus {
+	background-color: #3C3C3C;
+	color: #FFFFFF;
+	outline: none;
+}
+
+#navbar .nav .dropdown {
+	z-index: 2;
+}
+
+
 @media(min-width:768px) {
 
 	#myNavbar {
