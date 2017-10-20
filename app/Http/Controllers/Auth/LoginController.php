@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'quanli/ql-sanpham';
+    protected $redirectTo = '/home';
     /**
      * Create a new controller instance.
      *
@@ -55,9 +55,9 @@ class LoginController extends Controller
                 'txtMatKhau.required'=>'Vui lòng nhập mật khẩu'
             ]);
 
-        // if($v->fails()){
-        //     return redirect()->back()->withErrors($v->errors());
-        // }
+        if($v->fails()){
+            return redirect()->back()->withErrors($v->errors());
+        }
 
         $auth = array(
                     'email'=>$request->txtEmail,
@@ -76,7 +76,7 @@ class LoginController extends Controller
 
     public function getDangXuatQuanLi(){
         Auth::logout();
-        return redirect('dangnhap');
+        return redirect('quanli/dangnhap');
     }
 
 }

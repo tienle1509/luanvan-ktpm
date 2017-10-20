@@ -141,7 +141,7 @@
 		            <li><a href="#" data-toggle="modal" data-target="#modalProfile"><span class="fa fa-user"></span>&nbsp;&nbsp;Thông tin</a></li>
 		            <li><a href="#" data-toggle="modal" data-target="#modalEditPass"><span class="fa fa-plus"></span>&nbsp;&nbsp;Cài đặt tài khoản</a></li>
 		            <li class="divider"></li>
-		            <li><a href="#"><span class="fa fa-power-off"></span>&nbsp;&nbsp;Đăng xuất</a></li>
+		            <li><a href="{{ asset('nguoiban/dangxuat') }}"><span class="fa fa-power-off"></span>&nbsp;&nbsp;Đăng xuất</a></li>
 		          </ul>
 		        </li>
 		    </ul>

@@ -27,11 +27,11 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
         	array(
-        		'mataikhoan'=>'QL002',
-        		'tentaikhoan'=>'Lê Thúy Hằng',
-        		'email'=>'hang1029@gmail.com',
-        		'password'=>Hash::make('hang12345'),
-                'quyen'=>'3'
+        		'mataikhoan'=>'KH001',
+        		'tentaikhoan'=>'Nguyễn Văn An',
+        		'email'=>'an1234@gmail.com',
+        		'password'=>Hash::make('an12345'),
+                'quyen'=>'2'
         	)
         ]);
     }

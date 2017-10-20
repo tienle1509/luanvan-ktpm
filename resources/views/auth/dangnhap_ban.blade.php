@@ -42,9 +42,18 @@
 					data : {"_token":_token, "email":email, "password": password},
 					success : function(result){
 						if(!result.success){
-							alert('Thất bại');
-						}else{
-							alert('Thành công');
+							var html = '';
+
+							$.each(result.errors, function(key, item){
+								html += '<li>'+item+'</li>';
+							});
+							// Hiển thị lỗi ra
+							$('.alert-danger').removeClass('hide');
+							$('.errorModalLogin').html(html);
+						}else { //Thành công
+							$('.alert-danger').addClass('hide');
+							$('#modalLogin').modal('hide');
+							window.location="http://localhost/luanvan-ktpm/nguoiban/ql-sanpham";
 						}
 					}
 				});				
@@ -69,17 +78,26 @@
 		      <div class="modal-body">
 		      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 		        <h4 class="modal-title">Đăng nhập</h4>
+
+		        <div class="alert alert-danger hide" role="alert" style="margin-top: 10px;">
+				  	<strong>Lỗi !</strong> Đã xảy ra vui lòng kiểm tra lại<br>
+				  	<ul>
+				  		<div class="errorModalLogin"></div>
+				  	</ul>
+				</div>
+
+
 		        <form name="formLogin" role="form" action="{{ action('LoginNguoiBanController@postDangNhapNguoiBan') }}" method="post">
 
 		       	  <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 				  <div class="form-group">
 				    <label>Email</label>
-				    <input type="email" name="txtEmail" class="form-control" id="emailLogin" placeholder="Nhập địa chỉ email">
+				    <input type="email" name="email" class="form-control" id="emailLogin" placeholder="Nhập địa chỉ email">
 				  </div>
 				  <div class="form-group">
 				    <label>Mật khẩu</label>
-				    <input type="password" name="txtMatKhau" class="form-control" id="matkhauLogin" placeholder="Nhập mật khẩu">
+				    <input type="password" name="password" class="form-control" id="matkhauLogin" placeholder="Nhập mật khẩu">
 				  </div>
 				</form>
 				<button id="btnDangNhap" type="button" class="btn btn-danger btn-lg">ĐĂNG NHẬP</button>

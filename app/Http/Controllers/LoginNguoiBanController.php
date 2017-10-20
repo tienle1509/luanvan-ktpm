@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Request;
 use Validator;
 use Response;
+use Auth;
 
 class LoginNguoiBanController extends Controller
 {
@@ -42,15 +43,22 @@ class LoginNguoiBanController extends Controller
                         'quyen'=>2
                 );
 
-                if(Auth::attempt()){
+                if(Auth::attempt($auth)){
                     return Response::json(['success'=>true]);
                 }else{
+                    $errors[] = 'Email hoặc mật khẩu không đúng';
                     return Response::json([
                         'success'=>false,
-                        'errors'=>'Email hoặc mật khẩu không đúng'
+                        //'emailpass'=>'Email hoặc mật khẩu không đúng'
+                        'errors'=>$errors
                     ]);
                 }
             }
         }
+    }
+
+    public function getDangXuatNguoiBan(){
+        Auth::logout();
+        return redirect('nguoiban/dangnhap');
     }
 }
