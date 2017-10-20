@@ -49,7 +49,6 @@ class LoginNguoiBanController extends Controller
                     $errors[] = 'Email hoặc mật khẩu không đúng';
                     return Response::json([
                         'success'=>false,
-                        //'emailpass'=>'Email hoặc mật khẩu không đúng'
                         'errors'=>$errors
                     ]);
                 }

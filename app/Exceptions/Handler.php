@@ -6,6 +6,9 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use Request;
+
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -59,9 +62,16 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-
         
-        return redirect()->guest('quanli/dangnhap');
+        if(Request::is('quanli/*')){
+            return redirect()->guest('quanli/dangnhap');
+        }
+
+        if(Request::is('nguoiban/*')){
+            return redirect()->guest('nguoiban/dangnhap');
+        }
+        
+       // return redirect()->guest('quanli/dangnhap');
     }
 }
  

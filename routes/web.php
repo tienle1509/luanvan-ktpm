@@ -95,7 +95,8 @@ Route::get('nguoiban/dangnhap', ['uses'=>'LoginNguoiBanController@getDangNhapNgu
 Route::post('nguoiban/postdangnhap', ['uses'=>'LoginNguoiBanController@postDangNhapNguoiBan']);
 
 Route::get('nguoiban/dangxuat', ['uses'=>'LoginNguoiBanController@getDangXuatNguoiBan']);
-
+	
+	
 Route::group(['prefix'=>'nguoiban', 'middleware'=>'auth'], function(){
 	Route::get('ql-sanpham', function(){
 		return view('nguoiban.sanpham.sanpham_home');
@@ -219,7 +220,8 @@ Route::get('dathang-thanhcong',function(){
 
 //-------------------------------------------------------------------------------------
 Route::get('demo1', function () {
-	return view('khachhang.home');
+	
+	return URL::full();
 });
 
 Route::get('demo2', function () {
