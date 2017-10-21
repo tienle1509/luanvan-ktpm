@@ -45,8 +45,15 @@
 	width: 200px;
 }
 
-#form-xacthuc a {
-	text-decoration: none;
+#form-guilaimail {
+	margin-top: -10px;
+}
+
+#form-guilaimail button {
+	border: none;
+	background-color: #FBF6FB;
+	outline: none;
+	color: blue;
 }
 
 .footer {

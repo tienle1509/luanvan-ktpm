@@ -56,7 +56,7 @@ class LoginController extends Controller
             ]);
 
         if($v->fails()){
-            return redirect()->back()->withErrors($v->errors());
+            return redirect()->back()->withInput($request->except('password'))->withErrors($v->errors());
         }
 
         $auth = array(
@@ -69,7 +69,7 @@ class LoginController extends Controller
             return redirect('quanli/ql-sanpham');
             
         }else{
-            return redirect()->back()->withErrors('Email hoặc mật khẩu không đúng !');
+            return redirect()->back()->withInput($request->except('password'))->withErrors('Email hoặc mật khẩu không đúng !');
         }
     } 
 

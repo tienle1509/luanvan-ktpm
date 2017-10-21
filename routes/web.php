@@ -91,13 +91,29 @@ Route::group(['prefix'=>'quanli'], function(){
 	});
 });
 
+
+
+
 /*------------------Đăng nhập, đăng xuất nhà bán hàng------------------*/
 Route::get('nguoiban/dangnhap', ['uses'=>'LoginNguoiBanController@getDangNhapNguoiBan']);
 Route::post('nguoiban/postdangnhap', ['uses'=>'LoginNguoiBanController@postDangNhapNguoiBan']);
 
 Route::get('nguoiban/dangxuat', ['uses'=>'LoginNguoiBanController@getDangXuatNguoiBan']);
 	
-	
+
+/*----------Đăng kí bán hàng và gửi mail xác nhận-----------*/
+//Route::get('nguoiban/dangky', ['uses'=>'RegisterNguoiBanController@getDangKyNguoiBan']);
+Route::post('nguoiban/postdangky',['uses'=>'RegisterNguoiBanController@postDangKyNguoiBan']);
+
+Route::get('nguoiban/xacthuc-mail',['uses'=>'RegisterNguoiBanController@getXacThucMail']);
+Route::post('nguoiban/postxacthuc-mail', ['uses'=>'RegisterNguoiBanController@postXacThucMail']);
+Route::post('nguoiban/postguilaimail', ['uses'=>'RegisterNguoiBanController@postGuiLạiMail']);
+
+Route::get('nguoiban/dien-thongtin', ['uses'=>'RegisterNguoiBanController@getDienThongTin']);
+Route::post('nguoiban/postdien-thongtin', ['uses'=>'RegisterNguoiBanController@postDienThongTin']);
+
+
+
 Route::group(['prefix'=>'nguoiban', 'middleware'=>'auth'], function(){
 	Route::get('ql-sanpham', function(){
 		return view('nguoiban.sanpham.sanpham_home');
@@ -105,28 +121,10 @@ Route::group(['prefix'=>'nguoiban', 'middleware'=>'auth'], function(){
 });
 
 
-
-
 /*--------------------------GIAO DIỆN NHÀ BÁN HÀNG-------------------------------*/
 
 Route::group(['prefix'=>'nguoiban'], function(){
-	//Đăng kí bán hàng
-	Route::get('dangky', function(){
-		return view('auth.dangnhap_ban');
-	});
-	Route::group(['prefix'=>'dangky'], function(){
-		Route::get('xacthuc-mail', function(){
-			return view('nguoiban.dangky.xacthuc_mail');
-		});
-		Route::get('dien-thongtin', function(){
-			return view('nguoiban.dangky.dien_thongtin');
-		});
-	});
-
 	//Quản lí sản phẩm
-/*	Route::get('ql-sanpham', function(){
-		return view('nguoiban.sanpham.sanpham_home');
-	}); */
 	Route::group(['prefix'=>'ql-sanpham'], function(){
 		Route::get('them-sanpham', function(){
 			return view('nguoiban.sanpham.them_sanpham');
@@ -220,9 +218,16 @@ Route::get('dathang-thanhcong',function(){
 });
 
 //-------------------------------------------------------------------------------------
+
 Route::get('demo1', function () {
+	$ds_manb = DB::table('users')->select('mataikhoan')->get();
+	//$ds_manb = App\NguoiBan::all();
+	print_r($ds_manb);
+	echo "<hr>";
+	foreach ($ds_manb as $key) {
+		echo $key->mataikhoan;
+	}
 	
-	return URL::full();
 });
 
 Route::get('demo2', function () {
@@ -232,5 +237,4 @@ Route::get('demo2', function () {
 	print_r($a);
 	echo '</pre>';
 });
-
 

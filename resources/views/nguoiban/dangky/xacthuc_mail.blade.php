@@ -1,3 +1,16 @@
+<?php  
+	session_start();
+	if(!isset($_SESSION['email'])){
+		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
+		exit;
+	} else {
+		$email = $_SESSION['email'];
+	}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,15 +52,29 @@
 
 	<div class="container panel-xacthuc">
 		<h2><b>XÁC THỰC EMAIL</b></h2>
-		<P>Mã xác thực vừa gửi đến email ahihi@gmail.com.<br>Bạn vui lòng mở email để nhận mã xác thực để tiếp tục</P>
-		<form id="form-xacthuc" role="form">
+		<P>Mã xác thực vừa gửi đến email {{ $email }}.<br>Bạn vui lòng mở email để nhận mã xác thực để tiếp tục</P>
+		<form id="form-xacthuc" role="form" action="{{ url('nguoiban/postxacthuc-mail') }}" method="post">
+
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 			<div class="form-group">
-		  		<input class="form-control input-lg" id="" placeholder="Mã xác thực">
+		  		<input class="form-control input-lg" name="txtMaXacNhan" placeholder="Mã xác thực gồm 6 chữ số" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
 		  	</div>
+		  	<div style="color: red;">{!! $errors->first('txtMaXacNhan'); !!}</div>
 		  	<button type="submit" class="btn btn-danger btn-lg">TIẾP TỤC</button>
-		  	<div>
-		  		<a href="">Gửi lại mã xác thực</a>
-		  	</div>
+		</form>
+		<form id="form-guilaimail" role="form" action="{{ url('nguoiban/postguilaimail') }}" method="post">
+
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+		  	<button type="submit">Gửi lại mã xác thực</button>
+
+		  	<?php
+		  		if(isset($_SESSION['success_guima']))
+		  			echo "<script>alert('".$_SESSION['success_guima']."');</script>";
+		  			unset($_SESSION['success_guima']);
+		  	?>
+
 		</form>
 	</div>
 

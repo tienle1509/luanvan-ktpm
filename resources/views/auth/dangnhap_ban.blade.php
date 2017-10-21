@@ -119,7 +119,7 @@
 		</div>
 	</div>
 
-
+	
 	<div class="container">
 		<div class="row">
 			<div id="panel-left" class="col-md-6 col-sm-6">
@@ -129,29 +129,41 @@
 			</div>
 		
 			<div id="panel-right" class="col-md-6 col-sm-6">
-				<form id="register" role="form">
+				<form id="register" action="{{ url('nguoiban/postdangky') }}" method="post">
+
+					<input type="hidden" name="_token" value="{{csrf_token()}}">
+
 					<div class="form-group">
 					    <label>Họ tên</label>
-					    <input id="hoten" type="text">
+					    <input type="text" name="txtHoTen" value="{{ old('txtHoTen') }}">
+					    <div style="color: red; padding-top: 10px; margin-bottom: -10px">{!! $errors->first('txtHoTen') !!}</div>					    
 					</div>
 					<div class="form-group">
 					    <label>Email</label>
-					    <input type="text">
+					    <input type="text" name="txtEmail" value="{{ old('txtEmail') }}">
+					    <div style="color: red; padding-top: 10px; margin-bottom: -10px">{!! $errors->first('txtEmail') !!}</div>
 					</div>
 					<div class="form-group">
 					    <label>Số điện thoại</label>
-					    <input type="text">
+					    <input type="text"  name="txtSDT" value="{{ old('txtSDT') }}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+					    <div style="color: red; padding-top: 10px; margin-bottom: -10px">{!! $errors->first('txtSDT') !!}</div>
 					</div>
 					<div class="form-group">
 					    <label>Mật khẩu</label>
-					    <input type="password">
+					    <input type="password" name="txtMatKhau1">
+					    <div style="color: red; padding-top: 10px; margin-bottom: -10px">{!! $errors->first('txtMatKhau1') !!}</div>
+					</div>
+					<div class="form-group">
+					    <label>Nhập lại mật khẩu</label>
+					    <input type="password" name="txtMatKhau2">
+					    <div style="color: red; padding-top: 10px; margin-bottom: -10px">{!! $errors->first('txtMatKhau2') !!}</div>
 					</div>
 					<div class="form-group">
 					    <label>Tên shop</label>
-					    <input type="text">
+					    <input type="text" name="txtTenShop" value="{{ old('txtTenShop') }}">
+					    <div style="color: red; padding-top: 10px; margin-bottom: -10px">{!! $errors->first('txtTenShop') !!}</div>
 					</div>			  
 					<button type="submit" class="btn btn-danger btn-lg">BÁN HÀNG NGAY</button>
-					  <a href="dangki-ban2.php">Chuyển trang</a>
 				</form>
 			</div>
 		</div>
