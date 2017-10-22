@@ -4,6 +4,10 @@
 	if(!isset($_SESSION['manb'])){
 		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
 		exit;
+	} else {
+		$manb = $_SESSION['manb'];
+
+		
 	}
 
 ?>

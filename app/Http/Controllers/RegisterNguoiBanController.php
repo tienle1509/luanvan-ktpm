@@ -69,8 +69,9 @@ class RegisterNguoiBanController extends Controller
     	//Lấy email trong bảng người bán ra
     	$email = DB::table('nguoi_ban')->select('email')->where('email',$request->txtEmail)->first();
     	
-    	//Nếu tồn tại biến email thì trùng
-    	if(isset($email)){
+
+        //Nếu tồn tại biến email thì trùng
+    	if(!empty($email)){
     		$errors['txtEmail'] = 'Email này đã tồn tại';
     		return redirect()->back()->withInput($request->except('password'))->withErrors($errors);
     	} else {
