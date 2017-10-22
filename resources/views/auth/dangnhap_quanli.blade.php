@@ -72,7 +72,7 @@
 
 			<div class="panel-login container">
 				<div class="text-center"><img src="{{asset('public/img/iconuser.png')}}"></div>
-				<form id="form-login" role="form" action="" method="post">
+				<form id="form-login" role="form" action="{{ url('quanli/dangnhap') }}" method="post">
 
 				  <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 

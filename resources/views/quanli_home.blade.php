@@ -1,3 +1,17 @@
+<!-- Kiểm tra session -->
+<?php
+	session_start();
+
+	if(!isset($_SESSION['maql'])){
+		header("Location: http://localhost/luanvan-ktpm/quanli/dangnhap");	
+		exit;
+	} else {
+		$maql = $_SESSION['maql'];
+	}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,7 +103,7 @@
 		    <ul class="nav navbar-nav navbar-right">
 		        <li class="dropdown">
 		          <button class="btndrop dropdown-toggle" data-toggle="dropdown">
-		          	<span class="fa fa-user"></span>&nbsp;&nbsp;Nguyen Van A&nbsp;
+		          	<span class="fa fa-user"></span>&nbsp;&nbsp;{{ $maql }}&nbsp;
 		          	<span class="caret"></span>
 		          </button>
 		          <ul class="dropdown-menu">

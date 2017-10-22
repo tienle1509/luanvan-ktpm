@@ -134,7 +134,7 @@
 		    <ul class="nav navbar-nav navbar-right">
 		        <li class="dropdown">
 		          <button class="btndrop dropdown-toggle" data-toggle="dropdown">
-		          	<span class="fa fa-user"></span>&nbsp;&nbsp;ShopHelllo&nbsp;
+		          	<span class="fa fa-user"></span>&nbsp;&nbsp;ágagadsf&nbsp;
 		          	<span class="caret"></span>
 		          </button>
 		          <ul class="dropdown-menu">

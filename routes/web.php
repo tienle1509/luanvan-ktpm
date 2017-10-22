@@ -16,12 +16,12 @@ Route::get('/', function () {
 });
 
 /*--------Đăng nhập, Đăng xuất người quản lí--------------*/
-Route::get('quanli/dangnhap', 'Auth\LoginController@getDangNhapQuanLi');
-Route::post('quanli/dangnhap', 'Auth\LoginController@postDangNhapQuanLi');
+Route::get('quanli/dangnhap', 'LoginQuanLiController@getDangNhapQuanLi');
+Route::post('quanli/dangnhap', 'LoginQuanLiController@postDangNhapQuanLi');
 
-Route::get('quanli/dangxuat', ['uses'=>'Auth\LoginController@getDangXuatQuanLi']);
+Route::get('quanli/dangxuat', ['uses'=>'LoginQuanLiController@getDangXuatQuanLi']);
 
-Route::group(['prefix'=>'quanli','middleware'=>'auth'],function(){
+Route::group(['prefix'=>'quanli'],function(){
 	//Quản lí sản phẩm
 	Route::get('ql-sanpham', function (){
 		return view('quanli.sanpham.sanpham_home');
