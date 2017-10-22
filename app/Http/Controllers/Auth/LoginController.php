@@ -66,8 +66,7 @@ class LoginController extends Controller
                 );
 
         if(Auth::attempt($auth)){
-            return redirect('quanli/ql-sanpham');
-            
+            return redirect('quanli/ql-sanpham'); 
         }else{
             return redirect()->back()->withInput($request->except('password'))->withErrors('Email hoặc mật khẩu không đúng !');
         }

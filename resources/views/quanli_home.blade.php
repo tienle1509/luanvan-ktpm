@@ -89,12 +89,12 @@
 		    <ul class="nav navbar-nav navbar-right">
 		        <li class="dropdown">
 		          <button class="btndrop dropdown-toggle" data-toggle="dropdown">
-		          	<span class="fa fa-user"></span>&nbsp;&nbsp;Nguyễn Văn A&nbsp;
+		          	<span class="fa fa-user"></span>&nbsp;&nbsp;Nguyen Van A&nbsp;
 		          	<span class="caret"></span>
 		          </button>
 		          <ul class="dropdown-menu">
 		           	<li><a href="#" data-toggle="modal" data-target="#modalEditPass"><span class="fa fa-plus"></span>&nbsp;&nbsp;Cài đặt tài khoản</a></li>
-		            <li><a href="{{ asset('quanli/dangnhap') }}"><span class="fa fa-power-off"></span>&nbsp;&nbsp;Đăng xuất</a></li>
+		            <li><a href="{{ asset('quanli/dangxuat') }}"><span class="fa fa-power-off"></span>&nbsp;&nbsp;Đăng xuất</a></li>
 		          </ul>
 		        </li>
 		    </ul>

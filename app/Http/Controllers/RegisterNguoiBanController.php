@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Validator;
 use DB;
 use Mail;
+use App\User;
+use Hash;
+use App\NguoiBan;
+use Auth;
 
 class RegisterNguoiBanController extends Controller
 {	
@@ -157,7 +161,48 @@ class RegisterNguoiBanController extends Controller
 			return redirect()->back()->withErrors($v->errors());
 		}
 
-		
+		session_start();
+
+		//Thêm vô bảng Users
+		$user = new User();
+		$user->mataikhoan = $this->maNguoiBan();
+		$user->tentaikhoan = $_SESSION['hoten'];
+		$user->email = $_SESSION['email'];
+		$user->password = Hash::make($_SESSION['matkhau']);
+		$user->quyen = 2;
+		$user->save();
+
+		//Thêm vô bảng người bán
+		$nguoiban = new NguoiBan();
+		$nguoiban->manb = $this->maNguoiBan();
+		$nguoiban->tennb = $_SESSION['hoten'];
+		$nguoiban->tengianhang = $_SESSION['tenshop'];
+		$nguoiban->email = $_SESSION['email'];
+		$nguoiban->matkhau = Hash::make($_SESSION['matkhau']);
+		$nguoiban->sodienthoai = $_SESSION['sdt'];
+		$nguoiban->diachi = $request->textareaDiaChi;
+		$nguoiban->save();
+
+
+		//Kiểm tra người dùng
+		$auth = array(
+				'email'=>$_SESSION['email'],
+				'password'=>$_SESSION['matkhau'],
+				'quyen'=>2
+			);
+
+
+		if(Auth::attempt($auth)){
+			//Xóa session
+			unset($_SESSION['hoten']);
+			unset($_SESSION['email']);
+			unset($_SESSION['sdt']);
+			unset($_SESSION['matkhau']);
+			unset($_SESSION['tenshop']);
+			unset($_SESSION['maxacnhan']);
+
+			return redirect('nguoiban/ql-sanpham');
+		} 
 	}
 
 }
