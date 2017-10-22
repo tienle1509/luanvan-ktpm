@@ -7,6 +7,8 @@ use Request;
 use Validator;
 use Response;
 use Auth;
+use DB;
+use Hash;
 
 class LoginNguoiBanController extends Controller
 {
@@ -36,16 +38,23 @@ class LoginNguoiBanController extends Controller
                     'success'=>false,
                     'errors'=>$v->errors()->toArray()
                 ]);
-            } else {
-                $auth = array(
-                        'email'=>$email,
-                        'password'=>$password,
-                        'quyen'=>2
-                );
+            }
 
-                if(Auth::attempt($auth)){
+            $check_db = DB::table('nguoi_ban')->where('email', $email)->first();
+
+            if(empty($check_db)){
+                $errors[] = 'Email hoặc mật khẩu không đúng';
+                return Response::json([
+                    'success'=>false,
+                    'errors'=>$errors
+                ]);
+            } else {
+                if(Hash::check($password, $check_db->matkhau)){
+                    session_start();
+                    $_SESSION['manb'] = $check_db->manb;
+
                     return Response::json(['success'=>true]);
-                }else{
+                } else {
                     $errors[] = 'Email hoặc mật khẩu không đúng';
                     return Response::json([
                         'success'=>false,
@@ -57,7 +66,8 @@ class LoginNguoiBanController extends Controller
     }
 
     public function getDangXuatNguoiBan(){
-        Auth::logout();
+        session_start();
+        unset($_SESSION['manb']);
         return redirect('nguoiban/dangnhap');
     }
 }

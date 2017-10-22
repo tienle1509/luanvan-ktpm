@@ -1,3 +1,14 @@
+<!-- Bắt session khi đăng nhập -->
+<?php
+	session_start();
+	if(!isset($_SESSION['manb'])){
+		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
+		exit;
+	}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>

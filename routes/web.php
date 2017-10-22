@@ -30,8 +30,6 @@ Route::group(['prefix'=>'quanli'],function(){
 
 
 
-
-
 /*--------------------GIAO DIỆN QUẢN LÍ----------------------------*/
 
 Route::group(['prefix'=>'quanli'], function(){
@@ -114,7 +112,7 @@ Route::post('nguoiban/postdien-thongtin', ['uses'=>'RegisterNguoiBanController@p
 
 
 
-Route::group(['prefix'=>'nguoiban', 'middleware'=>'auth'], function(){
+Route::group(['prefix'=>'nguoiban'], function(){
 	Route::get('ql-sanpham', function(){
 		return view('nguoiban.sanpham.sanpham_home');
 	});
