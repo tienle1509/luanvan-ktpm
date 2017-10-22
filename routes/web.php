@@ -116,6 +116,9 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	Route::get('ql-sanpham', function(){
 		return view('nguoiban.sanpham.sanpham_home');
 	});
+	//Thay đổi thông tin, tài khoản nhà bán
+	Route::post('sua-thongtin', ['uses'=>'EditProfileNguoiBanController@postSuaThongTin']);
+	Route::post('sua-taikhoan', ['uses'=>'EditProfileNguoiBanController@postSuaTaiKhoan']);
 });
 
 

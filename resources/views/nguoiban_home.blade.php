@@ -5,9 +5,7 @@
 		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
 		exit;
 	} else {
-		$manb = $_SESSION['manb'];
-
-		
+		$nguoiban = DB::table('nguoi_ban')->where('manb',$_SESSION['manb'])->first();
 	}
 
 ?>
@@ -41,6 +39,100 @@
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">
 
+	<script type="text/javascript">
+		//Thay đổi thông tin nhà bán hàng
+		$(document).ready(function(){
+			$('#btnSave-modalProfile').click(function(){
+				var url = "http://localhost/luanvan-ktpm/nguoiban/sua-thongtin";
+				var _token = $("form[name='formProfile']").find("input[name='_token']").val();
+				var manb = $('#manbProfile').val();
+				var tennb = $('#tennbProfile').val();
+				var sdt = $('#sdtProfile').val();
+				var diachi = $('#diachiProfile').val();
+
+				$.ajax({
+					url : url,
+					type : "POST",
+					dataType : "JSON",
+					data : {"_token":_token, "manb":manb, "tennb":tennb, "sdt":sdt, "diachi":diachi},
+					success : function(result){
+						if(!result.success){
+							var html = '';
+
+							$.each(result.errors, function(key, item){
+								html += '<li>'+ item + '</li>';
+							});
+							//Hiển thị lỗi ra
+							$('.alert-danger').removeClass('hide');
+							$('.errorModalProfile').html(html);
+							$('.alert-success').addClass('hide');
+						} else { //Thành công
+							$('.alert-success').removeClass('hide');
+							$('.successModalProfile').html('Chỉnh sửa thông tin thành công !');
+							$('.alert-danger').addClass('hide');
+
+							//Tắt modal sau thời gian
+							setTimeout(function(){
+								$('#modalProfile').modal('hide');
+
+								//Ẩn thông báo lỗi
+								$('.alert-danger').addClass('hide');
+                                $('.alert-success').addClass('hide');
+							}, 2000);
+						}
+					}
+				});
+			});			
+		});
+
+		//Thay đổi thông tin tài khoản
+		$(document).ready(function(){
+			$('#btnEdit-modalEdit').click(function(){
+				var url = "http://localhost/luanvan-ktpm/nguoiban/sua-taikhoan";
+				var _token = $("form[name='formEditPass']").find("input[name='_token']").val();
+				var manb = $('#manbEdit').val();
+				var email = $('#mailEdit').val();
+				var matkhau1 = $('#pass1Edit').val();
+				var matkhau2 = $('#pass2Edit').val();
+
+				$.ajax({
+					url : url,
+					type : "POST",
+					dataType : "JSON",
+					data : {"_token":_token, "manb":manb, "email":email, "matkhau1":matkhau1, "matkhau2":matkhau2},
+					success : function(result){
+						if(!result.success){
+							var html1 = '';
+
+							$.each(result.errors, function(key, item){
+								html1 += '<li>'+ item + '</li>';
+							});
+
+							//Hiển thông báo lỗi
+							$('.alert-danger').removeClass('hide');
+							$('.errorModalEdit').html(html1);
+							$('.alert-success').addClass('hide');
+						} 
+						else {//Thành công
+							$('.alert-success').removeClass('hide');
+							$('.successModalEdit').html('Cập nhật tài khoản thành công !');
+							$('.alert-danger').addClass('hide');
+
+							//Tắt modal sau thời gian
+							setTimeout(function(){
+								$('#modalEditPass').modal('hide');
+
+								//Ẩn thông báo lỗi
+								$('.alert-danger').addClass('hide');
+                                $('.alert-success').addClass('hide');
+							}, 2000);
+						}
+					}
+				});
+			});
+		});
+
+	</script>
 
 </head>
 
@@ -56,40 +148,56 @@
 			        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 			        <h4 class="modal-title" align="center"><b>Thông tin nhà bán hàng</b></h4>
 			      </div>
+
+
+			      <div class="alert alert-danger hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;"">
+				  	<strong>Lỗi !</strong> Đã xảy ra vui lòng kiểm tra lại<br>
+				  	<ul>
+				  		<div class="errorModalProfile"></div>
+				  	</ul>
+				  </div>
+				  <div class="alert alert-success hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;">
+				  		<div class="successModalProfile"></div>
+				  </div>
+
+
 			      <div class="modal-body">
-			    	<form id="formProfile" class="form-horizontal" role="form">
+			    	<form id="formProfile" name="formProfile" class="form-horizontal" role="form" action="{{ action('EditProfileNguoiBanController@postSuaThongTin') }}" method="post">
+
+			    	  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 					  <div class="form-group">
 					    <label class="col-md-4 control-label">Mã nhà bán hàng:</label>
 					    <div class="col-md-8">
-					      <input type="text" class="form-control" readonly="" value="NB001">
+					      <input type="text" id="manbProfile" class="form-control" readonly="" value="{{$nguoiban->manb}}">
 					    </div>
 					  </div>
 					  <div class="form-group">
 					    <label class="col-md-4 control-label">Họ và tên:</label>
 					    <div class="col-md-8">
-					      <input type="text" class="form-control" value="Nguyễn Văn A">
+					      <input type="text" id="tennbProfile" class="form-control" value="{{$nguoiban->tennb}}">
 					    </div>
 					  </div>				  
 					  <div class="form-group">
 					    <label class="col-md-4 control-label">Số điện thoại:</label>
 					    <div class="col-md-8">
-					      <input type="text" class="form-control" value="095637261">
+					      <input type="text" id="sdtProfile" class="form-control" value="{{$nguoiban->sodienthoai}}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
 					    </div>
 					  </div>
 					  <div class="form-group">
 					    <label class="col-md-4 control-label">Tên gian hàng:</label>
 					    <div class="col-md-8">
-					      <input type="text" class="form-control" readonly="" value="Ahihishop">
+					      <input type="text" id="tenghProfile" class="form-control" readonly="" value="{{$nguoiban->tengianhang}}">
 					    </div>
 					  </div>
 					  <div class="form-group">
 					    <label class="col-md-4 control-label">Địa chỉ:</label>
 					    <div class="col-md-8">
-					      <textarea class="form-control" cols="2">đường 3/2 Xuân Khánh, Ninh Kiều, Cần Thơ</textarea>
+					      <textarea class="form-control" id="diachiProfile" cols="2">{{$nguoiban->diachi}}</textarea>
 					    </div>
 					  </div>
 					  <div class="text-center">
-					  	<button type="button" class="btn btn-primary">Lưu lại</button>
+					  	<button id="btnSave-modalProfile" type="button" class="btn btn-primary">Lưu lại</button>
 					  </div>
 					</form>
 			      </div>		      
@@ -106,26 +214,40 @@
 			        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 			        <h4 class="modal-title" align="center"><b>Cài đặt tài khoản</b></h4>
 			      </div>
+
+			      	<div class="alert alert-danger hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;"">
+					  	<strong>Lỗi !</strong> Đã xảy ra vui lòng kiểm tra lại<br>
+					  	<ul>
+					  		<div class="errorModalEdit" style="margin-left: -10px;"></div>
+					  	</ul>
+					</div>
+					<div class="alert alert-success hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;">
+					  	<div class="successModalEdit"></div>
+					</div>
+
 			      <div class="modal-body">
-			        <form id="formEditPass" role="form">
+					<form id="formEditPass" name="formEditPass" role="form">
+
+			          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 					  <div class="form-group">
 					    <label>Mã nhà bán hàng</label>
-					    <input type="text" class="form-control" readonly="" value="NB001">
+					    <input type="text" class="form-control" id="manbEdit" readonly="" value="{{$nguoiban->manb}}">
 					  </div>
 					  <div class="form-group">
 					    <label>Địa chỉ email</label>
-					    <input type="text" class="form-control" value="nguyenvana0947@gmail.com">
+					    <input type="text" id="mailEdit" class="form-control" value="{{$nguoiban->email}}">
 					  </div>
 					  <div class="form-group">
 					    <label>Mật khẩu</label>
-					    <input type="password" class="form-control" placeholder="Nhập mật khẩu">
+					    <input type="password" id="pass1Edit" class="form-control" placeholder="Nhập mật khẩu">
 					  </div>
 					  <div class="form-group">
 					    <label>Xác nhận mật khẩu</label>
-					    <input type="password" class="form-control" placeholder="Nhập lại mật khẩu">
+					    <input type="password" id="pass2Edit" class="form-control" placeholder="Nhập lại mật khẩu">
 					  </div>
 					  <div class="text-center">
-				        <button type="button" class="btn btn-primary">Lưu Thay Đổi</button>
+				        <button id="btnEdit-modalEdit" type="button" class="btn btn-primary">Lưu Thay Đổi</button>
 				      </div>				  
 					</form>
 			      </div>		      
@@ -142,14 +264,14 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>                        
 		      </button>
-		      <a class="navbar-brand" href="{{asset('home')}}">
+		      <a class="navbar-brand" href="{{asset('home')}}" target="_blank">
 		      	<img src="{{asset('public/img/logo-home-ban.png')}}">
 		      </a>
 		    </div>
 		    <ul class="nav navbar-nav navbar-right">
 		        <li class="dropdown">
 		          <button class="btndrop dropdown-toggle" data-toggle="dropdown">
-		          	<span class="fa fa-user"></span>&nbsp;&nbsp;ágagadsf&nbsp;
+		          	<span class="fa fa-user"></span>&nbsp;&nbsp;{{ $nguoiban->tengianhang }}&nbsp;
 		          	<span class="caret"></span>
 		          </button>
 		          <ul class="dropdown-menu">

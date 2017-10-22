@@ -14,11 +14,12 @@
 #navbar .navbar-right .btndrop {
 	font-size: 15px;
 	color: #BFBFBF;
-	width: 160px;
+	width: auto;
 	background-color: #3C3C3C;
 	outline: none;
 	border: none;
 	padding: 12px;
+	margin-right: 10px;
 }
 
 #navbar .navbar-right .btndrop:hover,
@@ -26,6 +27,11 @@
 	background-color: #3C3C3C;
 	color: #FFFFFF;
 	outline: none;
+}
+
+#navbar .navbar-right .dropdown-menu {
+	width: auto;
+	margin-right: 10px;
 }
 
 #navbar .nav .dropdown {

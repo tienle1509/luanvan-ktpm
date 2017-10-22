@@ -70,7 +70,7 @@ class RegisterNguoiBanController extends Controller
     	$email = DB::table('nguoi_ban')->select('email')->where('email',$request->txtEmail)->first();
     	
 
-        //Nếu tồn tại biến email thì trùng
+        //Nếu có biến email thì trùng
     	if(!empty($email)){
     		$errors['txtEmail'] = 'Email này đã tồn tại';
     		return redirect()->back()->withInput($request->except('password'))->withErrors($errors);
