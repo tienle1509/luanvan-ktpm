@@ -3,6 +3,22 @@
 @section('sanpham', 'active')
 
 @section('noidung')
+
+<script type="text/javascript">
+	
+	
+
+     
+</script>
+
+<style type="text/css">
+	.error {
+		color: red;
+		margin-top: 6px;
+	}
+</style>
+
+
 <div class="container-fluid">
 				<h1>Thêm sản phẩm</h1>
 				<hr>
@@ -16,78 +32,69 @@
 				</div>
 
 				<div class="row">
-					<form id="formInfoProduct" class="form-horizontal" role="form">
+					<form id="formInfoProduct" class="form-horizontal" role="form" enctype="multipart/form-data">
+
+						<input type="hidden" name="_token" value="{{ csrf_token()}}">
+
 						<div class="col-md-3 col-sm-3">
-							<input id="imgDaiDien" name="" type="file">
+							<input id="imgDaiDien" name="anhDaiDien" type="file">
+							<div class="error" style="margin-top: 10px; text-align: center;">{{$errors->first('anhDaiDien')}}</div>
 						</div>
 						<div class="col-md-9 col-sm-9">
 							<div class="title-thongtin"><h3>Thông tin chung</h3></div>
 							<div class="form-group">
 							    <label class="col-sm-2 control-label">Chọn danh mục <b style="color: red">*</b></label>
 							    <div class="col-sm-10">
-							      <select class="form-control">
-							      	<option>-- Chọn danh mục sản phẩm --</option>
-							      	<option value="">Apple</option>
-							      	<option value="">Samsung</option>
-							      	<option value="">Nokia</option>
-							      	<option value="">Oppo</option>
-							      	<option value="">Sony</option>
-							      	<option value="">HTC</option>
-							      	<option value="">LG</option>
-							      	<option value="">Asus</option>
-							      	<option value="">Masstel</option>
-							      	<option value="">Motorola</option>
-							      	<option value="">Xiaomi</option>
-							      	<option value="">MobiiStart</option>
-							      	<option value="">Wiko</option>
-							      	<option value="">Lenovo</option>
-							      	<option value="">BlackBery</option>
-							      </select>
+							    	<select name="cbxDanhMuc" class="form-control">
+							    		<option value="">-- Chọn danh mục sản phẩm --</option>
+							    		@foreach($list_dm as $val)
+							    			@if(!empty($val))
+							    				<option value="{{$val->madm}}">{{$val->tendanhmuc}}</option>
+							    			@endif
+							    		@endforeach
+							    	</select>
+							    	<div class="error">{{$errors->first('cbxDanhMuc')}}</div>
 							    </div>
 							</div>
 							<div class="form-group">
 							    <label class="col-sm-2 control-label">Tên sản phẩm <b style="color: red">*</b></label>
 							    <div class="col-sm-10">
-							      <input type="text" class="form-control" id="" placeholder="Nhập tên sản phẩm">
+							      <input type="text" class="form-control" name="txtTenSanPham" placeholder="Nhập tên sản phẩm" value="{{ old('txtTenSanPham')}}">
+							      <div class="error">{{$errors->first('txtTenSanPham')}}</div>
 							    </div>
 							</div>
 							<div class="form-group">
 							    <label class="col-sm-2 control-label">Giá <b style="color: red">*</b></label>
 							    <div class="col-sm-6">
-							      <input type="text" class="form-control" id="" placeholder="Nhập giá">
+							      <input type="text" class="form-control" name="txtGia" placeholder="Nhập giá" value="{{old('txtGia')}}">
+							      <div class="error">{{$errors->first('txtGia')}}</div>
 							    </div>
 							    <label class="col-sm-1 control-label">VND</label>							    
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Số lượng <b style="color: red">*</b></label>
 							    <div class="col-sm-6">
-							      <input type="text" class="form-control" id="" placeholder="Nhập số lượng">
+							      <input type="text" class="form-control" name="txtSoLuong" value="{{old('txtSoLuong')}}" placeholder="Nhập số lượng" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+							      <div class="error">{{$errors->first('txtSoLuong')}}</div>
 							    </div>
 							</div>
 							<div class="form-group">
 							    <label class="col-sm-2 control-label">Xuất xứ <b style="color: red">*</b></label>
 							    <div class="col-sm-6">
-							      <input type="text" class="form-control" id="" placeholder="Nhập xuất xứ">
+							      <input type="text" class="form-control" name="txtXuatXu" placeholder="Nhập xuất xứ" value="{{old('txtXuatXu')}}">
+							      <div class="error">{{$errors->first('txtXuatXu')}}</div>
 							    </div>							    
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Bảo hành <b style="color: red">*</b></label>
 							    <div class="col-sm-6">
-							      <select class="form-control">
-							      	<option>-- Chọn thời gian bảo hành --</option>
-							      	<option value="1">1 tháng</option>
-							      	<option value="2">2 tháng</option>
-							      	<option value="3">3 tháng</option>
-							      	<option value="4">4 tháng</option>
-							      	<option value="5">5 tháng</option>
-							      	<option value="6">6 tháng</option>
-							      	<option value="7">7 tháng</option>
-							      	<option value="8">8 tháng</option>
-							      	<option value="9">9 tháng</option>
-							      	<option value="10">10 tháng</option>
-							      	<option value="11">11 tháng</option>
-							      	<option value="12">12 tháng</option>
+							      <select name="cbxBaoHanh" class="form-control">
+							      	<option value="">-- Chọn thời gian bảo hành --</option>
+							      	@for($i = 1; $i <= 12; $i++)
+							      		<option value="{{$i}}">{{$i}}  tháng</option>
+							      	@endfor
 							      </select>
+							      <div class="error">{{$errors->first('cbxBaoHanh')}}</div>
 							    </div>
 							</div>
 						</div> <!-- end thông tin -->
@@ -98,12 +105,13 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Độ phân giải màn hình <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<input type="text" name="" class="form-control" placeholder="Nhập độ phân giải màn hình">
+							    	<input type="text" name="txtDPGMH" class="form-control" placeholder="Nhập độ phân giải màn hình" value="{{old('txtDPGMH')}}">
+							    	<div class="error">{{$errors->first('txtDPGMH')}}</div>
 							    </div>
 								<label class="col-sm-2 control-label">Kích thước màn hình <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							      <select class="form-control">
-							      	<option>-- Chọn kích thước màn hình --</option>
+							      <select name="cbxKichThuocMH" class="form-control">
+							      	<option value="">-- Chọn kích thước màn hình --</option>
 							      	<option value="2.5">Dưới 2.5 inches</option>
 							      	<option value="2.6">2.6 inches</option>
 							      	<option value="2.7">2.7 inches</option>
@@ -140,92 +148,71 @@
 							      	<option value="5.8">5.8 inches</option>
 							      	<option value="5.9">5.9 inches</option>
 							      	<option value="6.0">6.0 inches</option>
-							      </select>							    
+							      </select>	
+							      <div class="error">{{$errors->first('cbxKichThuocMH')}}</div>	
 							    </div>							    
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Hệ điều hành <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<input type="text" name="" class="form-control" placeholder="Nhập hệ điều hành">
+							    	<input type="text" name="txtHeDieuHanh" class="form-control" placeholder="Nhập hệ điều hành" value="{{old('txtHeDieuHanh')}}">
+							    	<div class="error">{{$errors->first('txtHeDieuHanh')}}</div>
 							    </div>
 								<label class="col-sm-2 control-label">Màu sắc <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<select class="form-control">
-							    		<option>-- Chọn màu sắc --</option>
-							    		<option>Đen</option>
-							    		<option>Vàng</option>
-							    		<option>Đỏ</option>
-							    		<option>Trắng</option>
-							    		<option>Đồng đỏ</option>
-							    		<option>Kem</option>
-							    		<option>Xanh</option>
-							    		<option>Cam</option>
-							    		<option>Bạc</option>
-							    		<option>Xanh</option>
-							    		<option>Xám</option>
-							    		<option>Hồng</option>
-							    		<option>Nâu</option>
-							    		<option>Tím</option>
+							    	<select name="cbxMauSac" class="form-control">
+							    		<option value="">-- Chọn màu sắc --</option>
+							    		<option value="Đen">Đen</option>
+							    		<option value="Vàng">Vàng</option>
+							    		<option value="Đỏ">Đỏ</option>
+							    		<option value="Trắng">Trắng</option>
+							    		<option value="Đồng đỏ">Đồng đỏ</option>
+							    		<option value="Kem">Kem</option>
+							    		<option value="Xanh">Xanh</option>
+							    		<option value="Cam">Cam</option>
+							    		<option value="Bạc">Bạc</option>
+							    		<option value="Xám">Xám</option>
+							    		<option value="Hồng">Hồng</option>
+							    		<option value="Nâu">Nâu</option>
+							    		<option value="Tím">Tím</option>
 							    	</select>
+							    	<div class="error">{{$errors->first('cbxMauSac')}}</div>
 							    </div>							    
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Camera trước <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<select class="form-control">
-							    		<option>-- Chọn độ phân giải camera trước --</option>
-							    		<option>1 MP</option>
-							    		<option>2 MP</option>
-							    		<option>3 MP</option>
-							    		<option>4 MP</option>
-							    		<option>5 MP</option>
-							    		<option>6 MP</option>
-							    		<option>7 MP</option>
-							    		<option>8 MP</option>
-							    		<option>9 MP</option>
-							    		<option>10 MP</option>
-							    		<option>11 MP</option>
-							    		<option>12 MP</option>
-							    		<option>13 MP</option>
-							    		<option>Không có camera</option>
+							    	<select name="cbxCameraTruoc" class="form-control">
+							    		<option value="">-- Chọn độ phân giải camera trước --</option>
+							    		@for($i = 1; $i <= 13; $i++)
+							    			<option value="{{$i}}">{{$i }} MP</option>
+							    		@endfor
+							    		<option value="0">Không có camera</option>
 							    	</select>
+							    	<div class="error">{{$errors->first('cbxCameraTruoc')}}</div>
 							    </div>
 							    <label class="col-sm-2 control-label">Camera sau <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<select class="form-control">
-							    		<option>-- Chọn độ phân giải camera sau --</option>
-							    		<option>1 MP</option>
-							    		<option>2 MP</option>
-							    		<option>3 MP</option>
-							    		<option>4 MP</option>
-							    		<option>5 MP</option>
-							    		<option>6 MP</option>
-							    		<option>7 MP</option>
-							    		<option>8 MP</option>
-							    		<option>9 MP</option>
-							    		<option>10 MP</option>
-							    		<option>11 MP</option>
-							    		<option>12 MP</option>
-							    		<option>13 MP</option>
-							    		<option>14 MP</option>
-							    		<option>15 MP</option>
-							    		<option>16 MP</option>
-							    		<option>17 MP</option>
-							    		<option>18 MP</option>
-							    		<option>19 MP</option>
-							    		<option>20 MP</option>
-							    		<option>Không có camera</option>
+							    	<select name="cbxCameraSau" class="form-control">
+							    		<option value="">-- Chọn độ phân giải camera sau --</option>
+							    		@for($i = 1; $i <= 20; $i++)
+							    			<option value="{{$i}}">{{$i }} MP</option>
+							    		@endfor
+							    		<option value="0">Không có camera</option>
 							    	</select>
+							    	<div class="error">{{$errors->first('cbxCameraSau')}}</div>
 							    </div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Bộ nhớ trong <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<input type="text" name="" class="form-control" placeholder="Nhập bộ nhớ trong">
+							    	<input type="text" name="txtBoNhoTrong" class="form-control" placeholder="Nhập bộ nhớ trong" value="{{old('txtBoNhoTrong')}}">
+							    	<div class="error">{{$errors->first('txtBoNhoTrong')}}</div>
 							    </div>
 							    <label class="col-sm-2 control-label">Dung lượng pin <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<input type="text" name="" class="form-control" placeholder="Nhập dung lượng pin">
+							    	<input type="text" name="txtDungLuongPin" class="form-control" placeholder="Nhập dung lượng pin" value="{{old('txtDungLuongPin')}}">
+							    	<div class="error">{{$errors->first('txtDungLuongPin')}}</div>
 							    </div>
 							</div>
 						</div> <!-- end thuộc tính sản phẩm -->
@@ -233,12 +220,13 @@
 
 						<div class="col-md-12 col-sm-12">
 							<div class="title"><h3>Mô tả sản phẩm</h3></div>
-							<textarea name="editor1" class="ckeditor" id="editor1"></textarea>
+							<textarea name="txtMoTa" class="ckeditor" id="editor1"></textarea>
+							<div class="error">{{$errors->first('txtMoTa')}}</div>
 						</div> <!--end mô tả sản phẩm -->
 
 						<div class="col-md-12 col-sm-12">
 							<div class="title"><h3>Ảnh sản phẩm</h3></div>
-							<input id="imgListProduct" name="" type="file" multiple>
+							<input id="imgListProduct" name="imgListProduct[]" type="file" multiple="multiple">
 						</div>
 
 						<div class="col-md-12 col-sm-12">
@@ -277,17 +265,17 @@
 		});
 
 
-		$("#imgListProduct").fileinput({
+	/*	$("#imgListProduct").fileinput({
 	        uploadUrl: '/file-upload-batch/2',
 	        showUpload: false,
 	        showClose: false,
 	        maxFileCount: 4,
-	        msgFilesTooMany: 'Chỉ được chọn 5 ảnh',
+	        msgFilesTooMany: 'Chỉ được chọn 4 ảnh',
 	        allowedFileExtensions: ["jpg", "png", "gif"],
 	        msgInvalidFileExtension: 'Vui lòng chọn file ảnh có đuôi jpg, png, gif',
 	        msgPlaceholder: 'Chọn file',
 	        dropZoneTitle: 'Bạn có thể đăng tối đa 4 hình ảnh trong 1 sản phẩm<br> Click Browser phía dưới để thêm ảnh !'
-	    });
+	    });  */
 		
 	</script>
 

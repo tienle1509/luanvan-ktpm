@@ -49,19 +49,19 @@ class EditProfileNguoiBanController extends Controller
     public function postSuaTaiKhoan(Request $request){
         if(Request::ajax()){
             $manb = Request::get('manb');
-            $email = Request::get('email');
+           // $email = Request::get('email');
             $matkhau1 = Request::get('matkhau1');
             $matkhau2 = Request::get('matkhau2');
 
             $v = Validator::make(Request::all(), 
                 [
-                    'email'=>'required|email',
+                    //'email'=>'required|email',
                     'matkhau1'=>'required|min:8',
                     'matkhau2'=>'required|same:matkhau1'
                 ],
                 [
-                    'email.required'=>'Email không được rỗng',
-                    'email.email'=>'Email không đúng định dạng',
+                   // 'email.required'=>'Email không được rỗng',
+                   // 'email.email'=>'Email không đúng định dạng',
                     'matkhau1.required'=>'Mật khẩu không được rỗng',
                     'matkhau1.min'=>'Mật khẩu ít nhất 8 kí tự',
                     'matkhau2.required'=>'Xác nhận mật khẩu không được rỗng',
@@ -76,23 +76,23 @@ class EditProfileNguoiBanController extends Controller
             } 
             else {
                 //Kiểm tra mật khẩu tồn tại chưa
-                $check_mail = DB::table('nguoi_ban')->where('email',$email)->first();
+               // $check_mail = DB::table('nguoi_ban')->where('email',$email)->first();
 
-                if(!empty($check_mail)){
+              /*  if(!empty($check_mail)){
                     $errors['email'] = 'Email này đã tồn tại';
                     return Response::json([
                         'success'=>false,
                         'errors'=>$errors
                     ]);
                 }
-                else { //Update dữ liệu vào bảng người bán
-                    DB::table('nguoi_ban')->where('manb',$manb)->update(['email'=>$email, 'matkhau'=>Hash::make($matkhau1)]);
+                else { */ //Update dữ liệu vào bảng người bán
+                    DB::table('nguoi_ban')->where('manb',$manb)->update(['matkhau'=>Hash::make($matkhau1)]);
 
                     return Response::json(['success'=>true]);
-                }
+                //}
             }
         }
     }
 
-    
+
 }

@@ -113,9 +113,17 @@ Route::post('nguoiban/postdien-thongtin', ['uses'=>'RegisterNguoiBanController@p
 
 
 Route::group(['prefix'=>'nguoiban'], function(){
+	//Quản lí sản phẩm
 	Route::get('ql-sanpham', function(){
 		return view('nguoiban.sanpham.sanpham_home');
 	});
+	Route::group(['prefix'=>'ql-sanpham'], function(){
+		Route::get('them-sanpham', ['uses'=>'SanPhamNguoiBanController@getThemSanPham']);
+		Route::post('luu-sanpham', ['uses'=>'SanPhamNguoiBanController@postLuuSanPham']);
+	});
+	
+	
+
 	//Thay đổi thông tin, tài khoản nhà bán
 	Route::post('sua-thongtin', ['uses'=>'EditProfileNguoiBanController@postSuaThongTin']);
 	Route::post('sua-taikhoan', ['uses'=>'EditProfileNguoiBanController@postSuaTaiKhoan']);
@@ -126,10 +134,7 @@ Route::group(['prefix'=>'nguoiban'], function(){
 
 Route::group(['prefix'=>'nguoiban'], function(){
 	//Quản lí sản phẩm
-	Route::group(['prefix'=>'ql-sanpham'], function(){
-		Route::get('them-sanpham', function(){
-			return view('nguoiban.sanpham.them_sanpham');
-		});
+	Route::group(['prefix'=>'ql-sanpham'], function(){		
 		Route::get('sanpham-choduyet', function(){
 			return view('nguoiban.sanpham.sanpham_choduyet');
 		});
@@ -221,13 +226,7 @@ Route::get('dathang-thanhcong',function(){
 //-------------------------------------------------------------------------------------
 
 Route::get('demo1', function () {
-	$ds_manb = DB::table('users')->select('mataikhoan')->get();
-	//$ds_manb = App\NguoiBan::all();
-	print_r($ds_manb);
-	echo "<hr>";
-	foreach ($ds_manb as $key) {
-		echo $key->mataikhoan;
-	}
+	return view('demo');
 	
 });
 

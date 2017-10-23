@@ -63,21 +63,21 @@
 								html += '<li>'+ item + '</li>';
 							});
 							//Hiển thị lỗi ra
-							$('.alert-danger').removeClass('hide');
+							$('#alert-danger-profile').removeClass('hide');
 							$('.errorModalProfile').html(html);
-							$('.alert-success').addClass('hide');
+							$('#alert-success-profile').addClass('hide');
 						} else { //Thành công
-							$('.alert-success').removeClass('hide');
+							$('#alert-success-profile').removeClass('hide');
 							$('.successModalProfile').html('Chỉnh sửa thông tin thành công !');
-							$('.alert-danger').addClass('hide');
+							$('#alert-danger-profile').addClass('hide');
 
 							//Tắt modal sau thời gian
 							setTimeout(function(){
 								$('#modalProfile').modal('hide');
 
 								//Ẩn thông báo lỗi
-								$('.alert-danger').addClass('hide');
-                                $('.alert-success').addClass('hide');
+								$('#alert-danger-profile').addClass('hide');
+                                $('#alert-success-profile').addClass('hide');
 							}, 2000);
 						}
 					}
@@ -91,7 +91,7 @@
 				var url = "http://localhost/luanvan-ktpm/nguoiban/sua-taikhoan";
 				var _token = $("form[name='formEditPass']").find("input[name='_token']").val();
 				var manb = $('#manbEdit').val();
-				var email = $('#mailEdit').val();
+				//var email = $('#mailEdit').val();
 				var matkhau1 = $('#pass1Edit').val();
 				var matkhau2 = $('#pass2Edit').val();
 
@@ -99,7 +99,7 @@
 					url : url,
 					type : "POST",
 					dataType : "JSON",
-					data : {"_token":_token, "manb":manb, "email":email, "matkhau1":matkhau1, "matkhau2":matkhau2},
+					data : {"_token":_token, "manb":manb, "matkhau1":matkhau1, "matkhau2":matkhau2},
 					success : function(result){
 						if(!result.success){
 							var html1 = '';
@@ -109,22 +109,22 @@
 							});
 
 							//Hiển thông báo lỗi
-							$('.alert-danger').removeClass('hide');
+							$('#alert-danger-Edit').removeClass('hide');
 							$('.errorModalEdit').html(html1);
-							$('.alert-success').addClass('hide');
+							$('#alert-success-edit').addClass('hide');
 						} 
 						else {//Thành công
-							$('.alert-success').removeClass('hide');
+							$('#alert-success-edit').removeClass('hide');
 							$('.successModalEdit').html('Cập nhật tài khoản thành công !');
-							$('.alert-danger').addClass('hide');
+							$('#alert-danger-Edit').addClass('hide');
 
 							//Tắt modal sau thời gian
 							setTimeout(function(){
 								$('#modalEditPass').modal('hide');
 
 								//Ẩn thông báo lỗi
-								$('.alert-danger').addClass('hide');
-                                $('.alert-success').addClass('hide');
+								$('#alert-danger-Edit').addClass('hide');
+                                $('#alert-success-edit').addClass('hide');
 							}, 2000);
 						}
 					}
@@ -150,13 +150,13 @@
 			      </div>
 
 
-			      <div class="alert alert-danger hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;"">
+			      <div id="alert-danger-profile" class="alert alert-danger hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;"">
 				  	<strong>Lỗi !</strong> Đã xảy ra vui lòng kiểm tra lại<br>
 				  	<ul>
 				  		<div class="errorModalProfile"></div>
 				  	</ul>
 				  </div>
-				  <div class="alert alert-success hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;">
+				  <div id="alert-success-profile" class="alert alert-success hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;">
 				  		<div class="successModalProfile"></div>
 				  </div>
 
@@ -215,13 +215,13 @@
 			        <h4 class="modal-title" align="center"><b>Cài đặt tài khoản</b></h4>
 			      </div>
 
-			      	<div class="alert alert-danger hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;"">
+			      	<div id="alert-danger-Edit" class="alert alert-danger hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;"">
 					  	<strong>Lỗi !</strong> Đã xảy ra vui lòng kiểm tra lại<br>
 					  	<ul>
 					  		<div class="errorModalEdit" style="margin-left: -10px;"></div>
 					  	</ul>
 					</div>
-					<div class="alert alert-success hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;">
+					<div id="alert-success-edit" class="alert alert-success hide" role="alert" style="margin-top: 10px; margin-right: 15px; margin-left: 15px;">
 					  	<div class="successModalEdit"></div>
 					</div>
 
@@ -236,7 +236,7 @@
 					  </div>
 					  <div class="form-group">
 					    <label>Địa chỉ email</label>
-					    <input type="text" id="mailEdit" class="form-control" value="{{$nguoiban->email}}">
+					    <input type="text" id="mailEdit" class="form-control" value="{{$nguoiban->email}}" readonly="">
 					  </div>
 					  <div class="form-group">
 					    <label>Mật khẩu</label>

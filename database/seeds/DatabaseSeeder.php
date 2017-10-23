@@ -11,18 +11,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(QuanLiSeeder::class);
+        $this->call(DanhMucSeeder::class);
     }
 }
 
 
 class QuanLiSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('nguoi_quanli')->insert([
@@ -36,4 +31,16 @@ class QuanLiSeeder extends Seeder
     }
 }
 
+class DanhMucSeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('danhmuc_sanpham')->insert([
+            array(
+                'madm'=>'15',
+                'tendanhmuc'=>'BlackBerry'
+            )
+        ]);
+    }
+}
 

@@ -267,6 +267,10 @@
 	margin-left: 75px;
 }
 
+.file-input .file-upload-indicator {
+	display: none;
+}
+
 #formInfoProduct .title-thongtin {
 	margin-top: -20px;
 }
