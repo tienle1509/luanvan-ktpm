@@ -238,3 +238,5 @@ Route::get('demo2', function () {
 	echo '</pre>';
 });
 
+Route::get('demo', ['uses'=>'SanPhamNguoiBanController@maSanPham']);
+

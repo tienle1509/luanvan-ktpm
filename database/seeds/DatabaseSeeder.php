@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(DanhMucSeeder::class);
+        $this->call(demo1Seeder::class);
     }
 }
 
@@ -43,4 +43,5 @@ class DanhMucSeeder extends Seeder
         ]);
     }
 }
+
 

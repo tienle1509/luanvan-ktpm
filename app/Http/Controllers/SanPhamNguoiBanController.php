@@ -27,11 +27,9 @@ class SanPhamNguoiBanController extends Controller
 		$so = $max+1;
 		if($so < 10){
 			$masp = 'SP00'.$so;
-		} 
-		if($so < 100) {
+		} else if($so < 100) {
 			$masp = 'SP0'.$so;
-		}
-		if($so > 100){
+		} else if($so > 100){
 			$masp = 'SP'.$so;
 		}
 
@@ -64,7 +62,9 @@ class SanPhamNguoiBanController extends Controller
 	}
 
 	public function postLuuSanPham(Request $request){
-	/*	$v = Validator::make($request->all(), 
+		$masp = $this->maSanPham();
+
+		$v = Validator::make($request->all(), 
 			[
 				'anhDaiDien'=>'required',
 				'cbxDanhMuc'=>'required',
@@ -107,14 +107,14 @@ class SanPhamNguoiBanController extends Controller
 		}
 		else{
 			session_start();
-			$manguoiban = $_SESSION['manb'];
+			$manguoiban = $_SESSION['manb'];			
 
 			//Lấy tên ảnh đại diện ra
 			$tenanhdaidien = $request->file('anhDaiDien')->getClientOriginalName();
 			
 			//Thêm dữ liệu vào bản sản phẩm
 			$sp = new SanPham();
-			$sp->masp = $this->maSanPham();
+			$sp->masp = $masp;
 			$sp->tensp = $request->txtTenSanPham;
 			$sp->dongia = $request->txtGia;
 			$sp->soluong = $request->txtSoLuong;
@@ -138,37 +138,35 @@ class SanPhamNguoiBanController extends Controller
 
 			//Thêm ảnh chính vô thư mục public/anh-sanpham, nhỏ, trung bình
 			$request->file('anhDaiDien')->move('public/anh-sanpham/', $tenanhdaidien);
-			//$request->file('anhDaiDien')->resize(350,350)->move('public/anh-sanpham-trungbinh/', $tenanhdaidien);
-			//$request->file('anhDaiDien')->resize(42,42)->move('public/anh-sanpham-nho/', $tenanhdaidien);
 			Image::make('public/anh-sanpham/'.$tenanhdaidien)->resize(350,350)->save('public/anh-sanpham-trungbinh/'.$tenanhdaidien);
 			Image::make('public/anh-sanpham/'.$tenanhdaidien)->resize(42,42)->save('public/anh-sanpham-nho/'.$tenanhdaidien);
-*/
-			//Thêm ảnh phụ vào bảng ảnh sản phẩm
-			if($request->file('imgListProduct') != ''){
-				foreach ($request->file('imgListProduct') as $file) {
-					if(isset($file)){
-						//Lấy tên ảnh ra
-						$tenanhphu = $file->getClientOriginalName();
 
-						//Thêm tên ảnh vào bảng ảnh sản phẩm
+
+			//Thêm ảnh phụ vào bảng ảnh sản phẩm		
+			if($request->file('imgListProduct') != ''){
+	    		foreach ($request->file('imgListProduct') as $file) {
+	    			if(isset($file)){
+	    				//Lấy tên ảnh
+	    				$tenanhphu = $file->getClientOriginalName();
+
+	    				//Thêm tên ảnh vào bảng ảnh sản phẩm
 						$anhsp = new AnhSanPham();
 						$anhsp->maanh = $this->maAnhSanPham();
 						$anhsp->tenanh = $tenanhphu;
-						$anhsp->masp = $this->maSanPham();
+						$anhsp->masp = $masp;
+						$anhsp->save(); 
 
-						echo $tenanhphu;
-						echo "<hr>";
-						//Lưu ảnh vào thư mục
-						//$file->move('public/anh-sanpham/', $tenanhphu);
-					//	$file->resize(350,350)->move('public/anh-sanpham-trungbinh/', $tenanhphu);
-					//	$file->resize(42,42)->move('public/anh-sanpham-nho/', $tenanhphu);
-					}
-				}
-			} else {
-				echo "chưa có ảnh";
-			}
-
-			//return redirect('nguoiban/ql-sanpham');
-		//}
+						//Lưu ảnh vào thư mục public/anh-sanpham, nhỏ, trung bình
+						$file->move('public/anh-sanpham/',$tenanhphu);
+						Image::make('public/anh-sanpham/'.$tenanhphu)->resize(350,350)->save('public/anh-sanpham-trungbinh/'.$tenanhphu);
+						Image::make('public/anh-sanpham/'.$tenanhphu)->resize(42,42)->save('public/anh-sanpham-nho/'.$tenanhphu); 
+				    }
+			    } 
+		   	}
+			return redirect('nguoiban/ql-sanpham');
+		}  
 	}
+
+
+
 }

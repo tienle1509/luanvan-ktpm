@@ -4,12 +4,6 @@
 
 @section('noidung')
 
-<script type="text/javascript">
-	
-	
-
-     
-</script>
 
 <style type="text/css">
 	.error {
@@ -32,7 +26,7 @@
 				</div>
 
 				<div class="row">
-					<form id="formInfoProduct" class="form-horizontal" role="form" enctype="multipart/form-data">
+					<form id="formInfoProduct" class="form-horizontal" role="form" enctype="multipart/form-data" action="{{action('SanPhamNguoiBanController@postLuuSanPham')}}" method="post">
 
 						<input type="hidden" name="_token" value="{{ csrf_token()}}">
 
@@ -226,7 +220,7 @@
 
 						<div class="col-md-12 col-sm-12">
 							<div class="title"><h3>Ảnh sản phẩm</h3></div>
-							<input id="imgListProduct" name="imgListProduct[]" type="file" multiple="multiple">
+							<input id="imgListProduct" name="imgListProduct[]" type="file" multiple>
 						</div>
 
 						<div class="col-md-12 col-sm-12">
@@ -265,8 +259,8 @@
 		});
 
 
-	/*	$("#imgListProduct").fileinput({
-	        uploadUrl: '/file-upload-batch/2',
+		$("#imgListProduct").fileinput({
+	        uploadUrl: 'http://localhost/luanvan-ktpm/nguoiban/ql-sanpham/luu-sanpham',
 	        showUpload: false,
 	        showClose: false,
 	        maxFileCount: 4,
@@ -275,7 +269,7 @@
 	        msgInvalidFileExtension: 'Vui lòng chọn file ảnh có đuôi jpg, png, gif',
 	        msgPlaceholder: 'Chọn file',
 	        dropZoneTitle: 'Bạn có thể đăng tối đa 4 hình ảnh trong 1 sản phẩm<br> Click Browser phía dưới để thêm ảnh !'
-	    });  */
+	    });  
 		
 	</script>
 

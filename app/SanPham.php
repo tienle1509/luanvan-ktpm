@@ -14,4 +14,16 @@ class SanPham extends Model
     		'kichthuocmanhinh', 'hedieuhanh', 'mausac', 'cameratruoc', 'camerasau', 
     		'bonhotrong', 'dungluongpin', 'mota', 'anh', 'luotxem', 'trangthai', 'manb', 'madm'
     ];
+
+/*    public function anhsanpham(){
+    	return $this->hasMany('App\AnhSanPham');
+    }
+
+    public function danhmuc(){
+    	return $this->belongsTo('App\DanhMucSanPham');
+    }
+
+    public function nguoiban(){
+    	return $this->belongsTo('App\NguoiBan');
+    }   */
 }

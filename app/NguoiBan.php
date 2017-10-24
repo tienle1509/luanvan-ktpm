@@ -16,4 +16,8 @@ class NguoiBan extends Model
     protected $hidden = [
     	'matkhau', 'remember_token',
     ];
+
+ /*   public function sanpham(){
+    	return $this->hasMany('App\SanPham');
+    }  */
 }

@@ -12,4 +12,8 @@ class AnhSanPham extends Model
     protected $fillable = [
     	'maanh', 'tenanh', 'masp'
     ];
+
+ /*   public function sanpham(){
+    	return $this->belongsTo('App\SanPham');
+    }  */
 }
