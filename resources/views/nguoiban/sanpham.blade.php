@@ -26,7 +26,12 @@
 							  		<img src="{{asset('public/img/waiting.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">4</div>
+							  		<div class="huge">
+							  			<?php
+							  				$sp_choduyet = DB::table('san_pham')->where('trangthai',0)->where('manb',$_SESSION['manb'])->count('masp');
+							  				echo $sp_choduyet;
+							  			?>
+							  		</div>
 							  		Sản phẩm chờ duyệt
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -55,7 +60,11 @@
 							  		<img src="{{asset('public/img/banchay.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">12</div>
+							  		<div class="huge">191822973
+							  			<?php
+							  				//$sp_banchay = DB::table('san_pham')->where('')
+							  			?>
+							  		</div>
 							  		Sản phẩm bán chạy
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -85,7 +94,12 @@
 							  		<img src="{{asset('public/img/iconhethang.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">2</div>
+							  		<div class="huge">
+							  			<?php
+							  				$sp_hethang = DB::table('san_pham')->where('soluong',0)->where('manb', $_SESSION['manb'])->count('masp');
+							  				echo $sp_hethang;
+							  			?>
+							  		</div>
 							  		Sản phẩm hết hàng
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -116,7 +130,12 @@
 							  		<img src="{{asset('public/img/tonkho.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">43</div>
+							  		<div class="huge">
+							  			<?php
+							  				$sp_tatca = DB::table('san_pham')->where('manb', $_SESSION['manb'])->count('manb');
+							  				echo $sp_tatca;
+							  			?>
+							  		</div>
 							  		Tất cả sản phẩm
 							  	</div>
 							  	<div class="clearfix"></div>

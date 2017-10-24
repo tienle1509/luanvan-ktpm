@@ -1,13 +1,12 @@
-<!-- Bắt session khi đăng nhập -->
+<!-- Bắt session khi đăng nhập --> 
 <?php
-	session_start();
+	//session_start(); Xem bên route có bật session
 	if(!isset($_SESSION['manb'])){
 		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
 		exit;
-	} else {
-		$nguoiban = DB::table('nguoi_ban')->where('manb',$_SESSION['manb'])->first();
 	}
-
+	$nguoiban = DB::table('nguoi_ban')->where('manb',$_SESSION['manb'])->first();
+	
 ?>
 
 

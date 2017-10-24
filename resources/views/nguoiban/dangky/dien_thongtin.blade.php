@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	if(!isset($_SESSION['tenshop'])){
 		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
 		exit;

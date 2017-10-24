@@ -113,13 +113,22 @@ Route::post('nguoiban/postdien-thongtin', ['uses'=>'RegisterNguoiBanController@p
 
 
 Route::group(['prefix'=>'nguoiban'], function(){
+	session_start();
 	//Quản lí sản phẩm
-	Route::get('ql-sanpham', function(){
-		return view('nguoiban.sanpham.sanpham_home');
-	});
+	Route::get('ql-sanpham', ['uses'=>'SanPhamNguoiBanController@qlSanPhamHome']);	
+
 	Route::group(['prefix'=>'ql-sanpham'], function(){
 		Route::get('them-sanpham', ['uses'=>'SanPhamNguoiBanController@getThemSanPham']);
 		Route::post('luu-sanpham', ['uses'=>'SanPhamNguoiBanController@postLuuSanPham']);
+
+		Route::get('sanpham-choduyet', ['uses'=>'SanPhamNguoiBanController@getSPChoDuyet']);
+		Route::get('sanpham-hethang', ['uses'=>'SanPhamNguoiBanController@getSPHetHang']);
+		Route::group(['prefix'=>'sanpham-hethang'], function(){
+			Route::get('tim-kiem', ['uses'=>'SanPhamNguoiBanController@getTimKiemSPHetHang']);
+			Route::get('capnhat-soluong', ['uses'=>'CapNhatSoLuongSanPhamController@postCapNhatSoLuong']);
+		});
+		
+		
 	});
 	
 	
@@ -135,14 +144,8 @@ Route::group(['prefix'=>'nguoiban'], function(){
 Route::group(['prefix'=>'nguoiban'], function(){
 	//Quản lí sản phẩm
 	Route::group(['prefix'=>'ql-sanpham'], function(){		
-		Route::get('sanpham-choduyet', function(){
-			return view('nguoiban.sanpham.sanpham_choduyet');
-		});
 		Route::get('sanpham-banchay', function() {
 			return view('nguoiban.sanpham.sanpham_banchay');
-		});
-		Route::get('sanpham-hethang', function(){
-			return view('nguoiban.sanpham.sanpham_hethang');
 		});
 		Route::get('tatca-sanpham', function(){
 			return view('nguoiban.sanpham.tatca_sanpham');
@@ -237,6 +240,3 @@ Route::get('demo2', function () {
 	print_r($a);
 	echo '</pre>';
 });
-
-Route::get('demo', ['uses'=>'SanPhamNguoiBanController@maSanPham']);
-

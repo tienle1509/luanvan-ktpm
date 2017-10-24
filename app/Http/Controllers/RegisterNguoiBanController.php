@@ -76,7 +76,7 @@ class RegisterNguoiBanController extends Controller
     		return redirect()->back()->withInput($request->except('password'))->withErrors($errors);
     	} else {
     		//Truyền dữ liệu qua trang xác nhận mail
-    		session_start();
+    		//session_start(); bật session trong route
     		$_SESSION['hoten'] = $request->txtHoTen;
     		$_SESSION['email']= $request->txtEmail;
     		$_SESSION['sdt']= $request->txtSDT;
@@ -115,7 +115,7 @@ class RegisterNguoiBanController extends Controller
     		return redirect()->back()->withInput($request->except('password'))->withErrors($v->errors());
     	}
 
-    	session_start();
+    	//session_start(); bật bên route
     	$maxacnhan = $_SESSION['maxacnhan'];
 
     	if($maxacnhan == $request->txtMaXacNhan){
@@ -128,7 +128,7 @@ class RegisterNguoiBanController extends Controller
 
     //Gửi lại mail
     public function postGuiLạiMail(){
-    	session_start();
+    	//session_start(); session bật bên route
     	$_SESSION['maxacnhan'] = random_int(100000,999999);
 
 
@@ -151,6 +151,8 @@ class RegisterNguoiBanController extends Controller
 	}
 
 	public function postDienThongTin(Request $request){
+        $manb = $this->maNguoiBan();
+
 		$v = Validator::make($request->all(), [
 			'textareaDiaChi'=>'required'
 		],
@@ -162,11 +164,11 @@ class RegisterNguoiBanController extends Controller
 			return redirect()->back()->withErrors($v->errors());
 		}
 
-		session_start();
+		//session_start(); bật bên route
         
         //Thêm vô bảng người bán
 		$nguoiban = new NguoiBan();
-		$nguoiban->manb = $this->maNguoiBan();
+		$nguoiban->manb = $manb;
 		$nguoiban->tennb = $_SESSION['hoten'];
 		$nguoiban->tengianhang = $_SESSION['tenshop'];
 		$nguoiban->email = $_SESSION['email'];
@@ -181,7 +183,7 @@ class RegisterNguoiBanController extends Controller
 
         if(!empty($check_db)){
             if(Hash::check($_SESSION['matkhau'], $check_db->matkhau)){
-                $_SESSION['manb'] = $this->maNguoiBan();
+                $_SESSION['manb'] = $manb;
 
                 //Xóa session
                 unset($_SESSION['hoten']);

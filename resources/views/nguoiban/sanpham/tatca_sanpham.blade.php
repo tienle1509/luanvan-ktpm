@@ -4,17 +4,24 @@
 
 @section('chitiet')
 <h2>Danh sách sản phẩm của shop</h2>
+				@if(count($errors) > 0)
+					<div class="alert alert-danger" role="alert">
+						<strong>Lỗi ! </strong>{{$errors->first('key')}}	
+					</div>
+				@endif
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
-						<form id="form-searchProduct" class="form-horizontal" role="form">
-							<div class="col-sm-2 form-group">
-							  	<input type="text" class="form-control" id="" placeholder="Mã sản phẩm">
-							</div>
-							<div class="col-sm-5">
-							  	<input type="text" class="form-control" id="" placeholder="Tên sản phẩm">
-							</div>	
-							<button type="button" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
-						</form>
+						<div class="row">
+							<form id="form-searchProduct" class="form-horizontal" role="form" method="get" action="{{ url('nguoiban/ql-sanpham/sanpham-choduyet/tim-kiem') }}">
+							<!--	<div class="col-sm-2 form-group">
+								  	<input type="text" class="form-control" id="" placeholder="Mã sản phẩm">
+								</div>  -->
+								<div class="col-sm-4">
+								  	<input type="text" class="form-control" placeholder="Nhập từ khóa cần tìm" name="key">
+								</div>	
+								<button type="submit" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
+							</form>
+						</div>
 					</div>
 				</div>
 

@@ -50,7 +50,7 @@ class LoginNguoiBanController extends Controller
                 ]);
             } else {
                 if(Hash::check($password, $check_db->matkhau)){
-                    session_start();
+                   // session_start(); bật session bên route
                     $_SESSION['manb'] = $check_db->manb;
 
                     return Response::json(['success'=>true]);
@@ -66,7 +66,7 @@ class LoginNguoiBanController extends Controller
     }
 
     public function getDangXuatNguoiBan(){
-        session_start();
+       // session_start();  bật session bên route
         unset($_SESSION['manb']);
         return redirect('nguoiban/dangnhap');
     }

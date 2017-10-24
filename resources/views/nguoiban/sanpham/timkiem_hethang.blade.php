@@ -68,6 +68,10 @@
 					</div>
 				</div>
 
+				<div style="margin-top: 10px; font-size: 15px;">Tìm thấy : <b>{{count($result_search)}}</b> sản phẩm</div>
+
+
+				@if(count($result_search) != 0)
 
 				<table id="table-listProduct" class="table table-bordered table-hover">
 				    <thead>
@@ -82,22 +86,22 @@
 				        <th>Hành động</th>
 				      </tr>
 				    </thead>
-				    <tbody>			     
-
-				      @if(count($list_hethang) == 0)
-				      	<tr>
-				      		<td align="center" style="color: red" colspan="8"><h4>Không có sản phẩm hết hàng</h4></td>
-				      	</tr>
-				      @else
-				      	@foreach($list_hethang as $val)
-				      		<tr>
-						      	<td>{{$val->tendanhmuc}}</td>
-						        <td>{{$val->masp}}</td>
+				    <tbody>
+				    	<?php 
+				    		foreach ($result_search as $value) {
+				    			$db = DB::table('san_pham as sp')
+				    					->join('danhmuc_sanpham as dm', 'dm.madm', '=','sp.madm')
+				    					->where('sp.masp',$value)
+				    					->first();
+				    	?>
+				    		<tr>
+						      	<td>{{$db->tendanhmuc}}</td>
+						        <td>{{$db->masp}}</td>
 						        <td>
-						        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+						        	<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
 						        </td>
-						        <td class="name-pro">{{$val->tensp}}</td>
-						        <td class="price-pro">{{$val->dongia}}</td>
+						        <td class="name-pro">{{$db->tensp}}</td>
+						        <td class="price-pro">{{$db->dongia}}</td>
 						        <td>-</td>
 						        <td width="130px;">
 						        	<input type="text" name="soluong" class="form-control" value="0">
@@ -108,10 +112,12 @@
 						        	</button>
 						        </td>
 						    </tr>
-				      	@endforeach
-				      @endif
+				    	<?php
+				    		}
+				    	?>
+				   
 				    </tbody>
-				  </table>
+				</table>
 
-
+				@endif
 @stop
