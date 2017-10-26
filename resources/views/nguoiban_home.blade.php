@@ -124,6 +124,8 @@
 								//Ẩn thông báo lỗi
 								$('#alert-danger-Edit').addClass('hide');
                                 $('#alert-success-edit').addClass('hide');
+                                document.getElementById('pass1Edit').value = "";
+                                document.getElementById('pass2Edit').value = "";
 							}, 2000);
 						}
 					}

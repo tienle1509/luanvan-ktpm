@@ -104,46 +104,8 @@
 							    </div>
 								<label class="col-sm-2 control-label">Kích thước màn hình <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							      <select name="cbxKichThuocMH" class="form-control">
-							      	<option value="">-- Chọn kích thước màn hình --</option>
-							      	<option value="2.5">Dưới 2.5 inches</option>
-							      	<option value="2.6">2.6 inches</option>
-							      	<option value="2.7">2.7 inches</option>
-							      	<option value="2.8">2.8 inches</option>
-							      	<option value="2.9">2.9 inches</option>
-							      	<option value="3.0">3.0 inches</option>
-							      	<option value="3.1">3.1 inches</option>
-							      	<option value="3.2">3.2 inches</option>
-							      	<option value="3.3">3.3 inches</option>
-							      	<option value="3.4">3.4 inches</option>
-							      	<option value="3.5">3.5 inches</option>
-							      	<option value="3.6">3.6 inches</option>
-							      	<option value="3.7">3.7 inches</option>
-							      	<option value="3.8">3.8 inches</option>
-							      	<option value="3.9">3.9 inches</option>
-							      	<option value="4.0">4.0 inches</option>
-							      	<option value="4.1">4.1 inches</option>
-							      	<option value="4.2">4.2 inches</option>
-							      	<option value="4.3">4.3 inches</option>
-							      	<option value="4.4">4.4 inches</option>
-							      	<option value="4.5">4.5 inches</option>
-							      	<option value="4.6">4.6 inches</option>
-							      	<option value="4.7">4.7 inches</option>
-							      	<option value="4.8">4.8 inches</option>
-							      	<option value="4.9">4.9 inches</option>
-							      	<option value="5.0">5.0 inches</option>
-							      	<option value="5.1">5.1 inches</option>
-							      	<option value="5.2">5.2 inches</option>
-							      	<option value="5.3">5.3 inches</option>
-							      	<option value="5.4">5.4 inches</option>
-							      	<option value="5.5">5.5 inches</option>
-							      	<option value="5.6">5.6 inches</option>
-							      	<option value="5.7">5.7 inches</option>
-							      	<option value="5.8">5.8 inches</option>
-							      	<option value="5.9">5.9 inches</option>
-							      	<option value="6.0">6.0 inches</option>
-							      </select>	
-							      <div class="error">{{$errors->first('cbxKichThuocMH')}}</div>	
+							    	<input type="type" name="txtKichThuocMH" class="form-control" placeholder="Nhập kích thước màn hình" value="{{old('txtKichThuocMH')}}">						      
+							      <div class="error">{{$errors->first('txtKichThuocMH')}}</div>	
 							    </div>							    
 							</div>
 							<div class="form-group">
@@ -154,23 +116,8 @@
 							    </div>
 								<label class="col-sm-2 control-label">Màu sắc <b style="color: red">*</b></label>
 							    <div class="col-sm-4">
-							    	<select name="cbxMauSac" class="form-control">
-							    		<option value="">-- Chọn màu sắc --</option>
-							    		<option value="Đen">Đen</option>
-							    		<option value="Vàng">Vàng</option>
-							    		<option value="Đỏ">Đỏ</option>
-							    		<option value="Trắng">Trắng</option>
-							    		<option value="Đồng đỏ">Đồng đỏ</option>
-							    		<option value="Kem">Kem</option>
-							    		<option value="Xanh">Xanh</option>
-							    		<option value="Cam">Cam</option>
-							    		<option value="Bạc">Bạc</option>
-							    		<option value="Xám">Xám</option>
-							    		<option value="Hồng">Hồng</option>
-							    		<option value="Nâu">Nâu</option>
-							    		<option value="Tím">Tím</option>
-							    	</select>
-							    	<div class="error">{{$errors->first('cbxMauSac')}}</div>
+							    	<input type="text" name="txtMauSac" class="form-control" placeholder="Nhập màu sản phẩm" value="{{old('txtMauSac')}}">
+							    	<div class="error">{{$errors->first('txtMauSac')}}</div>
 							    </div>							    
 							</div>
 							<div class="form-group">

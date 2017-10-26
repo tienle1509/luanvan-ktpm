@@ -25,7 +25,12 @@
 						  <div class="panel-heading">
 						  	<div class="row text-center">
 							  	<img src="{{asset('public/img/iconproduct.png')}}">
-							  	<div class="huge">29</div>
+							  	<div class="huge">
+							  		<?php
+							  			$num_choduyet = DB::table('san_pham')->where('trangthai',0)->count('masp');
+							  			echo $num_choduyet;
+							  		?>
+							  	</div>
 							</div>
 						  </div>
 						  <a href="{{asset('quanli/ql-sanpham/duyet-sanpham')}}">
@@ -37,12 +42,14 @@
 					</div> <!-- end sản phẩm chờ duyêt -->	
 
 					<!-- Sản phẩm trong ngày -->
-					<div class="col-md-3 col-sm-3">
+				<!--	<div class="col-md-3 col-sm-3">
 						<div class="panel panel-orange">
 						  <div class="panel-heading">
 						  	<div class="row text-center">
 							  	<img src="{{asset('public/img/iconproductday.png')}}">
-							  	<div class="huge">54</div>
+							  	<div class="huge">
+							  		33534
+							  	</div>
 							</div>
 						  </div>
 						  <a href="{{asset('quanli/ql-sanpham/sanpham-trongngay')}}">
@@ -52,7 +59,7 @@
 							  </div>
 						  </a>
 						</div>
-					</div> <!-- end sản phẩm trong ngày -->	
+					</div>  end sản phẩm trong ngày -->	
 
 					<!-- Tất cả sản phẩm -->
 					<div class="col-md-3 col-sm-3">
@@ -60,7 +67,12 @@
 						  <div class="panel-heading">
 						  	<div class="row text-center">
 							  	<img src="{{asset('public/img/iconproductall.png')}}">
-							  	<div class="huge">29</div>
+							  	<div class="huge">
+							  		<?php
+							  			$num_all = DB::table('san_pham')->count('masp');
+							  			echo $num_all;
+							  		?>
+							  	</div>
 							</div>
 						  </div>
 						  <a href="{{asset('quanli/ql-sanpham/tatca-sanpham')}}">

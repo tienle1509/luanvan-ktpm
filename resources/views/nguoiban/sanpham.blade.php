@@ -96,7 +96,7 @@
 							  	<div class="col-md-9 col-sm-9 text-right">
 							  		<div class="huge">
 							  			<?php
-							  				$sp_hethang = DB::table('san_pham')->where('soluong',0)->where('manb', $_SESSION['manb'])->count('masp');
+							  				$sp_hethang = DB::table('san_pham')->where('soluong',0)->where('manb', $_SESSION['manb'])->where('trangthai',1)->count('masp');
 							  				echo $sp_hethang;
 							  			?>
 							  		</div>

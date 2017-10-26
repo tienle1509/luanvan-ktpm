@@ -52,7 +52,7 @@
 							        	<span class="label label-warning">Chờ duyệt</span>
 							        </td>
 							        <td>				        	
-							        	<a href="{{asset('nguoiban/ql-sanpham/chitiet-sanpham')}}" type="btn" class="btn btn-info">
+							        	<a href="chitiet-sanpham/{{$val->masp}}" type="btn" class="btn btn-info">
 							        		Chi tiết
 							        	</a>
 							        </td>

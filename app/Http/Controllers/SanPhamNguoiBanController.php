@@ -9,6 +9,7 @@ use App\SanPham;
 use App\AnhSanPham;
 use Image;
 use App\DanhMucSanPham;
+use File;
 
 
 class SanPhamNguoiBanController extends Controller
@@ -94,9 +95,9 @@ class SanPhamNguoiBanController extends Controller
 				'txtXuatXu'=>'required',
 				'cbxBaoHanh'=>'required',
 				'txtDPGMH'=>'required',
-				'cbxKichThuocMH'=>'required',
+				'txtKichThuocMH'=>'required',
 				'txtHeDieuHanh'=>'required',
-				'cbxMauSac'=>'required',
+				'txtMauSac'=>'required',
 				'cbxCameraTruoc'=>'required',
 				'cbxCameraSau'=>'required',
 				'txtBoNhoTrong'=>'required',
@@ -112,9 +113,9 @@ class SanPhamNguoiBanController extends Controller
 				'txtXuatXu.required'=>'Xuất xứ sản phẩm không được rỗng',
 				'cbxBaoHanh.required'=>'Bạn phải chọn thời gian bảo hành',
 				'txtDPGMH.required'=>'Độ phân giải màn hình không được rỗng',
-				'cbxKichThuocMH.required'=>'Bạn phải chọn kích thước màn hình',
+				'txtKichThuocMH.required'=>'Bạn phải nhập kích thước màn hình',
 				'txtHeDieuHanh.required'=>'Hệ điều hành không được rỗng',
-				'cbxMauSac.required'=>'Bạn phải chọn màu sản phẩm',
+				'txtMauSac.required'=>'Bạn phải nhập màu sản phẩm',
 				'cbxCameraTruoc.required'=>'Bạn phải chọn camera trước',
 				'cbxCameraSau.required'=>'Bạn phải chọn camera sau',
 				'txtBoNhoTrong.required'=>'Bộ nhớ trong không được rỗng',
@@ -141,9 +142,9 @@ class SanPhamNguoiBanController extends Controller
 			$sp->xuatxu = $request->txtXuatXu;
 			$sp->baohanh = $request->cbxBaoHanh;
 			$sp->dophangiaimanhinh = $request->txtDPGMH;
-			$sp->kichthuocmanhinh = $request->cbxKichThuocMH;
+			$sp->kichthuocmanhinh = $request->txtKichThuocMH;
 			$sp->hedieuhanh = $request->txtHeDieuHanh;
-			$sp->mausac = $request->cbxMauSac;
+			$sp->mausac = $request->txtMauSac;
 			$sp->cameratruoc = $request->cbxCameraTruoc;
 			$sp->camerasau = $request->cbxCameraSau;
 			$sp->bonhotrong = $request->txtBoNhoTrong;
@@ -251,6 +252,203 @@ class SanPhamNguoiBanController extends Controller
 			return view('nguoiban.sanpham.timkiem_hethang')->with('result_search',$result_search); 
 		}		
 	}
+
+/*--------------------------Tất cả sản phẩm-----------------------------*/
+	public function getTatCaSanPham(){
+		$list_tatca = DB::table('san_pham as sp')
+						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+						->where('sp.manb',$_SESSION['manb'])
+						->get();
+		
+		$list_khuyenmai = DB::table('khuyen_mai as km')
+							->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+							->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
+							->where('sp.manb', $_SESSION['manb'])
+							->get();
+		
+		return view('nguoiban.sanpham.tatca_sanpham')->with('list_tatca', $list_tatca)->with('list_khuyenmai', $list_khuyenmai);
+	}
+
+	public function getTimKiemTatCaSP(Request $request){
+		$v = Validator::make($request->all(),
+			[
+				'key'=>'required'
+			],
+			[
+				'key.required'=>'Bạn chưa nhập từ khóa tìm kiếm'
+			]);
+		if($v->fails()){
+			return redirect()->back()->withErrors($v->errors());
+		}
+		else {
+			$masp_nguoiban = DB::table('san_pham')
+								->where('manb',$_SESSION['manb'])
+								->get();
+
+			$arr = array();
+			foreach ($masp_nguoiban as $value) {
+				$arr[] = $value->masp;
+			}
+
+			$masp_result = DB::table('san_pham as sp')
+							->join('danhmuc_sanpham as dm', 'sp.madm','=','dm.madm')
+							->where('dm.tendanhmuc','like','%'.$request->key.'%')
+							->orwhere('sp.tensp','like','%'.$request->key.'%')
+							->get();
+			
+			$result_search = array();
+			foreach ($masp_result as $value) {
+				if(in_array($value->masp, $arr)){
+					$result_search[] = $value->masp;
+				}
+			}
+
+			return view('nguoiban.sanpham.timkiem_tatca')->with('result_search',$result_search);
+		}
+		
+	}
+
+/*-----------------Chi tiết sản phẩm, sửa sản phẩm--------------------------*/
+	public function getChiTietSanPham($masp){
+		$chitiet_sanpham = DB::table('san_pham as sp')
+							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+							->where('sp.masp', $masp)
+							->first();
+
+		$img_ctsp = DB::table('anh_sanpham')->where('masp',$masp)->get();
+
+		return view('nguoiban.sanpham.chitiet_sanpham')->with('chitiet_sanpham', $chitiet_sanpham)->with('img_ctsp',$img_ctsp);
+	}
+
+	public function postCapNhatSanPham(Request $request){
+		$v = Validator::make($request->all(), 
+			[
+				'cbxDanhMuc'=>'required',
+				'txtTenSP'=>'required',
+				'txtGia'=>'required',
+				'txtSoLuong'=>'required',
+				'txtXuatXu'=>'required',
+				'cbxBaoHanh'=>'required',
+				'txtDPGMH'=>'required',
+				'txtKichThuocMH'=>'required',
+				'txtHeDieuHanh'=>'required',
+				'txtMauSac'=>'required',
+				'cbxCameraTruoc'=>'required',
+				'cbxCameraSau'=>'required',
+				'txtBoNhoTrong'=>'required',
+				'txtDungLuongPin'=>'required',
+				'txtMoTa'=>'required'
+			],
+			[
+				'cbxDanhMuc.required'=>'Bạn phải chọn danh mục sản phẩm',
+				'txtTenSP.required'=>'Tên sản phẩm không được rỗng',
+				'txtGia.required'=>'Giá sản phẩm không được rỗng',
+				'txtSoLuong.required'=>'Số lượng sản phẩm không được rỗng',
+				'txtXuatXu.required'=>'Xuất xứ sản phẩm không được rỗng',
+				'cbxBaoHanh.required'=>'Bạn phải chọn thời gian bảo hành sản phẩm',
+				'txtDPGMH.required'=>'Độ phân giản màn hình không được rỗng',
+				'txtKichThuocMH.required'=>'Kích thước màn hình không được rỗng',
+				'txtHeDieuHanh.required'=>'Hệ điều hành không được rỗng',
+				'txtMauSac.required'=>'Màu sắc sản phẩm không được rỗng',
+				'cbxCameraTruoc.required'=>'Bạn phải chọn camera trước',
+				'cbxCameraSau.required'=>'Bạn phải chọn camera sau',
+				'txtBoNhoTrong.required'=>'Bộ nhớ trong không được rỗng',
+				'txtDungLuongPin.required'=>'Dung lượng pin không được rỗng',
+				'txtMoTa.required'=>'Mô tả sản phẩm không được rỗng'
+			]);
+
+		if($v->fails()){
+			return redirect()->back()->withErrors($v->errors());
+		} else {
+			//Cập nhật lại bảng sản phẩm
+			if(!empty($request->file('anhDaiDien'))){
+				//Xóa ảnh chính trong thư mục cũ
+				$sp = DB::table('san_pham')->where('masp',$request->txtMaSP)->first();
+				$duongdan1 = 'public/anh-sanpham/'.$sp->anh;
+				$duongdan2 = 'public/anh-sanpham-trungbinh/'.$sp->anh;
+				$duongdan3 = 'public/anh-sanpham-nho/'.$sp->anh;
+
+				if(File::exists($duongdan1)){
+					File::delete($duongdan1);
+				}
+				if(File::exists($duongdan2)){
+					File::delete($duongdan2);
+				}
+				if(File::exists($duongdan3)){
+					File::delete($duongdan3);
+				}
+
+				//Lấy tên ảnh đại diện mới
+				$anhmoi = $request->file('anhDaiDien')->getClientOriginalName();
+
+				DB::table('san_pham')->where('masp',$request->txtMaSP)
+							->update([
+								'tensp'=>$request->txtTenSP,
+								'dongia'=>$request->txtGia,
+								'soluong'=>$request->txtSoLuong,
+								'xuatxu'=>$request->txtXuatXu,
+								'baohanh'=>$request->cbxBaoHanh,
+								'dophangiaimanhinh'=>$request->txtDPGMH,
+								'kichthuocmanhinh'=>$request->txtKichThuocMH,
+								'hedieuhanh'=>$request->txtHeDieuHanh,
+								'mausac'=>$request->txtMauSac,
+								'cameratruoc'=>$request->cbxCameraTruoc,
+								'camerasau'=>$request->cbxCameraSau,
+								'bonhotrong'=>$request->txtBoNhoTrong,
+								'dungluongpin'=>$request->txtDungLuongPin,
+								'mota'=>$request->txtMoTa,
+								'anh'=>$anhmoi
+							]);
+				//Thêm ảnh đại diện mới vào thư mục
+				$request->file('anhDaiDien')->move('public/anh-sanpham/', $anhmoi);
+				Image::make('public/anh-sanpham/'.$anhmoi)->resize(350,350)->save('public/anh-sanpham-trungbinh/'.$anhmoi);
+				Image::make('public/anh-sanpham/'.$anhmoi)->resize(42,42)->save('public/anh-sanpham-nho/'.$anhmoi);
+			} else {
+				DB::table('san_pham')->where('masp',$request->txtMaSP)
+							->update([
+								'tensp'=>$request->txtTenSP,
+								'dongia'=>$request->txtGia,
+								'soluong'=>$request->txtSoLuong,
+								'xuatxu'=>$request->txtXuatXu,
+								'baohanh'=>$request->cbxBaoHanh,
+								'dophangiaimanhinh'=>$request->txtDPGMH,
+								'kichthuocmanhinh'=>$request->txtKichThuocMH,
+								'hedieuhanh'=>$request->txtHeDieuHanh,
+								'mausac'=>$request->txtMauSac,
+								'cameratruoc'=>$request->cbxCameraTruoc,
+								'camerasau'=>$request->cbxCameraSau,
+								'bonhotrong'=>$request->txtBoNhoTrong,
+								'dungluongpin'=>$request->txtDungLuongPin,
+								'mota'=>$request->txtMoTa
+							]);
+			}
+
+			//Thêm ảnh phụ vào bảng ảnh sản phẩm	
+			if($request->file('imgListProduct') != ''){
+	    		foreach ($request->file('imgListProduct') as $file) {
+	    			if(isset($file)){
+	    				//Lấy tên ảnh
+	    				$tenanhphu = $file->getClientOriginalName();
+
+	    				//Thêm tên ảnh vào bảng ảnh sản phẩm
+						$anhsp = new AnhSanPham();
+						$anhsp->maanh = $this->maAnhSanPham();
+						$anhsp->tenanh = $tenanhphu;
+						$anhsp->masp = $request->txtMaSP;
+						$anhsp->save(); 
+
+						//Lưu ảnh vào thư mục public/anh-sanpham, nhỏ, trung bình
+						$file->move('public/anh-sanpham/',$tenanhphu);
+						Image::make('public/anh-sanpham/'.$tenanhphu)->resize(350,350)->save('public/anh-sanpham-trungbinh/'.$tenanhphu);
+						Image::make('public/anh-sanpham/'.$tenanhphu)->resize(42,42)->save('public/anh-sanpham-nho/'.$tenanhphu); 
+				    }
+			    } 
+		   	}
+		   	return redirect('nguoiban/ql-sanpham/tatca-sanpham');
+		}
+
+	}
+
 
 
 }

@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*-----------------BẬT SESSION CHO TOÀN HỆ THỐNG----------------------*/
+session_start();
+
+
+
 /*--------Đăng nhập, Đăng xuất người quản lí--------------*/
 Route::get('quanli/dangnhap', 'LoginQuanLiController@getDangNhapQuanLi');
 Route::post('quanli/dangnhap', 'LoginQuanLiController@postDangNhapQuanLi');
@@ -23,9 +28,17 @@ Route::get('quanli/dangxuat', ['uses'=>'LoginQuanLiController@getDangXuatQuanLi'
 
 Route::group(['prefix'=>'quanli'],function(){
 	//Quản lí sản phẩm
-	Route::get('ql-sanpham', function (){
-		return view('quanli.sanpham.sanpham_home');
+	Route::get('ql-sanpham', ['uses'=>'SanPhamQuanLiController@getHomeSanPham']);
+	Route::group(['prefix'=>'ql-sanpham'], function(){
+		Route::get('duyet-sanpham', ['uses'=>'SanPhamQuanLiController@getDuyetSanPham']);
+		Route::get('duyet', ['uses'=>'DuyetSanPhamController@getDuyetSanPham']);
+		Route::get('tatca-sanpham', ['uses'=>'SanPhamQuanLiController@getTatCaSanPham']);
+		Route::get('tim-kiem-sp', ['uses'=>'SanPhamQuanLiController@getTimKiemSanPham']);
+		Route::get('chitiet-sanpham/{masp}', ['uses'=>'SanPhamQuanLiController@getChiTietSanPham']);
 	});
+
+
+	Route::post('sua-taikhoan',['uses'=>'EditAccountQuanLiController@postSuaTaiKhoan']);
 });
 
 
@@ -33,23 +46,6 @@ Route::group(['prefix'=>'quanli'],function(){
 /*--------------------GIAO DIỆN QUẢN LÍ----------------------------*/
 
 Route::group(['prefix'=>'quanli'], function(){
-
-	Route::group(['prefix'=>'ql-sanpham'], function(){
-		Route::get('duyet-sanpham', function () {
-			return view('quanli.sanpham.duyet_sanpham');
-		});
-		Route::get('sanpham-trongngay', function () {
-			return view('quanli.sanpham.sanpham_trongngay');
-		});
-		Route::get('tatca-sanpham', function () {
-			return view('quanli.sanpham.tatca_sanpham');
-		});
-		Route::get('chitiet-sanpham', function () {
-			return view('quanli.sanpham.chitiet_sanpham');
-		});
-	});
-
-
 	//Quản lí đơn hàng
 	Route::get('ql-donhang',function () {
 		return view('quanli.donhang.donhang_home');
@@ -113,7 +109,6 @@ Route::post('nguoiban/postdien-thongtin', ['uses'=>'RegisterNguoiBanController@p
 
 
 Route::group(['prefix'=>'nguoiban'], function(){
-	session_start();
 	//Quản lí sản phẩm
 	Route::get('ql-sanpham', ['uses'=>'SanPhamNguoiBanController@qlSanPhamHome']);	
 
@@ -127,8 +122,13 @@ Route::group(['prefix'=>'nguoiban'], function(){
 			Route::get('tim-kiem', ['uses'=>'SanPhamNguoiBanController@getTimKiemSPHetHang']);
 			Route::get('capnhat-soluong', ['uses'=>'CapNhatSoLuongSanPhamController@postCapNhatSoLuong']);
 		});
-		
-		
+		Route::get('tatca-sanpham', ['uses'=>'SanPhamNguoiBanController@getTatCaSanPham']);
+		Route::get('tim-kiem-tatca', ['uses'=>'SanPhamNguoiBanController@getTimKiemTatCaSP']);
+				
+		Route::get('chitiet-sanpham/{masp}', ['uses'=>'SanPhamNguoiBanController@getChiTietSanPham']);
+		Route::post('capnhat-sanpham', ['uses'=>'SanPhamNguoiBanController@postCapNhatSanPham']);
+		Route::get('xoa-anh', ['uses'=>'CapNhatSoLuongSanPhamController@getXoaAnhSanPham']);
+		Route::post('xoa-sanpham', ['uses'=>'CapNhatSoLuongSanPhamController@postXoaSanPham']);
 	});
 	
 	
@@ -146,12 +146,6 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	Route::group(['prefix'=>'ql-sanpham'], function(){		
 		Route::get('sanpham-banchay', function() {
 			return view('nguoiban.sanpham.sanpham_banchay');
-		});
-		Route::get('tatca-sanpham', function(){
-			return view('nguoiban.sanpham.tatca_sanpham');
-		});
-		Route::get('chitiet-sanpham', function(){
-			return view('nguoiban.sanpham.chitiet_sanpham');
 		});
 	});
 
@@ -228,15 +222,15 @@ Route::get('dathang-thanhcong',function(){
 
 //-------------------------------------------------------------------------------------
 
-Route::get('demo1', function () {
-	return view('demo');
-	
+Route::get('taobang2', function(){
+	Schema::create('mau_sanpham', function($tab){
+		$tab->integer('mamau');
+		$tab->primary('mamau');
+		$tab->string('tenmau',50);
+	});
 });
 
 Route::get('demo2', function () {
-	$a = DB::table('san_pham')->join('nguoi_ban','manb','=','nguoi_ban.manb')->get();
-
-	echo '<pre>';
-	print_r($a);
-	echo '</pre>';
+	$day = date('m',strtotime('2017/10/26'));
+	echo $day;
 });

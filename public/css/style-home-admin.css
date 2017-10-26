@@ -22,11 +22,12 @@ body {
 #navbar .navbar-right .btndrop {
 	font-size: 15px;
 	color: #BFBFBF;
-	width: 170px;
+	width: auto;
 	background-color: #3C3C3C;
 	outline: none;
 	border: none;
 	padding: 12px;
+	margin-right: 10px;
 }
 
 #navbar .navbar-right .btndrop:hover,

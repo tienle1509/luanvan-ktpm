@@ -35,7 +35,6 @@ class LoginQuanLiController extends Controller
   
         if(!empty($check_db)){
 	        if(Hash::check($request->txtMatKhau, $check_db->matkhau)){
-	        	session_start();
 	        	$_SESSION['maql'] = $check_db->maql;
 
 	        	return redirect('quanli/ql-sanpham');
@@ -50,8 +49,7 @@ class LoginQuanLiController extends Controller
 
 
     public function getDangXuatQuanLi(){
-        session_start();
-    	unset($_SESSION['maql']);
+        unset($_SESSION['maql']);
     	return redirect('quanli/dangnhap');
     }
 

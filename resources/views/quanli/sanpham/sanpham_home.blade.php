@@ -18,61 +18,32 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>SP0028</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/hotwav.jpg')}}">
-				        </td>
-				        <td class="tensp">Điện thoại Hotwav đen chính hãng</td>
-				        <td class="dongia">2,400,000</td>
-				        <td>10</td>
-				        <td class="tenshop">ANHDUYSHOP</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				      </tr>
-
-				      <tr>
-				        <td>SP0028</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/hotwav.jpg')}}">
-				        </td>
-				        <td class="tensp">Điện thoại Hotwav đen chính hãng</td>
-				        <td class="dongia">2,400,000</td>
-				        <td>10</td>
-				        <td class="tenshop">ANHDUYSHOP</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				      </tr>
-
-				      <tr>
-				        <td>SP0028</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/hotwav.jpg')}}">
-				        </td>
-				        <td class="tensp">Điện thoại Hotwav đen chính hãng</td>
-				        <td class="dongia">2,400,000</td>
-				        <td>10</td>
-				        <td class="tenshop">ANHDUYSHOP</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				      </tr>
-
-				      <tr>
-				        <td>SP0028</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/hotwav.jpg')}}">
-				        </td>
-				        <td class="tensp">Điện thoại Hotwav đen chính hãng</td>
-				        <td class="dongia">2,400,000</td>
-				        <td>10</td>
-				        <td class="tenshop">ANHDUYSHOP</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				      </tr>
+				    	@if(count($list_spmoi) == 0)
+				    		<tr>
+				    			<td align="center" colspan="7" style="color: red"><h4>Không có sản phẩm mới !</h4></td>
+				    		</tr>
+				    	@else
+				    		@foreach($list_spmoi as $val)
+				    			<tr>
+							        <td>{{$val->masp}}</td>
+							        <td>
+							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+							        </td>
+							        <td class="tensp">{{$val->tensp}}</td>
+							        <td class="dongia">{{number_format($val->dongia)}}</td>
+							        <td>{{$val->soluong}}</td>
+							        <td class="tenshop">{{$val->tengianhang}}</td>
+							        <td>
+							        	<label class="label label-warning">Chờ duyệt</label>
+							        </td>
+							    </tr>
+				    		@endforeach
+				    	@endif
 				    </tbody>
+				    <tfoot>
+				    	<tr>
+				    		<td align="center" colspan="7">{!! $list_spmoi->render() !!}</td>
+				    	</tr>
+				    </tfoot>
 				</table>
 @stop
