@@ -32,38 +32,24 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>KM001</td>
-				        <td>
-				        	<a href="{{asset('quanli/khuyenmai/chitiet-khuyenmai')}}">Deal giá sốc - Khuyến mãi chỉ duy nhất 2 ngày</a>
-				        </td>
-				        <td>12/04/2017</td>
-				        <td>14/04/2017</td>
-				        <td>10/04/2017</td>
-				        <td>8%</td>
-				      </tr>
-
-				      <tr>
-				        <td>KM001</td>
-				        <td>
-				        	<a href="{{asset('quanli/khuyenmai/chitiet-khuyenmai')}}">Deal giá sốc - Khuyến mãi chỉ duy nhất 2 ngày</a>
-				        </td>
-				        <td>12/04/2017</td>
-				        <td>14/04/2017</td>
-				        <td>10/04/2017</td>
-				        <td>8%</td>
-				      </tr>
-
-				      <tr>
-				        <td>KM001</td>
-				        <td>
-				        	<a href="{{asset('quanli/khuyenmai/chitiet-khuyenmai')}}">Deal giá sốc - Khuyến mãi chỉ duy nhất 2 ngày</a>
-				        </td>
-				        <td>12/04/2017</td>
-				        <td>14/04/2017</td>
-				        <td>10/04/2017</td>
-				        <td>8%</td>
-				      </tr>
+				     	@if(count($list_km) == 0)
+				     		<tr>
+				     			<td align="center" colspan="6" style="color: red"><h4>Chưa có chương trình khuyến mãi !</h4></td>
+				     		</tr>
+				     	@else
+				     		@foreach($list_km as $valKm)
+				     			<tr>
+							        <td>{{$valKm->makm}}</td>
+							        <td>
+							        	<a href="{{asset('quanli/khuyenmai/chitiet-khuyenmai/'.$valKm->makm)}}">{{$valKm->tenkm}}</a>
+							        </td>
+							        <td>{{date('d-m-Y',strtotime($valKm->ngaybd))}}</td>
+							        <td>{{date('d-m-Y',strtotime($valKm->ngaykt))}}</td>
+							        <td>{{date('d-m-Y',strtotime($valKm->handangki))}}</td>
+							        <td>{{$valKm->chietkhau}}%</td>
+							    </tr>
+				     		@endforeach
+				     	@endif
 				    </tbody>
 				  </table>
 			</div>

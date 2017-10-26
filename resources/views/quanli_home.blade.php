@@ -42,8 +42,18 @@
 	<script type="text/javascript">
 		// datepicker		
 		$(function () {
-                $("#Sdate").datepicker();
-                 $("#Edate").datepicker();
+                $("#Sdate").datepicker({
+                	dateFormat : 'dd-mm-yy',
+                    minDate: 0,
+                    onClose: function (selectedDate) {
+                        if (selectedDate != ""){ 
+                            $("#Edate").datepicker("option", "minDate", selectedDate); }
+                    }
+                });
+                $("#Edate").datepicker({
+                	dateFormat : 'dd-mm-yy',
+                    minDate: 'selectedDate',
+                });
         });
 
         //Thay đổi thông tin quản lí

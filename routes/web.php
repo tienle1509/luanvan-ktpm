@@ -37,6 +37,16 @@ Route::group(['prefix'=>'quanli'],function(){
 		Route::get('chitiet-sanpham/{masp}', ['uses'=>'SanPhamQuanLiController@getChiTietSanPham']);
 	});
 
+	//Quản lí khuyến mãi
+	Route::get('khuyenmai', ['uses'=>'KhuyenMaiQuanLiController@getHomeKhuyenMai']);
+	Route::group(['prefix'=>'khuyenmai'], function(){
+		Route::get('them-khuyenmai', ['uses'=>'KhuyenMaiQuanLiController@getThemKhuyenMai']);
+		Route::post('them-khuyenmai', ['uses'=>'KhuyenMaiQuanLiController@postThemKhuyenMai']);
+		Route::get('chitiet-khuyenmai/{makm}', ['uses'=>'KhuyenMaiQuanLiController@getChiTietKhuyenMai']);
+		Route::post('capnhat-khuyenmai', ['uses'=>'KhuyenMaiQuanLiController@postCapNhatKhuyenMai']);
+		Route::get('xoa-khuyenmai', ['uses'=>'XoaKhuyenMaiController@getXoaKhuyenMai']);
+		Route::get('dssanphamkm',['uses'=>'KhuyenMaiQuanLiController@getDSSanPhamKhuyenMai']);
+	});
 
 	Route::post('sua-taikhoan',['uses'=>'EditAccountQuanLiController@postSuaTaiKhoan']);
 });
@@ -63,25 +73,6 @@ Route::group(['prefix'=>'quanli'], function(){
 		Route::get('chitiet-donhang',function(){
 			return view('quanli.donhang.chitiet_donhang');
 		});
-	});
-
-
-	//Quản lí khuyến mãi
-	Route::get('khuyenmai', function(){
-		return view('quanli.khuyenmai');
-	});
-	Route::group(['prefix'=>'khuyenmai'], function(){
-		Route::get('them-khuyenmai', function(){
-			return view('quanli.khuyenmai.them_khuyenmai');
-		});
-		Route::get('chitiet-khuyenmai', function(){
-			return view('quanli.khuyenmai.chitiet_khuyenmai');
-		});
-			Route::group(['prefix'=>'chitiet-khuyenmai'], function(){
-				Route::get('dssanphamkm', function(){
-					return view('quanli.khuyenmai.sanpham_km');
-				});
-			});
 	});
 });
 
@@ -231,6 +222,5 @@ Route::get('taobang2', function(){
 });
 
 Route::get('demo2', function () {
-	$day = date('m',strtotime('2017/10/26'));
-	echo $day;
+	DB::table('chitiet_khuyenmai')->where('makm','km001')->delete();
 });
