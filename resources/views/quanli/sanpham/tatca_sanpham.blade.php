@@ -50,7 +50,7 @@
 				      @else
 				      	<?php
 				      		foreach ($list_all as $all) {
-				      			if(count($list_khuyenmai) == 0){ ?>
+				      			if(count($masp_khuyenmai) == 0){ ?>
 				      				<tr>
 								        <td>{{$all->tendanhmuc}}</td>
 								        <td>{{$all->masp}}</td>
@@ -80,8 +80,7 @@
 								        </td>
 								    </tr>
 				      			<?php } else {
-				      				foreach ($list_khuyenmai as $valkm) {
-				      					if($all->masp == $valkm->masp){ ?>
+				      				if(in_array($all->masp, $masp_khuyenmai)){ ?>
 				      						<tr>
 										        <td>{{$all->tendanhmuc}}</td>
 										        <td>{{$all->masp}}</td>
@@ -91,7 +90,11 @@
 										        <td class="tensp">{{$all->tensp}}</td>
 										        <td class="dongia">{{number_format($all->dongia)}}</td>
 										        <td>
-										        	{{number_format($all->dongia-($all->dongia*$valkm->chietkhau*0.01))}}
+										        	<?php
+										        		$giam = DB::table('khuyen_mai as km')
+										        				->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')->where('ctkm.masp',$all->masp)->first();
+										        		echo number_format($all->dongia-($all->dongia*$giam->chietkhau*0.01));
+										        	?>
 										        </td>
 										        <td>{{$all->soluong}}</td>
 										        <td>
@@ -143,7 +146,6 @@
 										    </tr>
 				      					<?php }
 				      				}
-				      			}
 				      		}
 				      	?>
 				      @endif

@@ -90,24 +90,51 @@
 				      	</tr>
 				      @else
 				      	@foreach($list_hethang as $val)
-				      		<tr>
-						      	<td>{{$val->tendanhmuc}}</td>
-						        <td>{{$val->masp}}</td>
-						        <td>
-						        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-						        </td>
-						        <td class="name-pro">{{$val->tensp}}</td>
-						        <td class="price-pro">{{$val->dongia}}</td>
-						        <td>-</td>
-						        <td width="130px;">
-						        	<input type="text" name="soluong" class="form-control" value="0">
-						        </td>
-						        <td>
-						        	<button type="btn" class="btn btn-success btnCapNhat">
-						        		<span class="fa fa-refresh"></span>&nbsp;&nbsp;Cập nhật
-						        	</button>
-						        </td>
-						    </tr>
+				      		@if(in_array($val->masp, $masp_khuyenmai))
+					      		<tr>
+							      	<td>{{$val->tendanhmuc}}</td>
+							        <td>{{$val->masp}}</td>
+							        <td>
+							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+							        </td>
+							        <td class="name-pro">{{$val->tensp}}</td>
+							        <td class="price-pro">{{number_format($val->dongia)}}</td>
+							        <td>
+							        	<?php
+							        		$giamgia = DB::table('khuyen_mai as km')
+							        					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')->where('ctkm.masp',$val->masp)->first();
+							        		echo number_format($val->dongia-($val->dongia*$giamgia->chietkhau*0.01));
+							        	?>
+							        </td>
+							        <td width="130px;">
+							        	<input type="text" name="soluong" class="form-control" value="0">
+							        </td>
+							        <td>
+							        	<button type="btn" class="btn btn-success btnCapNhat">
+							        		<span class="fa fa-refresh"></span>&nbsp;&nbsp;Cập nhật
+							        	</button>
+							        </td>
+							    </tr>
+							@else
+								<tr>
+							      	<td>{{$val->tendanhmuc}}</td>
+							        <td>{{$val->masp}}</td>
+							        <td>
+							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+							        </td>
+							        <td class="name-pro">{{$val->tensp}}</td>
+							        <td class="price-pro">{{$val->dongia}}</td>
+							        <td>-</td>
+							        <td width="130px;">
+							        	<input type="text" name="soluong" class="form-control" value="0">
+							        </td>
+							        <td>
+							        	<button type="btn" class="btn btn-success btnCapNhat">
+							        		<span class="fa fa-refresh"></span>&nbsp;&nbsp;Cập nhật
+							        	</button>
+							        </td>
+							    </tr>
+							@endif
 				      	@endforeach
 				      @endif
 				    </tbody>

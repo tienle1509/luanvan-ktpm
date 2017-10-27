@@ -17,79 +17,34 @@
 				</div>
 
 
-				<h3>Khuyến mãi - Tham gia ngay trước khi hết hạn</h3>
+				@if(count($dskm) == 0)
+					<h4 style="color: red">Chưa có chương trình khuyến mãi trên hệ thống !</h4>
+				@else
+					<h3>Khuyến mãi - Tham gia ngay trước khi hết hạn</h3>
+					@foreach($dskm as $val)
+						<!-- panel khuyến mãi -->	
+						<div class="col-md-4 col-sm-4 panel-promotion">
+							<div class="row">
+								<img src="{{asset('public/anh-khuyenmai/'.$val->anhkm)}}" width="351" height="156">
+							</div>					
+							<h4><b>{{$val->tenkm}}</b></h4>
+							<div><b>Thời gian:</b> {{date('d/m/Y', strtotime($val->ngaybd))}} -  {{date('d/m/Y', strtotime($val->ngaykt))}}</div>
+							<div>Giảm giá: {{$val->chietkhau}}%.</div>
+							<div class="row">
+								<div class="col-sm-7">
+									Hạn đăng kí:  {{date('d/m/Y', strtotime($val->handangki))}}
+								</div>
+								<div class="col-sm-5 text-right" style="margin-top: -20px">
 
-				<!-- panel khuyến mãi -->	
-				<div class="col-md-4 col-sm-4 panel-promotion">
-					<div class="row">
-						<img src="{{asset('public/anh-khuyenmai/flashsale.png')}}" width="351" height="156">
-					</div>					
-					<h4><b>Deal Giá Sốc - Khuyến mãi chỉ duy nhất 2 ngày</b></h4>
-					<div><b>Thời gian:</b> 30/4/2017 - 02/05/2017</div>
-					<div>Giảm giá: 5%.</div>
-					<div class="row">
-						<div class="col-sm-7">
-							Hạn đăng kí: 28/04/2017
+									@if(strtotime($val->handangki) < strtotime($ngayht))
+										<button type="button" class="btn btn-default btn-block">Hết hạn</button>
+									@else
+										<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai/'.$val->makm)}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
+									@endif
+								</div>
+							</div>
 						</div>
-						<div class="col-sm-5 text-right" style="margin-top: -20px">
-							<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai')}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
-						</div>
-					</div>
-				</div>
-				
-
-				<div class="col-md-4 col-sm-4 panel-promotion">
-					<div class="row">
-						<img src="{{asset('public/anh-khuyenmai/salebirthday.jpg')}}" width="351" height="156">
-					</div>					
-					<h4><b>Deal Giá Sốc - Khuyến mãi chỉ duy nhất 2 ngày</b></h4>
-					<div><b>Thời gian:</b> 30/4/2017 - 02/05/2017</div>
-					<div>Giảm giá: 5%.</div>
-					<div class="row">
-						<div class="col-sm-7">
-							Hạn đăng kí: 28/04/2017
-						</div>
-						<div class="col-sm-5 text-right" style="margin-top: -20px">
-							<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai')}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-md-4 col-sm-4 panel-promotion">
-					<div class="row">
-						<img src="{{asset('public/anh-khuyenmai/salebirthday.jpg')}}" width="351" height="156">
-					</div>					
-					<h4><b>Deal Giá Sốc - Khuyến mãi chỉ duy nhất 2 ngày</b></h4>
-					<div><b>Thời gian:</b> 30/4/2017 - 02/05/2017</div>
-					<div>Giảm giá: 5%.</div>
-					<div class="row">
-						<div class="col-sm-7">
-							Hạn đăng kí: 28/04/2017
-						</div>
-						<div class="col-sm-5 text-right" style="margin-top: -20px">
-							<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai')}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-md-4 col-sm-4 panel-promotion">
-					<div class="row">
-						<img src="{{asset('public/anh-khuyenmai/salebirthday.jpg')}}" width="351" height="156">
-					</div>					
-					<h4><b>Deal Giá Sốc - Khuyến mãi chỉ duy nhất 2 ngày</b></h4>
-					<div><b>Thời gian:</b> 30/4/2017 - 02/05/2017</div>
-					<div>Giảm giá: 5%.</div>
-					<div class="row">
-						<div class="col-sm-7">
-							Hạn đăng kí: 28/04/2017
-						</div>
-						<div class="col-sm-5 text-right" style="margin-top: -20px">
-							<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai')}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
+					@endforeach
+				@endif
 
 @stop

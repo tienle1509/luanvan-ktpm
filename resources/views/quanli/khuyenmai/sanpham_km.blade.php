@@ -26,7 +26,7 @@
 					</div>
 				</div>
 
-				<h2>Deal giá sốc - Khuyến mãi chỉ duy nhất 2 ngày</h2>
+				<h2>{{$tenkm->tenkm}}</h2>
 
 
 				<table id="table-listProduct" class="table table-bordered table-hover">
@@ -42,53 +42,25 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>AP002</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
-				        </td>
-				        <td class="name-pro">Điện thoại apple chính hãng sdfk dkjgh dfghk dskfjgh zdg kjgf skj</td>
-				        <td class="price-pro">18.483.000</td>
-				        <td>17.905.000</td>
-				        <td>5</td>
-				        <td>8%</td>
-				      </tr>
-				      
-				      <tr>
-				        <td>AP002</td>
-				       	<td>
-				        	<img src="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
-				        </td>
-				        <td class="name-pro">Điện thoại apple chính hãng sdfk dkjgh dfghk dskfjgh zdg kjgf skj</td>
-				        <td class="price-pro">18.483.000</td>
-				        <td>17.905.000</td>
-				        <td>5</td>
-				        <td>8%</td>
-				      </tr>
-
-				      <tr>
-				        <td>AP002</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
-				        </td>
-				        <td class="name-pro">Điện thoại apple chính hãng sdfk dkjgh dfghk dskfjgh zdg kjgf skj</td>
-				        <td class="price-pro">18.483.000</td>
-				        <td>17.905.000</td>
-				        <td>5</td>
-				        <td>8%</td>
-				      </tr>
-
-				      <tr>
-				        <td>AP002</td>
-				        <td>
-				        	<img src="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
-				        </td>
-				        <td class="name-pro">Điện thoại apple chính hãng sdfk dkjgh dfghk dskfjgh zdg kjgf skj</td>
-				        <td class="price-pro">18.483.000</td>
-				        <td>17.905.000</td>
-				        <td>5</td>
-				        <td>8%</td>
-				      </tr>
+				    	@if(count($dsspkm) == 0)
+				    		<tr>
+				    			<td align="center" colspan="7" style="color: red"><h4>Chưa có sản phẩm tham gia khuyến mãi</h4></td>
+				    		</tr>
+				    	@else
+				    		@foreach($dsspkm as $val)
+				    			<tr>
+							        <td>{{$val->masp}}</td>
+							        <td>
+							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+							        </td>
+							        <td class="name-pro">{{$val->tensp}}</td>
+							        <td class="price-pro">{{number_format($val->dongia)}}</td>
+							        <td>{{number_format($val->dongia-($val->dongia*$val->chietkhau*0.01))}}</td>
+							        <td>{{$val->soluong}}</td>
+							        <td>{{$val->chietkhau}}%</td>
+							    </tr>
+				    		@endforeach
+				    	@endif
 				    </tbody>
 				  </table>
 			</div>

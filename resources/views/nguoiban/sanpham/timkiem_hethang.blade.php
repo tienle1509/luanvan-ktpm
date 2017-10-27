@@ -93,26 +93,52 @@
 				    					->join('danhmuc_sanpham as dm', 'dm.madm', '=','sp.madm')
 				    					->where('sp.masp',$value)
 				    					->first();
-				    	?>
-				    		<tr>
-						      	<td>{{$db->tendanhmuc}}</td>
-						        <td>{{$db->masp}}</td>
-						        <td>
-						        	<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
-						        </td>
-						        <td class="name-pro">{{$db->tensp}}</td>
-						        <td class="price-pro">{{$db->dongia}}</td>
-						        <td>-</td>
-						        <td width="130px;">
-						        	<input type="text" name="soluong" class="form-control" value="0">
-						        </td>
-						        <td>
-						        	<button type="btn" class="btn btn-success btnCapNhat">
-						        		<span class="fa fa-refresh"></span>&nbsp;&nbsp;Cập nhật
-						        	</button>
-						        </td>
-						    </tr>
-				    	<?php
+				    			//Kiểm tra sản phẩm có khuyến mãi hay không
+				    			$km = DB::table('khuyen_mai as km')
+										->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+										->where('ctkm.masp', $value)
+										->first();
+				    		if(count($km) == 0) { ?>
+					    		<tr>
+							      	<td>{{$db->tendanhmuc}}</td>
+							        <td>{{$db->masp}}</td>
+							        <td>
+							        	<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
+							        </td>
+							        <td class="name-pro">{{$db->tensp}}</td>
+							        <td class="price-pro">{{$db->dongia}}</td>
+							        <td>-</td>
+							        <td width="130px;">
+							        	<input type="text" name="soluong" class="form-control" value="0">
+							        </td>
+							        <td>
+							        	<button type="btn" class="btn btn-success btnCapNhat">
+							        		<span class="fa fa-refresh"></span>&nbsp;&nbsp;Cập nhật
+							        	</button>
+							        </td>
+							    </tr>
+							<?php } else { ?>
+								<tr>
+							      	<td>{{$db->tendanhmuc}}</td>
+							        <td>{{$db->masp}}</td>
+							        <td>
+							        	<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
+							        </td>
+							        <td class="name-pro">{{$db->tensp}}</td>
+							        <td class="price-pro">{{$db->dongia}}</td>
+							        <td>
+							        	{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}
+							        </td>
+							        <td width="130px;">
+							        	<input type="text" name="soluong" class="form-control" value="0">
+							        </td>
+							        <td>
+							        	<button type="btn" class="btn btn-success btnCapNhat">
+							        		<span class="fa fa-refresh"></span>&nbsp;&nbsp;Cập nhật
+							        	</button>
+							        </td>
+							    </tr>
+				    	<?php }
 				    		}
 				    	?>
 				   

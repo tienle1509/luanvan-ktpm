@@ -1,6 +1,5 @@
 <!-- Bắt session khi đăng nhập --> 
 <?php
-	//session_start(); Xem bên route có bật session
 	if(!isset($_SESSION['manb'])){
 		header("Location: http://localhost/luanvan-ktpm/nguoiban/dangnhap");	
 		exit;

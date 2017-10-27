@@ -95,8 +95,10 @@
 											<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
 										</td>
 										<td class="name-pro">{{$db->tensp}}</td>
-										<td class="price-pro">{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}</td>
-										<td>-</td>
+										<td class="price-pro">{{number_format($db->dongia)}}</td>
+										<td>
+											{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}
+										</td>
 										<td>
 											{{$db->soluong}}
 										</td>

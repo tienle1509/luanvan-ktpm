@@ -66,7 +66,7 @@
 					</div>
 				</div>
 
-				<a href="{{asset('quanli/khuyenmai/dssanphamkm')}}" type="button" class="btn btn-primary btn-lg">
+				<a href="{{asset('quanli/khuyenmai/dssanphamkm/'.$chitiet_km->makm)}}" type="button" class="btn btn-primary btn-lg">
 					<span class="fa fa-list"></span>&nbsp;&nbsp;Danh sách sản phẩm tham gia khuyến mãi
 				</a>
 

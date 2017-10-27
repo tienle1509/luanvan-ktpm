@@ -92,11 +92,19 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Camera trước</label>
 							    <div class="col-sm-4">
-							    	<input type="text" class="form-control" value="{{$chitietsp->cameratruoc}} MP" readonly="">
+							    	@if($chitietsp->cameratruoc == 0)
+							    		<input type="text" class="form-control" value="Không có camera" readonly="">
+							    	@else
+							    		<input type="text" class="form-control" value="{{$chitietsp->cameratruoc}} MP" readonly="">
+							    	@endif							    	
 							    </div>
 							    <label class="col-sm-2 control-label">Camera sau</label>
 							    <div class="col-sm-4">
-							    	<input type="text" class="form-control" value="{{$chitietsp->camerasau}} MP" readonly="">
+							    	@if($chitietsp->camerasau == 0)
+							    		<input type="text" class="form-control" value="Không có camera" readonly="">
+							    	@else
+							    		<input type="text" class="form-control" value="{{$chitietsp->camerasau}} MP" readonly="">
+							    	@endif
 							    </div>
 							</div>
 							<div class="form-group">
@@ -106,7 +114,7 @@
 							    </div>
 							    <label class="col-sm-2 control-label">Dung lượng pin</label>
 							    <div class="col-sm-4">
-							    	<input type="text" class="form-control" value="{{$chitietsp->dungluongpin}}" readonly="">
+							    	<input type="text" class="form-control" value="{{$chitietsp->dungluongpin}} (mAh)" readonly="">
 							    </div>
 							</div>
 						</div> <!-- end thuộc tính sản phẩm -->

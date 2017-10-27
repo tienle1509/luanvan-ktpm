@@ -38,8 +38,12 @@ class SanPhamQuanLiController extends Controller
 		$list_khuyenmai = DB::table('khuyen_mai as km')
 								->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 								->get();
+		$masp_khuyenmai = array();
+		foreach ($list_khuyenmai as $val) {
+			$masp_khuyenmai[] = $val->masp;
+		}
 
-		return view('quanli.sanpham.tatca_sanpham')->with('list_all', $list_all)->with('list_khuyenmai', $list_khuyenmai);
+		return view('quanli.sanpham.tatca_sanpham')->with('list_all', $list_all)->with('masp_khuyenmai', $masp_khuyenmai);
 	}
 
 	public function getTimKiemSanPham(Request $request){

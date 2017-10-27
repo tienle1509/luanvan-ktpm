@@ -32,8 +32,6 @@
 
 
 
-
-
 <!-- Nav bottom -->
 	<div class="nav-bottom">
 		<div class="container">

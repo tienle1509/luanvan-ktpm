@@ -45,7 +45,7 @@ Route::group(['prefix'=>'quanli'],function(){
 		Route::get('chitiet-khuyenmai/{makm}', ['uses'=>'KhuyenMaiQuanLiController@getChiTietKhuyenMai']);
 		Route::post('capnhat-khuyenmai', ['uses'=>'KhuyenMaiQuanLiController@postCapNhatKhuyenMai']);
 		Route::get('xoa-khuyenmai', ['uses'=>'XoaKhuyenMaiController@getXoaKhuyenMai']);
-		Route::get('dssanphamkm',['uses'=>'KhuyenMaiQuanLiController@getDSSanPhamKhuyenMai']);
+		Route::get('dssanphamkm/{makm}',['uses'=>'KhuyenMaiQuanLiController@getDSSanPhamKhuyenMai']);
 	});
 
 	Route::post('sua-taikhoan',['uses'=>'EditAccountQuanLiController@postSuaTaiKhoan']);
@@ -102,7 +102,6 @@ Route::post('nguoiban/postdien-thongtin', ['uses'=>'RegisterNguoiBanController@p
 Route::group(['prefix'=>'nguoiban'], function(){
 	//Quản lí sản phẩm
 	Route::get('ql-sanpham', ['uses'=>'SanPhamNguoiBanController@qlSanPhamHome']);	
-
 	Route::group(['prefix'=>'ql-sanpham'], function(){
 		Route::get('them-sanpham', ['uses'=>'SanPhamNguoiBanController@getThemSanPham']);
 		Route::post('luu-sanpham', ['uses'=>'SanPhamNguoiBanController@postLuuSanPham']);
@@ -122,7 +121,15 @@ Route::group(['prefix'=>'nguoiban'], function(){
 		Route::post('xoa-sanpham', ['uses'=>'CapNhatSoLuongSanPhamController@postXoaSanPham']);
 	});
 	
-	
+	//Khuyến mãi
+	Route::get('khuyenmai', ['uses'=>'KhuyenMaiNguoiBanController@getHomeKhuyenMai']);
+	Route::group(['prefix'=>'khuyenmai'], function(){
+		Route::get('chitiet-khuyenmai/{makm}', ['uses'=>'KhuyenMaiNguoiBanController@getChiTietKhuyenMai']);
+		Route::get('themspkm/{makm}', ['uses'=>'KhuyenMaiNguoiBanController@getThemSanPhamKhuyenMai']);
+		Route::get('them-spkm', ['uses'=>'ThemSanPhamKhuyenMaiNguoiBanController@getThemSanPham']);
+		Route::get('dssanphamkm/{makm}', ['uses'=>'KhuyenMaiNguoiBanController@getDSSanPhamKhuyenMai']);
+		Route::get('xoa-spkm', ['uses'=>'ThemSanPhamKhuyenMaiNguoiBanController@getXoaSanPham']);
+	});
 
 	//Thay đổi thông tin, tài khoản nhà bán
 	Route::post('sua-thongtin', ['uses'=>'EditProfileNguoiBanController@postSuaThongTin']);
@@ -167,24 +174,6 @@ Route::group(['prefix'=>'nguoiban'], function(){
 			return view('nguoiban.donhang.chitiet_donhang');
 		});
 	});
-
-	//Quản lí khuyến mãi
-	Route::get('khuyenmai', function(){
-		return view('nguoiban.khuyenmai');
-	});
-	Route::group(['prefix'=>'khuyenmai'], function(){
-		Route::get('chitiet-khuyenmai', function(){
-			return view('nguoiban.khuyenmai.chitiet_khuyenmai');
-		});
-		Route::group(['prefix'=>'chitiet-khuyenmai'], function(){
-			Route::get('themspkm', function(){
-				return view('nguoiban.khuyenmai.them_sanpham_km');
-			});
-			Route::get('dssanphamkm', function(){
-				return view('nguoiban.khuyenmai.ds_sanpham_km');
-			});
-		});
-	});
 });
 
 
@@ -222,5 +211,9 @@ Route::get('taobang2', function(){
 });
 
 Route::get('demo2', function () {
-	DB::table('chitiet_khuyenmai')->where('makm','km001')->delete();
+	if(date('d-m-Y', strtotime('2017/10/27')) < date('d-m-Y', strtotime('2017/11/07'))){
+		echo 'bé hơn';
+	}else{
+		echo "lớn hơn";
+	}
 });

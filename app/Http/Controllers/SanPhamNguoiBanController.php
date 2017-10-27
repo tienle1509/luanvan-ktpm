@@ -208,7 +208,18 @@ class SanPhamNguoiBanController extends Controller
 							->where('sp.manb',$_SESSION['manb'])
 							->paginate(10);
 
-		return view('nguoiban.sanpham.sanpham_hethang')->with('list_hethang',$list_hethang);
+		$list_khuyenmai = DB::table('khuyen_mai as km')
+							->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+							->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
+							->where('sp.manb', $_SESSION['manb'])
+							->get();
+							
+		$masp_khuyenmai = array();
+		foreach ($list_khuyenmai as $val) {
+			$masp_khuyenmai[] = $val->masp;
+		}
+
+		return view('nguoiban.sanpham.sanpham_hethang')->with('list_hethang',$list_hethang)->with('masp_khuyenmai', $masp_khuyenmai);
 	}
 
 	public function getTimKiemSPHetHang(Request $request){
@@ -265,8 +276,12 @@ class SanPhamNguoiBanController extends Controller
 							->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
 							->where('sp.manb', $_SESSION['manb'])
 							->get();
+		$masp_khuyenmai = array();
+		foreach ($list_khuyenmai as $val) {
+			$masp_khuyenmai[] = $val->masp;
+		}
 		
-		return view('nguoiban.sanpham.tatca_sanpham')->with('list_tatca', $list_tatca)->with('list_khuyenmai', $list_khuyenmai);
+		return view('nguoiban.sanpham.tatca_sanpham')->with('list_tatca', $list_tatca)->with('masp_khuyenmai', $masp_khuyenmai);
 	}
 
 	public function getTimKiemTatCaSP(Request $request){

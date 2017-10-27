@@ -163,10 +163,16 @@ class KhuyenMaiQuanLiController extends Controller
 	}
 
 /*--------------------Danh sách sản phẩm khuyến mãi-----------------------------*/
-	public function getDSSanPhamKhuyenMai(){
-		
+	public function getDSSanPhamKhuyenMai($makm){
+		$tenkm = DB::table('khuyen_mai')->where('makm',$makm)->first();
 
-		return view('quanli.khuyenmai.sanpham_km');
+		$dsspkm = DB::table('khuyen_mai as km')
+						->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+						->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
+						->where('km.makm',$makm)
+						->paginate(20);
+
+		return view('quanli.khuyenmai.sanpham_km')->with('tenkm', $tenkm)->with('dsspkm', $dsspkm);
 	}
 
 }

@@ -46,7 +46,7 @@
 				    	@else
 				    		<?php
 				    			foreach ($list_tatca as $all) {
-				    				if(count($list_khuyenmai) == 0){ ?>
+				    				if(count($masp_khuyenmai) == 0){ ?>
 				    					<tr>
 								    				<td>{{$all->tendanhmuc}}</td>
 											        <td>{{$all->masp}}</td>
@@ -81,9 +81,8 @@
 				    				<?php
 				    				}
 				    				else {
-				    					foreach ($list_khuyenmai as $valkm) {
-					    					if($all->masp == $valkm->masp){ ?>
-					    						<tr>
+				    					if(in_array($all->masp, $masp_khuyenmai)){ ?>
+				    						<tr>
 								    				<td>{{$all->tendanhmuc}}</td>
 											        <td>{{$all->masp}}</td>
 											        <td>
@@ -91,7 +90,12 @@
 											        </td>
 											        <td class="name-pro">{{$all->tensp}}</td>
 											        <td class="price-pro">{{number_format($all->dongia)}}</td>
-											        <td>{{number_format($all->dongia-($valkm->chietkhau*$all->dongia*0.01))}}		       	
+											        <td>
+											        	<?php
+											        		$giamgia = DB::table('khuyen_mai as km')
+											        					->join('chitiet_khuyenmai as ctkm','ctkm.makm', '=', 'km.makm')->where('ctkm.masp', $all->masp)->first();
+											        		echo number_format($all->dongia-($giamgia->chietkhau*$all->dongia*0.01))
+											        	?>		       	
 											        </td>
 											        <td>
 											        	{{$all->soluong}}	        	
@@ -115,10 +119,8 @@
 											        	</a>
 											        </td>
 											      </tr>
-					    					<?php
-					    					}
-					    					else { ?>
-					    						<tr>
+				    					<?php } else { ?>
+				    						<tr>
 								    				<td>{{$all->tendanhmuc}}</td>
 											        <td>{{$all->masp}}</td>
 											        <td>
@@ -149,9 +151,7 @@
 											        	</a>
 											        </td>
 											      </tr>
-					    					<?php
-					    					}
-				    					}
+				    					<?php }
 				    				}
 				    			}	
 				    		?>
