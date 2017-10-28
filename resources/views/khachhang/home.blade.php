@@ -31,7 +31,6 @@
 
 
 
-
 <!-- Nav bottom -->
 	<div class="nav-bottom">
 		<div class="container">
@@ -66,21 +65,12 @@
 				<!-- Danh mục -->
 				<div class="col-md-3 col-sm-3 danhmuc">
 					<div class="row">
-						<a href="{{asset('chitiet-danhmuc')}}">Apple</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Samsung</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Nokia</a>				
-						<a href="{{asset('chitiet-danhmuc')}}">Oppo</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Sony</a>
-						<a href="{{asset('chitiet-danhmuc')}}">HTC</a>
-						<a href="{{asset('chitiet-danhmuc')}}">LG</a>								
-						<a href="{{asset('chitiet-danhmuc')}}">Asus</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Masstel</a>				
-						<a href="{{asset('chitiet-danhmuc')}}">Motorola</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Xiaomi</a>
-						<a href="{{asset('chitiet-danhmuc')}}">MobiiStar</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Wiko</a>
-						<a href="{{asset('chitiet-danhmuc')}}">Lenovo</a>
-						<a href="{{asset('chitiet-danhmuc')}}">BlackBery</a>
+						<?php
+							$dmleft = DB::table('danhmuc_sanpham')->get();
+						?>
+						@foreach($dmleft as $val)
+							<a href="{{asset('chitiet-danhmuc/'.$val->madm)}}">{{$val->tendanhmuc}}</a>
+						@endforeach
 					</div>
 				</div>
 
@@ -95,24 +85,29 @@
 							<li data-target="#myCarousel" data-slide-to="1"></li>
 							<li data-target="#myCarousel" data-slide-to="2"></li>
 							<li data-target="#myCarousel" data-slide-to="3"></li>
+							<li data-target="#myCarousel" data-slide-to="4"></li>
 						</ol>
 
 						<!-- Wrapper for slides -->
 						<div class="carousel-inner">
 							<div class="item active">
-								<a href=""><img src="{{asset('public/anh-khuyenmai/2.jpg')}}" alt="slide1"></a>
+								<img src="{{asset('public/img/panel1.jpg')}}" alt="slide1">
 							</div>
 
 							<div class="item">
-								<a href=""><img src="{{asset('public/anh-khuyenmai/note8.jpg')}}" alt="slide2"></a>
+								<img src="{{asset('public/img/panel2.jpg')}}" alt="slide2">
 							</div>
 
 							<div class="item">
-								<a href=""><img src="{{asset('public/anh-khuyenmai/mia1.png')}}" alt="slide3"></a>
+								<img src="{{asset('public/img/panel3.png')}}" alt="slide3">
 							</div>
 
 							<div class="item">
-								<a href=""><img src="{{asset('public/anh-khuyenmai/sony.png')}}" alt="slide3"></a>
+								<img src="{{asset('public/img/panel4.png')}}" alt="slide4">
+							</div>
+
+							<div class="item">
+								<img src="{{asset('public/img/panel5.png')}}" alt="slide5">
 							</div>
 						</div>
 
@@ -128,9 +123,9 @@
 					</div> <!-- end carousel -->
 
 					<div class="row panel-ship ">
-						<a href=""><img src="{{asset('public/img/banner1.jpg')}}" alt="banner1"></a>
-						<a href=""><img src="{{asset('public/img/banner2.jpg')}}" alt="banner1"></a>
-						<a href=""><img src="{{asset('public/img/banner3.jpg')}}" alt="banner1"></a>
+						<img src="{{asset('public/img/banner1.jpg')}}" alt="banner1">
+						<img src="{{asset('public/img/banner2.jpg')}}" alt="banner1">
+						<img src="{{asset('public/img/banner3.jpg')}}" alt="banner1">
 					</div>
 				</div> <!-- end panel right -->
 			</div>
@@ -148,417 +143,88 @@
 					<div class="row">
 						<!-- Slick slider -->
 				    	<div class="slider-fastPro">
-				    		<div>
-							    <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-							
+				    		<?php
+				    			for ($i=0; $i <10 ; $i++) { 
+				    				foreach ($list_sp as $val) {
+				    					if($val->masp == $ma_giam[$i]){
+				    						//Kiểm tra sản phẩm có khuyến mãi hay không
+				    						$today = date('d'); //lấy ngày hiện tại
+		                                    $month_cur = date('m'); //lấy tháng hiện tại
+		                                    $year = date('Y'); //lấy năm hiện tại
 
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
+		                                    $listKM = DB::table('khuyen_mai as km')
+		                                    			->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+		                                    			->where('ctkm.masp', $val->masp)
+		                                    			->first(); ?>
 
+		                                    <div>
+											    <a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+											    	<div class="thumbnail">
+												      	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+												      	@if(count($listKM) != 0)
+												      		@if((strtotime($ngayht) > strtotime($listKM->ngaybd)) && (strtotime($ngayht) < strtotime($listKM->ngaykt)))
+												      			<div class="chietkhau">
+												      				{{$listKM->chietkhau}}%
+												      			</div>
+												      		@endif
+												      	@endif
+												      	<div class="caption">
+												      		@if(count($listKM) != 0)
+													      		@if((strtotime($ngayht) > strtotime($listKM->ngaybd)) && (strtotime($ngayht) < strtotime($listKM->ngaykt)))
+													      			<div class="gia">
+														      			<label class="giakm">{{number_format($val->dongia-($val->dongia*0.01*$listKM->chietkhau),0,'.','.')}} đ
+														      			</label>
+														      			<del class="giagoc">{{number_format($val->dongia,0,'.','.')}} đ</del>
+														      		</div>
+													      		@endif
+													      	@else
+													      		<div class="gia">
+													      			<label class="giakm">
+													      				{{number_format($val->dongia,0,'.','.')}} đ
+													      			</label>
+													      		</div>
+													      	@endif									
+													      	<div class="tendt">
+												      			<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+												      		</div>
+												      		<div class="luotvote row">
+												      			<?php
+																	$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+																?>
+												      			@if($luotmua != 0)
+																	<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+																	    <span class="fa fa-tag"> {{$luotmua}}</span>
+																	</a>
+																@endif
+												      		<!--	<a data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
+												      				<span class="fa fa-eye">5</span>
+												      			</a>
+												      			<a data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
+												      				<span class="fa fa-comment">0</span>
+												      			</a>  -->
+												      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
+												      		</div>
+				  											<div class="ten-shop row">
+				  												<?php
+								  									$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+								  									echo $nguoiban->tengianhang;
+								  								?>
+				  											</div>
+												      	</div>
+												    </div>
+											    </a>
+											</div>
 
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
+				    					<?php }
+				    				}
+				    				unset($ma_giam[$i]);//Xóa mã sản phẩm
+				    			}
+				    		?>
 				    	</div><!-- Slick slider -->
 					</div>
 				</div>
 			</div>
 		</div> <!-- Panel sản phẩm mới nổi bật -->
-
-
-
-		<!-- Panel sản phẩm giảm giá -->
-		<div class="container">
-			<div class="row panel-product">
-				<div class="panel-title col-md-12 col-sm-12">
-					<h4>Sản phẩm giảm giá</h4>
-				</div>
-				<div class="panel-img col-md-2 col-sm-2">
-					<div class="row">
-						<a href="khuyenmai.php">
-							<img src="{{asset('public/anh-khuyenmai/giamgia.jpg')}}">
-						</a>
-					</div>
-				</div>
-				<div class="panel-slider col-md-10 col-sm-10">
-					<div class="row">
-						<!-- Slick slider -->
-				    	<div class="slider slider-pricePro">
-				    		<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-							
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-				    	</div><!-- Slick slider -->
-					</div>
-				</div>
-			</div>
-		</div> <!-- Panel sản phẩm giảm giá -->
-
 
 
 		<!-- Panel Sản phẩm bán chạy -->
@@ -772,374 +438,85 @@
 		<div class="container">
 			<div class="row panel-product">
 				<div class="panel-list col-md-12 col-sm-12">
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
+					<?php
+						foreach ($list_sp as $val) {
+							if(in_array($val->masp, $ma_giam)){
+								//Kiểm tra sản phẩm có khuyến mãi hay không
+				    			$today = date('d'); //lấy ngày hiện tại
+		                        $month_cur = date('m'); //lấy tháng hiện tại
+		                        $year = date('Y'); //lấy năm hiện tại
+
+		                        $dskm = DB::table('khuyen_mai as km')
+		                                    ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+		                                    ->where('ctkm.masp', $val->masp)
+		                                    ->first(); ?>
+
+		                        <div class="list-pro">
+									<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+									<div class="thumbnail">
+										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+										@if(count($dskm) != 0)
+											@if((strtotime($ngayht) > strtotime($dskm->ngaybd)) && (strtotime($ngayht) < strtotime($dskm->ngaykt)))
+												<div class="chietkhau">
+													{{$dskm->chietkhau}}%
+												</div>
+											@endif
+										@endif
+										<div class="caption">
+										@if(count($dskm) != 0)
+											@if((strtotime($ngayht) > strtotime($dskm->ngaybd)) && (strtotime($ngayht) < strtotime($dskm->ngaykt)))
+											<div class="gia">
+												<label class="giakm">
+													{{number_format($val->dongia-($val->dongia*0.01*$dskm->chietkhau),0,'.','.')}} đ
+												</label>
+												<del class="giagoc">
+													{{number_format($val->dongia,0,'.','.')}} đ
+												</del>
+											</div>
+											@endif
+										@else
+											<div class="gia">
+												<label class="giakm">
+													{{number_format($val->dongia,0,'.','.')}} đ
+												</label>
+											</div>
+										@endif									
+										<div class="tendt">
+											<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+										</div>
+										<div class="luotvote row">
+											<?php
+												$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+											?>
+											@if($luotmua != 0)
+												<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+												<span class="fa fa-tag"> {{$luotmua}}</span>
+												</a>
+											@endif
+											<!--	<a data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
+												<span class="fa fa-eye">5</span>
+											</a>
+											<a data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
+												<span class="fa fa-comment">0</span>
+											</a>  -->
+												<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
+										</div>
+				  						<div class="ten-shop row">
+				  							<?php
+								  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+								  					echo $nguoiban->tengianhang;
+								  				?>
+				  						</div>
 									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
 								</div>
-							</div>
-						</a>
-					</div>
+							</a>
+						</div>
 
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-
-					<div class="list-pro">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-										    <span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-										    <span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-										    <span class="fa fa-comment">0</span>
-										</a>
-									</div>
-		  							<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-					</div>
+		                                   
+							<?php }
+						}
+					?>		
+					
 				</div> <!-- panel list -->
 			</div>
 		</div> <!-- end sản phẩm đặc trưng-->
@@ -1148,7 +525,7 @@
 	<script type="text/javascript">
 		//Carousel
 	    $('#myCarousel').carousel({
-		  	interval: 3000,
+		  	interval: 2500,
 		});
 	</script>
 

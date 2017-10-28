@@ -177,15 +177,17 @@ Route::group(['prefix'=>'nguoiban'], function(){
 });
 
 
+/*------------------Giao diện khách hàng------------------*/
+Route::get('home', ['uses'=>'HomeKhachHangController@getHomeKhachHang']);
+Route::get('timkiem',['uses'=>'HomeKhachHangController@getTimKiemSanPham']);
+
+Route::get('chitiet-sanpham/{masp}',['uses'=>'HomeKhachHangController@getChiTietSanPham']);
+
+
+
 /*---------------GIAO DIỆN KHÁCH HÀNG---------------------------------*/
-Route::get('home',function(){
-	return view('khachhang.home');
-});
 Route::get('chitiet-danhmuc',function(){
 	return view('khachhang.chitiet_danhmuc');
-});
-Route::get('chitiet-sanpham',function(){
-	return view('khachhang.chitiet_sanpham');
 });
 Route::get('donhang',function(){
 	return view('khachhang.donhang');
@@ -211,9 +213,7 @@ Route::get('taobang2', function(){
 });
 
 Route::get('demo2', function () {
-	if(date('d-m-Y', strtotime('2017/10/27')) < date('d-m-Y', strtotime('2017/11/07'))){
-		echo 'bé hơn';
-	}else{
-		echo "lớn hơn";
+	for ($i=20; $i >= 1 ; $i--) { 
+		echo $i.'<br>';
 	}
 });

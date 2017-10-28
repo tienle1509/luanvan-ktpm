@@ -10,6 +10,7 @@ use App\AnhSanPham;
 use Image;
 use App\DanhMucSanPham;
 use File;
+use Carbon\Carbon;
 
 
 class SanPhamNguoiBanController extends Controller
@@ -151,7 +152,7 @@ class SanPhamNguoiBanController extends Controller
 			$sp->dungluongpin = $request->txtDungLuongPin;
 			$sp->mota = $request->txtMoTa;
 			$sp->anh = $tenanhdaidien;
-			$sp->luotxem = 0;
+			//$sp->luotxem = 0;
 			$sp->trangthai = false;
 			$sp->manb = $manguoiban;
 			$sp->madm = $request->cbxDanhMuc;
@@ -201,6 +202,8 @@ class SanPhamNguoiBanController extends Controller
 
 /*-----------------Sản phẩm hết hàng-----------------------*/
 	public function getSPHetHang(){
+		$ngayht = Carbon::now();
+
 		$list_hethang = DB::table('san_pham as sp')
 							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 							->where('sp.soluong',0)
@@ -219,7 +222,7 @@ class SanPhamNguoiBanController extends Controller
 			$masp_khuyenmai[] = $val->masp;
 		}
 
-		return view('nguoiban.sanpham.sanpham_hethang')->with('list_hethang',$list_hethang)->with('masp_khuyenmai', $masp_khuyenmai);
+		return view('nguoiban.sanpham.sanpham_hethang')->with('list_hethang',$list_hethang)->with('masp_khuyenmai', $masp_khuyenmai)->with('ngayht',$ngayht);
 	}
 
 	public function getTimKiemSPHetHang(Request $request){
@@ -234,6 +237,7 @@ class SanPhamNguoiBanController extends Controller
 			return redirect()->back()->withErrors($v->errors());
 		}
 		else {
+			$ngayht = Carbon::now();
 		
 			$masp_nguoiban = DB::table('san_pham')
 								->where('manb',$_SESSION['manb'])
@@ -260,12 +264,14 @@ class SanPhamNguoiBanController extends Controller
 			}
 
 
-			return view('nguoiban.sanpham.timkiem_hethang')->with('result_search',$result_search); 
+			return view('nguoiban.sanpham.timkiem_hethang')->with('result_search',$result_search)->with('ngayht',$ngayht); 
 		}		
 	}
 
 /*--------------------------Tất cả sản phẩm-----------------------------*/
 	public function getTatCaSanPham(){
+		$ngayht = Carbon::now();
+
 		$list_tatca = DB::table('san_pham as sp')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 						->where('sp.manb',$_SESSION['manb'])
@@ -281,7 +287,7 @@ class SanPhamNguoiBanController extends Controller
 			$masp_khuyenmai[] = $val->masp;
 		}
 		
-		return view('nguoiban.sanpham.tatca_sanpham')->with('list_tatca', $list_tatca)->with('masp_khuyenmai', $masp_khuyenmai);
+		return view('nguoiban.sanpham.tatca_sanpham')->with('list_tatca', $list_tatca)->with('masp_khuyenmai', $masp_khuyenmai)->with('ngayht',$ngayht);
 	}
 
 	public function getTimKiemTatCaSP(Request $request){
@@ -296,6 +302,7 @@ class SanPhamNguoiBanController extends Controller
 			return redirect()->back()->withErrors($v->errors());
 		}
 		else {
+			$ngayht = Carbon::now();
 			$masp_nguoiban = DB::table('san_pham')
 								->where('manb',$_SESSION['manb'])
 								->get();
@@ -318,7 +325,7 @@ class SanPhamNguoiBanController extends Controller
 				}
 			}
 
-			return view('nguoiban.sanpham.timkiem_tatca')->with('result_search',$result_search);
+			return view('nguoiban.sanpham.timkiem_tatca')->with('result_search',$result_search)->with('ngayht',$ngayht);
 		}
 		
 	}

@@ -97,7 +97,11 @@
 										<td class="name-pro">{{$db->tensp}}</td>
 										<td class="price-pro">{{number_format($db->dongia)}}</td>
 										<td>
-											{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}
+											@if((strtotime($ngayht) > strtotime($km->ngaybd)) && (strtotime($ngayht) < strtotime($km->ngaykt)))
+												{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}
+											@else
+												-
+											@endif
 										</td>
 										<td>
 											{{$db->soluong}}

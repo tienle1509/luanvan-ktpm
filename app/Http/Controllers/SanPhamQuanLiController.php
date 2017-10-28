@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Validator;
+use Carbon\Carbon;
 
 class SanPhamQuanLiController extends Controller
 {
@@ -30,6 +31,8 @@ class SanPhamQuanLiController extends Controller
 
 /*-----------------------Tất cả sản phẩm-----------------------------*/
 	public function getTatCaSanPham(){
+		$ngayht = Carbon::now();
+
 		$list_all = DB::table('san_pham as sp')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 						->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
@@ -43,7 +46,7 @@ class SanPhamQuanLiController extends Controller
 			$masp_khuyenmai[] = $val->masp;
 		}
 
-		return view('quanli.sanpham.tatca_sanpham')->with('list_all', $list_all)->with('masp_khuyenmai', $masp_khuyenmai);
+		return view('quanli.sanpham.tatca_sanpham')->with('list_all', $list_all)->with('masp_khuyenmai', $masp_khuyenmai)->with('ngayht',$ngayht);
 	}
 
 	public function getTimKiemSanPham(Request $request){
@@ -58,6 +61,8 @@ class SanPhamQuanLiController extends Controller
 		if($v->fails()){
 			return redirect()->back()->withErrors($v->errors());
 		} else {
+			$ngayht = Carbon::now();
+
 			$result_search = DB::table('san_pham as sp')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 						->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
@@ -66,7 +71,7 @@ class SanPhamQuanLiController extends Controller
 						->orwhere('nb.tengianhang', 'like', '%'.$request->key.'%')
 						->paginate(10);
 
-			return view('quanli.sanpham.timkiem_tatca')->with('result_search',$result_search);
+			return view('quanli.sanpham.timkiem_tatca')->with('result_search',$result_search)->with('ngayht',$ngayht);
 		}
 	}
 

@@ -91,7 +91,11 @@
 										        <td class="tensp">{{$valSearch->tensp}}</td>
 										        <td class="dongia">{{number_format($valSearch->dongia)}}</td>
 										        <td>
-										        	{{number_format($valSearch->dongia-($valSearch->dongia*$km->chietkhau*0.01))}}
+										        	@if((strtotime($ngayht) > strtotime($km->ngaybd)) && (strtotime($ngayht) < strtotime($km->ngaykt)))
+										        		{{number_format($valSearch->dongia-($valSearch->dongia*$km->chietkhau*0.01))}}
+										        	@else
+										        		-
+										        	@endif
 										        </td>
 										        <td>{{$valSearch->soluong}}</td>
 										        <td>

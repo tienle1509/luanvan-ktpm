@@ -39,6 +39,7 @@
 				        <th>Giá khuyến mãi</th>
 				        <th>Số lượng</th>
 				        <th>Chiết khấu</th>
+				        <th>Nhà bán hàng</th>
 				      </tr>
 				    </thead>
 				    <tbody>
@@ -58,6 +59,12 @@
 							        <td>{{number_format($val->dongia-($val->dongia*$val->chietkhau*0.01))}}</td>
 							        <td>{{$val->soluong}}</td>
 							        <td>{{$val->chietkhau}}%</td>
+							        <td style="color: blue">
+							        	<?php
+							        		$tenshop = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+							        		echo $tenshop->tengianhang;
+							        	?>
+							        </td>
 							    </tr>
 				    		@endforeach
 				    	@endif

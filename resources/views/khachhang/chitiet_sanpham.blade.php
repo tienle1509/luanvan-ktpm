@@ -1,6 +1,8 @@
 @extends('khachhang_home')
 
-@section('title-page','TÊN SẢN PHẨM ĐƯỢC CHỌN')
+@section('title-page')
+	{{$chitietsp->tensp}}
+@stop
 
 @section('noidung')
 
@@ -47,21 +49,12 @@
 							<span class="fa fa-angle-down"></span>
 						</button>
 						<div class="dropdown-content">
-							<a href="{{asset('chitiet-danhmuc')}}">Apple</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Samsung</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Nokia</a>				
-							<a href="{{asset('chitiet-danhmuc')}}">Oppo</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Sony</a>
-							<a href="{{asset('chitiet-danhmuc')}}">HTC</a>
-							<a href="{{asset('chitiet-danhmuc')}}">LG</a>								
-							<a href="{{asset('chitiet-danhmuc')}}">Asus</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Masstel</a>				
-							<a href="{{asset('chitiet-danhmuc')}}">Motorola</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Xiaomi</a>
-							<a href="{{asset('chitiet-danhmuc')}}">MobiiStar</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Wiko</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Lenovo</a>
-							<a href="{{asset('chitiet-danhmuc')}}">BlackBery</a>
+							<?php
+								$dmleft = DB::table('danhmuc_sanpham')->get();
+							?>
+							@foreach($dmleft as $val)
+								<a href="{{asset('chitiet-danhmuc/'.$val->madm)}}">{{$val->tendanhmuc}}</a>
+							@endforeach
 						</div>
 					</li>
 					<li>
@@ -85,8 +78,12 @@
 				<div class="row">
 					<ol class="breadcrumb">
 					  <li><a href="{{asset('home')}}">TRANG CHỦ</a></li>
-					  <li><a href="{{asset('chitiet-danhmuc')}}">APPLE</a></li>
-					  <li class="active">IPHONE 6</li>
+					  <li>
+					  	<a href="{{asset('chitiet-danhmuc/'.$chitietsp->madm)}}">
+					  		{{strtoupper($chitietsp->tendanhmuc)}}
+					  	</a>
+					  </li>
+					<!--  <li class="active">{{strtoupper($chitietsp->tensp)}}</li> -->
 					</ol>
 				</div>
 			</div>
@@ -98,35 +95,36 @@
 			<div class="row">
 				<div class="img-product col-md-4 col-sm-4">
 				  <div class="slider-for">
-				  	<img id="zoom_01" src="{{asset('public/anh-sanpham-trungbinh/galaxyj7_1.jpg')}}" data-zoom-image="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}"/>
+				  	<img id="zoom_01" src="{{asset('public/anh-sanpham-trungbinh/'.$chitietsp->anh)}}" data-zoom-image="{{asset('public/anh-sanpham/'.$chitietsp->anh)}}"/>
 				  </div>
 				  <div id="gallery" class="slider-nav" >
-				  	<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/galaxyj7_1.jpg')}}" data-zoom-image="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
-				  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/galaxyj7_1.jpg')}}">
-				  	</a>				  
-				  	<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/galaxyj7_2.jpg')}}" data-zoom-image="{{asset('public/anh-sanpham/galaxyj7_2.jpg')}}">
-				  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/galaxyj7_2.jpg')}}">
+				  	<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/'.$chitietsp->anh)}}" data-zoom-image="{{asset('public/anh-sanpham/'.$chitietsp->anh)}}">
+				  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/'.$chitietsp->anh)}}">
 				  	</a>
-				  	<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/galaxyj7_3.jpg')}}" data-zoom-image="{{asset('public/anh-sanpham/galaxyj7_3.jpg')}}">
-				  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/galaxyj7_3.jpg')}}">
-				  	</a>
-				  	<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/galaxyj7_4.jpg')}}" data-zoom-image="{{asset('public/anh-sanpham/galaxyj7_4.jpg')}}">
-				  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/galaxyj7_4.jpg')}}">
-				  	</a>
-				  	<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/galaxyj7_5.jpg')}}" data-zoom-image="{{asset('public/anh-sanpham/galaxyj7_5.jpg')}}">
-				  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/galaxyj7_5.jpg')}}">
-				  	</a>				  
+				  	<?php
+				  		$anh_phu = DB::table('anh_sanpham')->where('masp',$chitietsp->masp)->get();
+				  		foreach ($anh_phu as $val) { ?>
+				  			<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/'.$val->tenanh)}}" data-zoom-image="{{asset('public/anh-sanpham/'.$val->tenanh)}}">
+						  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/'.$val->tenanh)}}">
+						  	</a>
+				  		<?php }
+				  	?>	
 				  </div>
 				  <a href="{{asset('')}}"><span class="fa fa-heart-o">&nbsp;&nbsp;Tôi thích sản phẩm này !</span></a>
 				</div>
 
 
 				<div class="info-product col-md-5 col-sm-5">
-					<h4><b>Điện thoại HOTWAV Tặng ốp lưng dán màn hình hàng nhập khẩu</b></h4>
+					<h4><b>{{$chitietsp->tensp}}</b></h4>
 					<div class="row">
-						<label class="number-buy" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 1 lượt mua"><span class="fa fa-tag">1</span></label>
-						<label class="number-view" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 5 lượt xem"><span class="fa fa-eye">5</span></label>
-						<label class="number-cmt" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 0 hỏi đáp"><span class="fa fa-comments">0</span></label>
+						<?php
+							$luotmua = DB::table('chitiet_donhang')->where('masp',$chitietsp->masp)->count('soluong');
+						?>
+						@if($luotmua != 0)
+							<label class="number-buy" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có {{$luotmua}} lượt mua"><span class="fa fa-tag">{{$luotmua}}</span></label>
+						@endif
+					<!--	<label class="number-view" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 5 lượt xem"><span class="fa fa-eye">5</span></label>
+						<label class="number-cmt" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 0 hỏi đáp"><span class="fa fa-comments">0</span></label> -->
 					</div>
 					<div class="clearfix"></div>
 					<hr>
@@ -288,15 +286,7 @@
 					<div id="mota" class="row">
 						<div class="tieude"><h4>Mô tả sản phẩm</h4></div>
 						<div id="ndMota" class="col-md-12 col-sm-12" style="overflow: hidden; height: 500px;">
-							<p>	Không còn jack cắm tai nghe truyền thống, thay vào đó tai tai nghe EarPod không dây hoặc kết nối thông quan đầu cắm Lightning. Dung lượng bộ nhớ được tăng đáng kể, bạn có thể sở hữu phiên bản lên đến 256GB. Ngoài những màu sắc quen thuộc, Apple đã giới thiệu đến người dùng phiên bản màu đen bóng (Jet Black) cực kỳ ấn tượng. Trọng lượng máy nhẹ hơn và màn hình sáng hơn cũng là một điểm đáng chú ý. Nhờ bỏ đi jack cắm tai nghe Apple đã có thể trang bị hệ thống loa kép với âm thanh stereo cực kỳ sống động. Apple đã loại bỏ nút Home vật lý thay bằng nút cảm ứng với công nghệ cảm ứng lực Force Touch độc đáo. Cuối cùng là pin “khủng” hơn, bộ xử lý mạnh hơn cũng như camera tốt hơn hỗ trợ quay video 4K.<br>
-							Nút Home vật lý quen thuộc ngày nào giờ đây đã được thay bằng nút Home cảm ứng tích hợp cảm ứng lực mang lại trải nghiệm hoàn hảo hơn. Nút Home trên iPhone 7 hoạt động song song với Taptic Engine mới cho độ nhạy cao, phản hồi chính xác trong từng lực nhấn của người dùng. Nút home vẫn giữ nguyên chức năng cảm biến vân tay Tuoch ID, cũng như Apple Pay dùng để thanh toán một cách an toàn.
-							Không còn jack cắm tai nghe truyền thống, thay vào đó tai tai nghe EarPod không dây hoặc kết nối thông quan đầu cắm Lightning. Dung lượng bộ nhớ được tăng đáng kể, bạn có thể sở hữu phiên bản lên đến 256GB. Ngoài những màu sắc quen thuộc, Apple đã giới thiệu đến người dùng phiên bản màu đen bóng (Jet Black) cực kỳ ấn tượng. Trọng lượng máy nhẹ hơn và màn hình sáng hơn cũng là một điểm đáng chú ý. Nhờ bỏ đi jack cắm tai nghe Apple đã có thể trang bị hệ thống loa kép với âm thanh stereo cực kỳ sống động. Apple đã loại bỏ nút Home vật lý thay bằng nút cảm ứng với công nghệ cảm ứng lực Force Touch độc đáo. Cuối cùng là pin “khủng” hơn, bộ xử lý mạnh hơn cũng như camera tốt hơn hỗ trợ quay video 4K.<br>
-							Nút Home vật lý quen thuộc ngày nào giờ đây đã được thay bằng nút Home cảm ứng tích hợp cảm ứng lực mang lại trải nghiệm hoàn hảo hơn. Nút Home trên iPhone 7 hoạt động song song với Taptic Engine mới cho độ nhạy cao, phản hồi chính xác trong từng lực nhấn của người dùng. Nút home vẫn giữ nguyên chức năng cảm biến vân tay Tuoch ID, cũng như Apple Pay dùng để thanh toán một cách an toàn.
-							<p>	Không còn jack cắm tai nghe truyền thống, thay vào đó tai tai nghe EarPod không dây hoặc kết nối thông quan đầu cắm Lightning. Dung lượng bộ nhớ được tăng đáng kể, bạn có thể sở hữu phiên bản lên đến 256GB. Ngoài những màu sắc quen thuộc, Apple đã giới thiệu đến người dùng phiên bản màu đen bóng (Jet Black) cực kỳ ấn tượng. Trọng lượng máy nhẹ hơn và màn hình sáng hơn cũng là một điểm đáng chú ý. Nhờ bỏ đi jack cắm tai nghe Apple đã có thể trang bị hệ thống loa kép với âm thanh stereo cực kỳ sống động. Apple đã loại bỏ nút Home vật lý thay bằng nút cảm ứng với công nghệ cảm ứng lực Force Touch độc đáo. Cuối cùng là pin “khủng” hơn, bộ xử lý mạnh hơn cũng như camera tốt hơn hỗ trợ quay video 4K.<br>
-							Nút Home vật lý quen thuộc ngày nào giờ đây đã được thay bằng nút Home cảm ứng tích hợp cảm ứng lực mang lại trải nghiệm hoàn hảo hơn. Nút Home trên iPhone 7 hoạt động song song với Taptic Engine mới cho độ nhạy cao, phản hồi chính xác trong từng lực nhấn của người dùng. Nút home vẫn giữ nguyên chức năng cảm biến vân tay Tuoch ID, cũng như Apple Pay dùng để thanh toán một cách an toàn.
-							Không còn jack cắm tai nghe truyền thống, thay vào đó tai tai nghe EarPod không dây hoặc kết nối thông quan đầu cắm Lightning. Dung lượng bộ nhớ được tăng đáng kể, bạn có thể sở hữu phiên bản lên đến 256GB. Ngoài những màu sắc quen thuộc, Apple đã giới thiệu đến người dùng phiên bản màu đen bóng (Jet Black) cực kỳ ấn tượng. Trọng lượng máy nhẹ hơn và màn hình sáng hơn cũng là một điểm đáng chú ý. Nhờ bỏ đi jack cắm tai nghe Apple đã có thể trang bị hệ thống loa kép với âm thanh stereo cực kỳ sống động. Apple đã loại bỏ nút Home vật lý thay bằng nút cảm ứng với công nghệ cảm ứng lực Force Touch độc đáo. Cuối cùng là pin “khủng” hơn, bộ xử lý mạnh hơn cũng như camera tốt hơn hỗ trợ quay video 4K.<br>
-							Nút Home vật lý quen thuộc ngày nào giờ đây đã được thay bằng nút Home cảm ứng tích hợp cảm ứng lực mang lại trải nghiệm hoàn hảo hơn. Nút Home trên iPhone 7 hoạt động song song với Taptic Engine mới cho độ nhạy cao, phản hồi chính xác trong từng lực nhấn của người dùng. Nút home vẫn giữ nguyên chức năng cảm biến vân tay Tuoch ID, cũng như Apple Pay dùng để thanh toán một cách an toàn.
-							</p>
+							{!!$chitietsp->mota!!}
 						</div>
 
 						<div class="clearfix"></div>

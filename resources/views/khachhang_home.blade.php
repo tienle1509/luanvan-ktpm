@@ -306,28 +306,20 @@
 				      </a>
 				    </div>
 
+				    
 				    <!-- Collect the nav links, forms, and other content for toggling -->
 				    <div id="mainnav" class="collapse navbar-collapse">
-				      <form class="navbar-form navbar-left" role="search">
+				      <form name="formSearch" class="navbar-form navbar-left" role="search" method="get" action="{{url('timkiem')}}">
 				        <div class="input-group">
-				          <input type="search" placeholder="Nhập từ khóa tìm kiếm ...">
-				          <select name="" id="select-danhmuc">
+				          <input type="search" name="keysearch" placeholder="Nhập từ khóa tìm kiếm ...">
+				          <select name="searchdanhmuc" id="select-danhmuc">
+				          	<?php
+				          		$dmselect = DB::table('danhmuc_sanpham')->get();	
+				          	?>
 				          	<option value="">Tất cả danh mục</option>
-				          	<option selected="active" value="Apple">Apple</option>
-				          	<option value="Samsung">Samsung</option>
-				          	<option value="Nokia">Nokia</option>
-				          	<option value="Oppo">Oppo</option>
-				          	<option value="Sony">Sony</option>
-				          	<option value="HTC">HTC</option>
-				          	<option value="LG">LG</option>
-				          	<option value="Asus">Asus</option>
-				          	<option value="Masstel">Masstel</option>
-				          	<option value="Motorola">Motorola</option>
-				          	<option value="Xiaomi">Xiaomi</option>
-				          	<option value="MobiiStar">MobiiStar</option>
-				          	<option value="Wiko">Wiko</option>
-							<option value="Lenovo">Lenovo</option>
-							<option value="BlackBery">BlackBery</option>
+				          	@foreach($dmselect as $val)
+				          		<option value="{{$val->madm}}">{{$val->tendanhmuc}}</option>
+				          	@endforeach
 				          </select>
 				          <span class="input-group-btn">
 				          	<button type="submit" class="btn btn-search">

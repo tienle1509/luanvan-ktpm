@@ -36,7 +36,7 @@
 								</p>
 							</div>
 							<div class="col-md-7 col-sm-7">
-								<div><b>Sản phẩm tham gia khuyến mãi:</b> {{$num_pro}} sản phẩm</div>
+								<div><b>Sản phẩm tham gia :</b> {{$num_pro}} sản phẩm</div>
 								<div><b>Giảm giá:</b> {{$ctkm->chietkhau}}%.</div>
 							</div>
 						</div>

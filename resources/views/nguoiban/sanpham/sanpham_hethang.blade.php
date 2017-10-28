@@ -103,7 +103,11 @@
 							        	<?php
 							        		$giamgia = DB::table('khuyen_mai as km')
 							        					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')->where('ctkm.masp',$val->masp)->first();
-							        		echo number_format($val->dongia-($val->dongia*$giamgia->chietkhau*0.01));
+							        		if((strtotime($ngayht) > strtotime($giamgia->ngaybd)) &&(strtotime($ngayht))< strtotime($giamgia->ngaykt)){
+							        			echo number_format($val->dongia-($val->dongia*$giamgia->chietkhau*0.01));
+							        		}else {
+							        			echo '-';
+							        		}
 							        	?>
 							        </td>
 							        <td width="130px;">
