@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Validator;
 use Carbon\Carbon;
+use Cart;
 
 class HomeKhachHangController extends Controller
 {
@@ -90,5 +91,8 @@ class HomeKhachHangController extends Controller
 
 		return view('khachhang.chitiet_sanpham')->with('chitietsp',$chitietsp)->with('ngayht',$ngayht);
 	}
+
+
+
 
 }

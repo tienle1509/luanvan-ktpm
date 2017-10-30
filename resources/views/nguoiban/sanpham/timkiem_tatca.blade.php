@@ -55,7 +55,7 @@
 										->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 										->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
 										->where('sp.masp', $valSearch)
-										->first();
+										->get();
 								if(count($km) == 0){ ?>
 									<tr>
 								    	<td>{{$db->tendanhmuc}}</td>
@@ -97,11 +97,19 @@
 										<td class="name-pro">{{$db->tensp}}</td>
 										<td class="price-pro">{{number_format($db->dongia)}}</td>
 										<td>
-											@if((strtotime($ngayht) > strtotime($km->ngaybd)) && (strtotime($ngayht) < strtotime($km->ngaykt)))
-												{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}
-											@else
-												-
-											@endif
+											<?php
+												$t = 0;
+												foreach ($km as $valkm) {
+													if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){
+													echo number_format($db->dongia-($db->dongia*$valkm->chietkhau*0.01));
+													} else {
+														$t+=1;
+													}
+												}
+												if($t != 0){
+								        			echo "-";
+								        		}
+											?>
 										</td>
 										<td>
 											{{$db->soluong}}

@@ -15,14 +15,14 @@
 	    /* Show hide nội dung mô tả */
 	    $(document).ready(function(){
 	    	$('#showhiddenMota').click(function(){
-	    		if(ndMota.style.overflow === "hidden" && ndMota.style.height ==="500px"){
+	    		if(ndMota.style.overflow === "hidden" && ndMota.style.height ==="600px"){
 		    		ndMota.style.overflow = "visible";
 			    	ndMota.style.height = "auto";
 			    	document.getElementById("showhiddenMota").innerHTML = "Thu gọn&nbsp;&nbsp;&nbsp;<span class='fa fa-angle-double-up'></span>";
 			    }
 			    else if(ndMota.style.overflow === "visible" && ndMota.style.height === "auto"){
 			    	ndMota.style.overflow = "hidden";
-		    		ndMota.style.height="500px";
+		    		ndMota.style.height="600px";
 		    		document.getElementById("showhiddenMota").innerHTML = "Xem thêm&nbsp;&nbsp;<span class='fa fa-angle-double-down'></span>";
 			    }
 	    	});	    	
@@ -103,11 +103,13 @@
 				  	</a>
 				  	<?php
 				  		$anh_phu = DB::table('anh_sanpham')->where('masp',$chitietsp->masp)->get();
-				  		foreach ($anh_phu as $val) { ?>
-				  			<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/'.$val->tenanh)}}" data-zoom-image="{{asset('public/anh-sanpham/'.$val->tenanh)}}">
-						  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/'.$val->tenanh)}}">
-						  	</a>
-				  		<?php }
+				  		if(count($anh_phu) > 0){
+					  		foreach ($anh_phu as $val) { ?>
+					  			<a href="#" data-image="{{asset('public/anh-sanpham-trungbinh/'.$val->tenanh)}}" data-zoom-image="{{asset('public/anh-sanpham/'.$val->tenanh)}}">
+							  		<img id="img_01" src="{{asset('public/anh-sanpham-nho/'.$val->tenanh)}}">
+							  	</a>
+					  		<?php }
+					  	}
 				  	?>	
 				  </div>
 				  <a href="{{asset('')}}"><span class="fa fa-heart-o">&nbsp;&nbsp;Tôi thích sản phẩm này !</span></a>
@@ -131,19 +133,17 @@
 					<div class="row">
 						<div class="col-md-6 col-sm-6">
 							<ul>
-								<li>Hãng sản xuất: Hotwav</li>
-								<li>Kích thước màn hình: 5.5inch-6.0inch</li>
-								<li>Độ phân giải màn hình: 1080x1920 pixels</li>
-								<li>Hệ điều hành: Android</li>
+								<li>Kích thước màn hình: {{$chitietsp->kichthuocmanhinh}} inches</li>
+								<li>Độ phân giải màn hình: {{$chitietsp->dophangiaimanhinh}} pixels</li>
+								<li>Hệ điều hành: {{$chitietsp->hedieuhanh}}</li>
 							</ul>
 						</div>
 						<div class="col-md-6 col-sm-6">
 							<ul>
-								<li>Ram: 1Gb</li>
-								<li>Bộ nhớ trong: 8GB</li>							
-								<li>Camera: 5MP</li>
-								<li>Dung lượng pin (mAh): 4100 mAh</li>
-								<li>Thời gian bảo hành 12 tháng</li>
+								<li>Bộ nhớ trong: {{$chitietsp->bonhotrong}}</li>					
+								<li>Camera: {{$chitietsp->camerasau}} MP</li>
+								<li>Dung lượng pin (mAh): {{$chitietsp->dungluongpin}} mAh</li>
+								<li>Thời gian bảo hành {{$chitietsp->baohanh}} tháng</li>
 							</ul>
 						</div>
 					</div>
@@ -157,13 +157,30 @@
 							<option value="3">3</option>
 							<option value="4">4</option>
 							<option value="5">5</option>
-						</select>(Còn lại 3 sản phẩm)
+
+						</select>(Còn lại {{$chitietsp->soluong}} sản phẩm)
 					</div>
 					<hr>
-					<div class="row label-gia">
-						<h3>1,399,000 đ</h3>
-						<div class="col-md-8 col-sm-8">Giá trước đây: <del>1,900,000 đ</del></div>
-					</div>
+					<?php 
+						//Kiểm tra sản phẩm có khuyến mãi hay không
+		                $checkKM = DB::table('khuyen_mai as km')
+		                                ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+		                                ->where('ctkm.masp', $chitietsp->masp)
+		                                ->first();
+		                if(count($checkKM) != 0){
+		                	if((strtotime($ngayht) > strtotime($checkKM->ngaybd)) && (strtotime($ngayht) < strtotime($checkKM->ngaykt))){ ?>
+		                		<div class="row label-gia">
+									<h3>{{number_format($chitietsp->dongia-($chitietsp->dongia*$checkKM->chietkhau*0.01),0,'.','.')}} đ</h3>
+									<div class="col-md-8 col-sm-8">Giá trước đây: <del>{{number_format($chitietsp->dongia,0,'.','.')}} đ</del></div>
+								</div>
+		                	<?php }
+		                } else { ?>
+		                	<div class="row label-gia">
+								<h3>{{number_format($chitietsp->dongia,0,'.','.')}} đ</h3>
+							</div>
+		                <?php }
+					?>
+					
 					<div class="row time-ship">
 						<div class="col-md-3 col-sm-3">Giao hàng: </div>
 						<label>Thời gian giao hàng trong vòng 6-7 ngày.</label>
@@ -253,7 +270,7 @@
 					<div class="row"><img src="{{asset('public/img/iconship.png')}}">&nbsp;&nbsp;Giao hàng bởi đối tác của Mobile Store</div>
 					<hr>
 					<div class="row noicungcap">
-						<div class="col-md-3 col-sm-3"><img src="{{asset('public/img/marketplace.jpg')}}"></div>Sản phẩm được cung cấp bởi<br><b>&nbsp;&nbsp;ANHDUY</b>
+						<div class="col-md-3 col-sm-3"><img src="{{asset('public/img/marketplace.jpg')}}"></div>Sản phẩm được cung cấp bởi<br><b>&nbsp;&nbsp;{{$chitietsp->tengianhang}}</b>
 					</div>
 				</div>
 			</div>
@@ -285,7 +302,7 @@
 				<div class="col-md-9 col-sm-9">	
 					<div id="mota" class="row">
 						<div class="tieude"><h4>Mô tả sản phẩm</h4></div>
-						<div id="ndMota" class="col-md-12 col-sm-12" style="overflow: hidden; height: 500px;">
+						<div id="ndMota" class="col-md-12 col-sm-12" style="overflow: hidden; height: 600px;">
 							{!!$chitietsp->mota!!}
 						</div>
 
@@ -306,17 +323,31 @@
 						<div class="table-dacdiem">
 							<table class="table table-bordered">
 							    <tbody>
-							      <tr><td class="title-table">Tên sản phẩm</td><td>Doe</td></tr>
-							      <tr><td class="title-table">Màu sắc</td><td>Moe</td></tr>
-							      <tr><td class="title-table">Xuất xứ</td><td>Moe</td></tr>
-							      <tr><td class="title-table">Bộ nhớ trong</td><td>Dooley</td></tr>
-							      <tr><td class="title-table">Kích thước</td><td>Doe</td></tr>
-							      <tr><td class="title-table">Độ phân giải màn hình</td><td>Moe</td></tr>
-							      <tr><td class="title-table">Camera Trước</td><td>Dooley</td></tr>
-							      <tr><td class="title-table">Camera Sau</td><td>Doe</td></tr>
-							      <tr><td class="title-table">Hệ điều hành</td><td>Moe</td></tr>
-							      <tr><td class="title-table">Dung lượng pin</td><td>Dooley</td></tr>
-							      <tr><td class="title-table">Thời gian bảo hành</td><td>Doe</td></tr>
+							      <tr><td class="title-table">Tên sản phẩm</td><td>{{$chitietsp->tensp}}</td></tr>
+							      <tr><td class="title-table">Màu sắc</td><td>{{$chitietsp->mausac}}</td></tr>
+							      <tr><td class="title-table">Xuất xứ</td><td>{{$chitietsp->xuatxu}}</td></tr>
+							      <tr><td class="title-table">Bộ nhớ trong</td><td>{{$chitietsp->bonhotrong}}</td></tr>
+							      <tr><td class="title-table">Kích thước màn hình</td><td>{{$chitietsp->kichthuocmanhinh}} inches</td></tr>
+							      <tr><td class="title-table">Độ phân giải màn hình</td><td>{{$chitietsp->dophangiaimanhinh}} pixels</td></tr>
+							      <tr>
+							      	<td class="title-table">Camera Trước</td>
+							      	@if($chitietsp->cameratruoc == 0)
+							      		<td>Không có</td>
+							      	@else
+							      		<td>{{$chitietsp->cameratruoc}} MP</td>
+							      	@endif
+							      </tr>
+							      <tr>
+							      	<td class="title-table">Camera Sau</td>
+							      	@if($chitietsp->camerasau == 0)
+							      		<td>Không có</td>
+							      	@else
+							      		<td>{{$chitietsp->camerasau}} MP</td>
+							      	@endif
+							      </tr>
+							      <tr><td class="title-table">Hệ điều hành</td><td>{{$chitietsp->hedieuhanh}}</td></tr>
+							      <tr><td class="title-table">Dung lượng pin</td><td>{{$chitietsp->dungluongpin}} mAh</td></tr>
+							      <tr><td class="title-table">Thời gian bảo hành</td><td>{{$chitietsp->baohanh}} tháng</td></tr>
 							    </tbody>
 							</table>
 						</div>
@@ -575,117 +606,75 @@
 				<div id="panel-goiy" class="col-md-3 col-sm-3">
 					<div class="tieude"><h4>Sản phẩm tương tự</h4></div>
 					<div class="list-spgoiy">
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-											<span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-											<span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-											<span class="fa fa-comment">0</span>
-										</a>
-									</div>
-					  				<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
+						<?php
+							$i = 0;
+							$sp_tuongtu = DB::table('san_pham')
+											->where('madm',$chitietsp->madm)
+											->whereNotIn('masp',[$chitietsp->masp])
+											->get();
+							//Kiểm tra sản phẩm có khuyến mãi hay không
+		                    foreach ($sp_tuongtu as $val) {
+		                    	$i +=1;
+		                    	if($i == 4){
+		                    		break;
+		                    	}
+		                    	$kmtuongtu = DB::table('khuyen_mai as km')
+		                                    ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+		                                    ->where('ctkm.masp', $val->masp)
+		                                    ->first(); ?>
 
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
+		                        <a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+									<div class="thumbnail">
+										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+										@if(count($kmtuongtu) != 0)
+										@if((strtotime($ngayht) > strtotime($kmtuongtu->ngaybd)) && (strtotime($ngayht) < strtotime($kmtuongtu->ngaykt)))
+												<div class="chietkhau">
+												    {{$kmtuongtu->chietkhau}}%
+												</div>
+											@endif
+										@endif
+										<div class="caption">
+											@if(count($kmtuongtu) != 0)
+												@if((strtotime($ngayht) > strtotime($kmtuongtu->ngaybd)) && (strtotime($ngayht) < strtotime($kmtuongtu->ngaykt)))
+													<div class="gia">
+														<label class="giakm">{{number_format($val->dongia-($val->dongia*0.01*$kmtuongtu->chietkhau),0,'.','.')}} đ
+														</label>
+														<del class="giagoc">{{number_format($val->dongia,0,'.','.')}} đ</del>
+													</div>
+												@endif
+											@else
+												<div class="gia">
+													<label class="giakm">
+													    {{number_format($val->dongia,0,'.','.')}} đ
+													</label>
+												</div>
+											@endif		
+											<div class="tendt">
+												<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+											</div>
+											
+												<?php
+													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+																?>
+												      	@if($luotmua != 0)
+												      	<div class="luotvote" style="margin-bottom: -28px;">
+															<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+																<span class="fa fa-tag"> {{$luotmua}}</span>
+															</a>
+														</div>
+														@endif
+							  				<div class="ten-shop row">
+							  					<?php
+								  					$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+								  						echo $nguoiban->tengianhang;
+								  				?>
+							  				</div>
+										</div>
 									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-											<span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-											<span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-											<span class="fa fa-comment">0</span>
-										</a>
-									</div>
-					  				<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-											<span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-											<span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-											<span class="fa fa-comment">0</span>
-										</a>
-									</div>
-					  				<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
-
-						<a id="sanpham" href="detailpro.php">
-							<div class="thumbnail">
-								<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								<div class="chietkhau">15%</div>
-								<div class="caption">
-									<div class="gia">
-										<label class="giakm">1.700.000 đ</label>
-										<del class="giagoc">2.500.000 đ</del>
-									</div>
-									<div class="tendt">
-										<a href="chitietsanpham.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-									</div>
-									<div class="luotvote">
-										<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-											<span class="fa fa-tag">1</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-											<span class="fa fa-eye">5</span>
-										</a>
-										<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-											<span class="fa fa-comment">0</span>
-										</a>
-									</div>
-					  				<div class="ten-shop row">ANHDUY</div>
-								</div>
-							</div>
-						</a>
+								</a>
+		                    <?php }
+		                    
+						?>
 					</div>
 				</div> <!-- end panel phải các sản phẩm gợi ý-->
 			</div>

@@ -169,120 +169,103 @@
 
 	<!--Modal giỏ hàng -->
 	<div class="modal" id="modalCart" tabindex="-1" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close1" data-dismiss="modal">
-					  	<span aria-hidden="true">&times;</span>
-					  	<span class="sr-only">Close</span>
-					</button>
-					<h5 class="modal-title">
-					  	<span class="fa fa-shopping-cart"></span>
-					  	&nbsp;<b style="font-size: 14px; text-align: center;">GIỎ HÀNG </b>
-					  	( <b style="color: #DA0000">9</b> sản phẩm )
-					</h5>	  				
-				</div>
-				<div class="modal-body">
-					<div class="container-fluid list-cart">
-					  	<div class="title-cart">
-						  	<div class="row">
-							  	<div class="col-md-6">Sản phẩm</div>
-							  	<div class="col-md-2" style="text-align: center;">Số lượng</div>
-							  	<div class="col-md-2" style="text-align: right;">Giá thành</div>
-							  	<div class="col-md-2"></div>
-						  	</div> 
-					  	</div>
-					  	<div class="box-scroll">			
-							<div class="row detail-cart">
-							  	<div class="col-md-6">
-							  		<img id="imageProduct" src="{{asset('public/anh-sanpham/GalaxyS7_32GB.jpg')}}" alt="imageProduct">
-							  		<div class="ten-sp">
-								  		<label>ĐIỆN THOẠI SAMSUNG GALAXY S7 Edge 32GB (BẠC) FULL BOX</label>
-								  		<a href="#"><span class="fa fa-heart-o">&nbsp;&nbsp;Thêm vào danh sách yêu thích</span></a>
-							  		</div>
+		<?php 
+			if(!isset($_SESSION['content'])){ ?>
+				<div class="modal-dialog">
+				    <div id="ndGioHang" class="modal-content">
+				      	<div class="modal-footer">
+				      	 	<button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				      	 	<br>
+				       		<div class="text-center" style="margin-bottom: 40px;">
+				       			<img src="{{asset('public/img/Cart.png')}}">
+				       			<h4><b>Giỏ hàng của bạn hiện đang trống</b></h4>
+				       			<p>Hãy nhanh tay sở hữu những sản phẩm yêu thích của bạn</p>
+				       			<button type="button" class="btn btn-danger" data-dismiss="modal">
+				       				Tiếp tục mua sắm&nbsp;&nbsp;
+				       				<span class="fa fa-long-arrow-right"></span>
+				       			</button>
+				       		</div>
+				      	</div>
+				    </div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			<?php } else { ?>
+				<div class="modal-dialog">
+					<div id="ndGioHang" class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close1" data-dismiss="modal">
+							  	<span aria-hidden="true">&times;</span>
+							  	<span class="sr-only">Close</span>
+							</button>
+							<h5 class="modal-title">
+							  	<span class="fa fa-shopping-cart"></span>
+							  	&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>
+							  	( <b style="color: #DA0000" id="numCart">
+							  		<?php
+							          	if(isset($_SESSION['soluong'])){
+							          		echo $_SESSION['soluong'];
+							          	} else{
+							          		echo "0";
+							          	}
+							        ?>
+							  	</b> sản phẩm )
+							</h5>	  				
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid list-cart">
+							  	<div class="title-cart">
+								  	<div class="row">
+									  	<div class="col-md-6">Sản phẩm</div>
+									  	<div class="col-md-2" style="text-align: center;">Giá thành</div>
+									  	<div class="col-md-2" style="text-align: center;">Số lượng</div>
+									  	<div class="col-md-2">Thành tiền</div>
+								  	</div> 
 							  	</div>
-							  	<div class="col-md-2 sl-cart">
-							  		<select name="" id="">
-							  			<option value="1">1</option>
-							  			<option selected="" value="2">2</option>
-							  			<option value="3">3</option>
-							  			<option value="4">4</option>
-							  			<option value="5">5</option>
-							  		</select>
-							  	</div>
-							  	<div class="col-md-2 gia-cart">
-							  		<label>3.790.000 đ</label>
-							  	</div>			  					
-							  	<div class="col-md-2 xoasp-cart">
-							  		<button type="submit"><span class="fa fa-trash-o"></span></button>
-							  	</div>
+							  	<div class="box-scroll">
+							  		@foreach($_SESSION['content'] as $item)
+							  			<div class="row detail-cart">
+										  	<div class="col-md-6">
+										  		<img id="imageProduct" src="{{asset('public/anh-sanpham/'.$item['options']['img'])}}" alt="imageProduct">
+										  		<div class="ten-sp">
+											  		<label>{{$item['name']}}</label>
+											  		<div class="xoasp-cart">
+										  				<button type="submit"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button>
+										  			</div>
+										  		</div>
+										  	</div>
+										  	<div class="col-md-2 gia-cart">
+										  		<label>{{number_format($item['price'],0,'.','.')}} đ</label>
+										  	</div>
+										  	<div class="col-md-2 sl-cart">
+										  		<input type="number" name="" min="1" max="5" value="{{$item['qty']}}">
+										  	</div>				
+										  	<div class="col-md-2 tong-cart">
+										  		<label>{{number_format($item['price']*$item['qty'],0,'.','.')}} đ</label>
+										  	</div>
+										</div>
+							  		@endforeach				  				 				
+								</div>	
 							</div>
-							  				
-							  				
-							<div class="row detail-cart">
-							  	<div class="col-md-6">
-							  		<img id="imageProduct" src="{{asset('public/anh-sanpham/GalaxyS7_32GB.jpg')}}" alt="imageProduct">
-							  		<div class="ten-sp">
-								  		<label>ĐIỆN THOẠI SAMSUNG GALAXY S7 Edge 32GB (BẠC) FULL BOX</label>
-								  		<a href="#"><span class="fa fa-heart-o">&nbsp;&nbsp;Thêm vào danh sách yêu thích</span></a>
-							  		</div>
-							  	</div>
-							  	<div class="col-md-2 sl-cart">
-							  		<select name="" id="">
-							  			<option value="1">1</option>
-							  			<option selected="" value="2">2</option>
-							  			<option value="3">3</option>
-							  			<option value="4">4</option>
-							  			<option value="5">5</option>
-							  		</select>
-							  	</div>
-							  	<div class="col-md-2 gia-cart">
-							  		<label>3.790.000 đ</label>
-							  	</div>			  					
-							  	<div class="col-md-2 xoasp-cart">
-							  		<button type="submit"><span class="fa fa-trash-o"></span></button>
-							  	</div>
+						</div>
+						<div class="modal-footer">
+							<label class="label-thanhtien">Thành tiền:</label>
+							<label class="label-tong"> 
+								<?php
+									if(isset($_SESSION['tongtien'])){
+										echo number_format($_SESSION['tongtien'],0,'.','.');
+									}
+								?>  VND</label>
+							<div class="label-vat">(Đã bao gồm VAT)</div>
+							<div class="footer-cart">
+							  	<a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;">
+							  		<span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a>
+							  	<button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button>
 							</div>
-
-
-							<div class="row detail-cart">
-							  	<div class="col-md-6">
-							  		<img id="imageProduct" src="{{asset('public/anh-sanpham/GalaxyS7_32GB.jpg')}}" alt="imageProduct">
-							  		<div class="ten-sp">
-								  		<label>ĐIỆN THOẠI SAMSUNG GALAXY S7 Edge 32GB (BẠC) FULL BOX</label>
-								  		<a href="#"><span class="fa fa-heart-o">&nbsp;&nbsp;Thêm vào danh sách yêu thích</span></a>
-							  		</div>
-							  	</div>
-							  	<div class="col-md-2 sl-cart">
-							  		<select name="" id="">
-							  			<option value="1">1</option>
-							  			<option selected="" value="2">2</option>
-							  			<option value="3">3</option>
-							  			<option value="4">4</option>
-							  			<option value="5">5</option>
-							  		</select>
-							  	</div>
-							  	<div class="col-md-2 gia-cart">
-							  		<label>3.790.000 đ</label>
-							  	</div>			  					
-							  	<div class="col-md-2 xoasp-cart">
-							  		<button type="submit"><span class="fa fa-trash-o"></span></button>
-							  	</div>
-							</div>							  				 				
-						</div>	
+						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<label class="label-thanhtien">Thành tiền:</label>
-					<label class="label-tong"> 17.980.000 VND</label>
-					<div class="label-vat">(Đã bao gồm VAT)</div>
-					<div class="footer-cart">
-					  	<a class="tieptuc-cart" href="{{asset('home')}}"><span class="fa fa-undo">&nbsp;&nbsp;Tiếp tục mua hàng</span></a>
-					  	<button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button>
-					</div>
-				</div>
-			</div>
-		</div>
+			<?php }
+		?>
+		
 	</div>  <!-- end modal giỏ hàng -->
 
 
@@ -332,7 +315,15 @@
 				        <li>
 				        	<button class="btn-cart navbar-btn" data-toggle="modal" data-target="#modalCart" data-backdrop="static">
 					          	<span class="fa fa-shopping-cart"></span>&nbsp;&nbsp;Giỏ hàng&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					          	<span class="badge">9</span>
+					          	<span id="btnCart" class="badge">
+					          		<?php
+					          			if(isset($_SESSION['soluong'])){
+					          				echo $_SESSION['soluong'];
+					          			} else{
+					          				echo "0";
+					          			}
+					          		?>
+					          	</span>
 					        </button> 
 				        </li>
 				        <li>

@@ -27,8 +27,52 @@
 	    	});
 	    });
 
-    </script>
+	    //Bấm mua ngay thêm sản phẩm vào giỏ hàng
+	    $(document).ready(function(){
+	    	$('.btnMuaNgay').click(function(){
+	    		var url = "http://localhost/luanvan-ktpm/muahang";
+	    		var masp = $(this).attr("id");
 
+	    		$.ajax({
+	    			url : url,
+	    			type : "GET",
+	    			dataType : "JSON",
+	    			data : {"masp":masp},
+	    			success : function(result){
+	    				if(result.success){
+	    					$('#numCart').html(result.soluong);
+	    					$('#btnCart').html(result.soluong);
+	    					var box = '';
+	    					var duongdan = '';
+	    					var ten = '';
+	    					var gia = '';
+	    					var soluong = '';
+	    					var tongtien = '';
+	    					var ndGioHang = '';
+
+	    					for (var i in result.content) {
+	    						console.log(result.content[i]);
+	    						duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    						ten = result.content[i]['name'];
+	    						gia = result.content[i]['price'];
+	    						soluong = result.content[i]['qty']
+	    						tongtien = result.tongtien;
+
+box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button type="submit"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 sl-cart"><input type="number" name="" min="1" max="5" value="'+ soluong +'"></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+	    					}
+
+ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></div></div>';
+
+
+	    					$('#ndGioHang').html(ndGioHang);
+	    					
+	    				}
+	    			}
+	    		});
+	    	});
+	    });
+
+    </script>
 
 
 <!-- Nav bottom -->
@@ -53,7 +97,6 @@
 			</div>
 		</div>
 	</div>
-
 
 
 
@@ -131,8 +174,7 @@
 			</div>
 		</div><!-- end danh mục và carousel khuyến mãi -->
 
-
-
+		
 		<!-- Panel sản phẩm mới nổi bật -->
 		<div class="container">
 			<div class="row panel-product">
@@ -148,42 +190,46 @@
 				    				foreach ($list_sp as $val) {
 				    					if($val->masp == $ma_giam[$i]){
 				    						//Kiểm tra sản phẩm có khuyến mãi hay không
-				    						$today = date('d'); //lấy ngày hiện tại
-		                                    $month_cur = date('m'); //lấy tháng hiện tại
-		                                    $year = date('Y'); //lấy năm hiện tại
-
-		                                    $listKM = DB::table('khuyen_mai as km')
+				    						$listKM = DB::table('khuyen_mai as km')
 		                                    			->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 		                                    			->where('ctkm.masp', $val->masp)
-		                                    			->first(); ?>
+		                                    			->get(); ?>
 
 		                                    <div>
 											    <a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
 											    	<div class="thumbnail">
 												      	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-												      	@if(count($listKM) != 0)
-												      		@if((strtotime($ngayht) > strtotime($listKM->ngaybd)) && (strtotime($ngayht) < strtotime($listKM->ngaykt)))
-												      			<div class="chietkhau">
-												      				{{$listKM->chietkhau}}%
-												      			</div>
-												      		@endif
-												      	@endif
+												      	<?php 
+												      		if(count($listKM) != 0){
+													      		foreach ($listKM as $valkm) {
+													      			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ ?>
+													      				<div class="chietkhau">
+														      				{{$valkm->chietkhau}}%
+														      			</div>
+													      			<?php }
+													      		}
+													      	}
+												      	?>
 												      	<div class="caption">
-												      		@if(count($listKM) != 0)
-													      		@if((strtotime($ngayht) > strtotime($listKM->ngaybd)) && (strtotime($ngayht) < strtotime($listKM->ngaykt)))
-													      			<div class="gia">
-														      			<label class="giakm">{{number_format($val->dongia-($val->dongia*0.01*$listKM->chietkhau),0,'.','.')}} đ
+												      		<?php 
+												      		if(count($listKM) != 0){
+													      		foreach ($listKM as $valkm) {
+													      			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ ?>
+													      				<div class="gia">
+														      			<label class="giakm">{{number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.')}} đ
 														      			</label>
 														      			<del class="giagoc">{{number_format($val->dongia,0,'.','.')}} đ</del>
 														      		</div>
-													      		@endif
-													      	@else
+													      			<?php }
+													      		}
+													      	} else { ?>
 													      		<div class="gia">
 													      			<label class="giakm">
 													      				{{number_format($val->dongia,0,'.','.')}} đ
 													      			</label>
 													      		</div>
-													      	@endif									
+													      	<?php }
+												      	?>								
 													      	<div class="tendt">
 												      			<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
 												      		</div>
@@ -196,13 +242,9 @@
 																	    <span class="fa fa-tag"> {{$luotmua}}</span>
 																	</a>
 																@endif
-												      		<!--	<a data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-												      				<span class="fa fa-eye">5</span>
-												      			</a>
-												      			<a data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-												      				<span class="fa fa-comment">0</span>
-												      			</a>  -->
-												      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
+															<form action="{{action('GioHangController@getMuaHang')}}" method="get">
+																<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
+												      		</form>
 												      		</div>
 				  											<div class="ten-shop row">
 				  												<?php
@@ -442,45 +484,49 @@
 						foreach ($list_sp as $val) {
 							if(in_array($val->masp, $ma_giam)){
 								//Kiểm tra sản phẩm có khuyến mãi hay không
-				    			$today = date('d'); //lấy ngày hiện tại
-		                        $month_cur = date('m'); //lấy tháng hiện tại
-		                        $year = date('Y'); //lấy năm hiện tại
-
 		                        $dskm = DB::table('khuyen_mai as km')
 		                                    ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 		                                    ->where('ctkm.masp', $val->masp)
-		                                    ->first(); ?>
+		                                    ->get(); ?>
 
 		                        <div class="list-pro">
 									<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
 									<div class="thumbnail">
 										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-										@if(count($dskm) != 0)
-											@if((strtotime($ngayht) > strtotime($dskm->ngaybd)) && (strtotime($ngayht) < strtotime($dskm->ngaykt)))
-												<div class="chietkhau">
-													{{$dskm->chietkhau}}%
-												</div>
-											@endif
-										@endif
+										<?php
+											if(count($dskm) != 0){
+												foreach ($dskm as $valkm) {
+													if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ ?>
+														<div class="chietkhau">
+															{{$valkm->chietkhau}}%
+														</div>
+													<?php }
+												}
+											} 
+										?>
 										<div class="caption">
-										@if(count($dskm) != 0)
-											@if((strtotime($ngayht) > strtotime($dskm->ngaybd)) && (strtotime($ngayht) < strtotime($dskm->ngaykt)))
-											<div class="gia">
-												<label class="giakm">
-													{{number_format($val->dongia-($val->dongia*0.01*$dskm->chietkhau),0,'.','.')}} đ
-												</label>
-												<del class="giagoc">
-													{{number_format($val->dongia,0,'.','.')}} đ
-												</del>
-											</div>
-											@endif
-										@else
-											<div class="gia">
-												<label class="giakm">
-													{{number_format($val->dongia,0,'.','.')}} đ
-												</label>
-											</div>
-										@endif									
+										<?php
+											if(count($dskm) != 0){
+												foreach ($dskm as $valkm) {
+													if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ ?>
+														<div class="gia">
+															<label class="giakm">
+																{{number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.')}} đ
+															</label>
+															<del class="giagoc">
+																{{number_format($val->dongia,0,'.','.')}} đ
+															</del>
+														</div>
+													<?php }
+												}
+											} else { ?>
+												<div class="gia">
+													<label class="giakm">
+														{{number_format($val->dongia,0,'.','.')}} đ
+													</label>
+												</div>
+											<?php }
+										?>							
 										<div class="tendt">
 											<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
 										</div>
@@ -493,13 +539,9 @@
 												<span class="fa fa-tag"> {{$luotmua}}</span>
 												</a>
 											@endif
-											<!--	<a data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-												<span class="fa fa-eye">5</span>
-											</a>
-											<a data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-												<span class="fa fa-comment">0</span>
-											</a>  -->
-												<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
+										<form action="{{action('GioHangController@getMuaHang')}}" method="get">
+											<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
+										</form>
 										</div>
 				  						<div class="ten-shop row">
 				  							<?php

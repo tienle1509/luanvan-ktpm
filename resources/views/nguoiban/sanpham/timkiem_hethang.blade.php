@@ -97,7 +97,7 @@
 				    			$km = DB::table('khuyen_mai as km')
 										->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 										->where('ctkm.masp', $value)
-										->first();
+										->get();
 				    		if(count($km) == 0) { ?>
 					    		<tr>
 							      	<td>{{$db->tendanhmuc}}</td>
@@ -127,11 +127,20 @@
 							        <td class="name-pro">{{$db->tensp}}</td>
 							        <td class="price-pro">{{$db->dongia}}</td>
 							        <td>
-							        	@if((strtotime($ngayht) > strtotime($km->ngaybd)) && (strtotime($ngayht) < strtotime($km->ngaykt)))
-							        		{{number_format($db->dongia-($db->dongia*$km->chietkhau*0.01))}}
-							        	@else
-							        		-
-							        	@endif
+							        	<?php
+							        	$t = 0;
+							        		foreach ($km as $valkm) {
+							        			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){
+							        			echo number_format($db->dongia-($db->dongia*$valkm->chietkhau*0.01));
+							        				break;
+							        			} else {
+							        				$t+=1;
+							        			}
+							        		}
+							        		if($t != 0){
+							        			echo "-";
+							        		}
+							        	?>
 							        </td>
 							        <td width="130px;">
 							        	<input type="text" name="soluong" class="form-control" value="0">

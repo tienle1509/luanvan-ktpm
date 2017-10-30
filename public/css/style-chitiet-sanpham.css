@@ -183,8 +183,8 @@ body {
 }
 
 .box-detail .info-product .label-soluong {
-	margin-bottom: 15px;
-	margin-top: 15px;
+	margin-bottom: 18px;
+	margin-top: 18px;
 }
 
 .box-detail .info-product .label-soluong label {
@@ -200,7 +200,7 @@ body {
 }
 
 .box-detail .info-product .label-gia {
-	margin-top: -20px;
+	margin-top: -12px;
 }
 
 .box-detail .info-product .label-gia h3 {
@@ -638,4 +638,7 @@ body {
 	padding: 2px 0px 2px 15px;
 	margin-left: -13px;
 	margin-right: -13px;
+	display: block;
+	position: inherit;
+	margin-top: 26px;
 }
