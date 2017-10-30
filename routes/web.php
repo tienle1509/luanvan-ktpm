@@ -183,8 +183,10 @@ Route::get('timkiem',['uses'=>'HomeKhachHangController@getTimKiemSanPham']);
 
 Route::get('chitiet-sanpham/{masp}',['uses'=>'HomeKhachHangController@getChiTietSanPham']);
 
+//Thêm sản phẩm vào giỏ hàng
 Route::get('muahang', ['uses'=>'GioHangController@getMuaHang']);
 Route::get('xoa-sanpham', ['uses'=>'GioHangController@getXoaSanPham']);
+Route::get('sua-sanpham', ['uses'=>'GioHangController@getSuaSanPham']);
 
 
 
