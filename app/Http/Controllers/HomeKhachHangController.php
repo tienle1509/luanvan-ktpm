@@ -92,7 +92,11 @@ class HomeKhachHangController extends Controller
 		return view('khachhang.chitiet_sanpham')->with('chitietsp',$chitietsp)->with('ngayht',$ngayht);
 	}
 
+/*---------------------------Gior hàng------------------------------------*/
+	public function getGioHang(){
 
+		return view('khachhang.giohang');
+	}
 
 
 }

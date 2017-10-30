@@ -184,6 +184,7 @@ Route::get('timkiem',['uses'=>'HomeKhachHangController@getTimKiemSanPham']);
 Route::get('chitiet-sanpham/{masp}',['uses'=>'HomeKhachHangController@getChiTietSanPham']);
 
 Route::get('muahang', ['uses'=>'GioHangController@getMuaHang']);
+Route::get('xoa-sanpham', ['uses'=>'GioHangController@getXoaSanPham']);
 
 
 

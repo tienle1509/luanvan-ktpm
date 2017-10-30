@@ -36,7 +36,66 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 	        $('[data-toggle="tooltip"]').tooltip();
+	    });    
+
+
+//Xóa sản phẩm trong gio hàng
+$(document).ready(function(){
+	$("body").on("click", ".XoaSP",function(){
+	    var url = "http://localhost/luanvan-ktpm/xoa-sanpham";
+	    var id = $(this).attr('id');
+
+	    $.ajax({
+	    	url : url,
+	    	type : "GET",
+	    	dataType : "JSON",
+	    	data : {"id":id},
+	    	success : function(result){
+	    		if(result.success){
+	    			$('#numCart').html(result.soluong);
+	    			$('#btnCart').html(result.soluong);
+	    			var box = '';
+	    			var duongdan = '';
+	    			var ten = '';
+	    			var gia = '';
+	    			var soluong = '';
+	    			var tongtien = '';
+	    			var ndGioHang = '';
+	    			var rowid = '';
+
+if(result.soluong == 0){
+ndGioHang = '<div class="modal-footer"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><br><div class="text-center" style="margin-bottom: 40px;"><img src="{{asset('public/img/Cart.png')}}"><h4><b>Giỏ hàng của bạn hiện đang trống</b></h4><p>Hãy nhanh tay sở hữu những sản phẩm yêu thích của bạn</p><button type="button" class="btn btn-danger" data-dismiss="modal">Tiếp tục mua sắm&nbsp;&nbsp;<span class="fa fa-long-arrow-right"></span></button></div></div>';
+
+<?php
+	unset($_SESSION['content']);
+?>
+$('#ndGioHang').html(ndGioHang);
+
+} else {
+
+	for (var i in result.content) {
+	   //console.log(result.content[i]['qty']);
+	    rowid = result.content[i]['rowid'];
+	    duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    ten = result.content[i]['name'];
+	    gia = result.content[i]['price'];
+	    soluong = result.content[i]['qty']
+	    tongtien = result.tongtien;
+
+box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 sl-cart"><input type="number" name="" min="1" max="5" value="'+ soluong +'"></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+	}
+
+
+ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></div></div>';
+
+$('#ndGioHang').html(ndGioHang); 
+
+	    				}
+	    			} 
+	    		}
+	    	}); 
 	    }); 
+	});  
 
 	</script>
 
@@ -186,7 +245,7 @@
 				       			</button>
 				       		</div>
 				      	</div>
-				    </div><!-- /.modal-content -->
+				    </div>
 				</div><!-- /.modal-dialog -->
 			<?php } else { ?>
 				<div class="modal-dialog">
@@ -228,7 +287,7 @@
 										  		<div class="ten-sp">
 											  		<label>{{$item['name']}}</label>
 											  		<div class="xoasp-cart">
-										  				<button type="submit"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button>
+											  			<button class="XoaSP" id="{{$item['rowid']}}"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button>
 										  			</div>
 										  		</div>
 										  	</div>
@@ -253,7 +312,7 @@
 									if(isset($_SESSION['tongtien'])){
 										echo number_format($_SESSION['tongtien'],0,'.','.');
 									}
-								?>  VND</label>
+								?> VND</label>
 							<div class="label-vat">(Đã bao gồm VAT)</div>
 							<div class="footer-cart">
 							  	<a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;">

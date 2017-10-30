@@ -27,6 +27,8 @@
 	    	});
 	    });
 
+	    
+
 	    //Bấm mua ngay thêm sản phẩm vào giỏ hàng
 	    $(document).ready(function(){
 	    	$('.btnMuaNgay').click(function(){
@@ -49,28 +51,40 @@
 	    					var soluong = '';
 	    					var tongtien = '';
 	    					var ndGioHang = '';
+	    					var rowid = '';
 
 	    					for (var i in result.content) {
-	    						console.log(result.content[i]);
+	    						//console.log(result.content[i]);
+	    						rowid = result.content[i]['rowid'];
 	    						duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
 	    						ten = result.content[i]['name'];
 	    						gia = result.content[i]['price'];
 	    						soluong = result.content[i]['qty']
 	    						tongtien = result.tongtien;
 
-box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button type="submit"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 sl-cart"><input type="number" name="" min="1" max="5" value="'+ soluong +'"></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 sl-cart"><input type="number" name="" min="1" max="5" value="'+ soluong +'"></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+
+
+
+
 	    					}
 
 ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></div></div>';
-
-
-	    					$('#ndGioHang').html(ndGioHang);
+							
+							if(result.soluong == 0){
+								$('#ndGioHang').html('riibf');
+							}else{
+	    						$('#ndGioHang').html(ndGioHang);
+							}
 	    					
 	    				}
 	    			}
 	    		});
 	    	});
 	    });
+
+
+	    
 
     </script>
 

@@ -45,4 +45,26 @@ class GioHangController extends Controller
     		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
     	}
     }
+
+
+    public function getXoaSanPham(){
+    	if(Request::ajax()){
+    		$id = Request::get('id');
+    		Cart::remove($id);
+
+    		//Thay đổi khi sử dụng script
+			$content = Cart::content();
+			$sl = Cart::count();
+			$tong = Cart::total();
+
+			//Lấy giá trị khi load lại trang
+    		$_SESSION['content'] = $content;
+    		$_SESSION['soluong'] = $sl;
+    		$_SESSION['tongtien'] = $tong;
+
+    		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
+    	}    	
+    }
+
+
 }
