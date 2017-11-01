@@ -103,46 +103,43 @@
 									<div class="thumbnail">
 										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
 										<?php
-											$today = date('d'); //lấy ngày hiện tại
-		                                    $month_cur = date('m'); //lấy tháng hiện tại
-		                                    $year = date('Y'); //lấy năm hiện tại
-
 		                                    $km = DB::table('khuyen_mai as km')
 		                                        	->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 		                                        	->where('ctkm.masp',$val->masp)
-		                                        	->first();
+		                                        	->get();
 		                                    if(count($km) != 0){
-		                                        if((strtotime($ngayht) > strtotime($km->ngaybd)) && (strtotime($ngayht)) < strtotime($km->ngaykt)){
-		                                        	?>
+		                                    	foreach ($km as $valkm) {
+		                                    		if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht)) < strtotime($valkm->ngaykt)){ ?>
 		                                        		<div class="chietkhau">
-		                                        			{{$km->chietkhau}}%
+		                                        			{{$valkm->chietkhau}}%
 		                                        		</div>
-
-		                                        <?php	}
+		                                        	<?php }
+		                                    	}
 		                                    }                                   
 										?>										
 										<div class="caption">
 											<?php
-												$today = date('d'); //lấy ngày hiện tại
-			                                    $month_cur = date('m'); //lấy tháng hiện tại
-			                                    $year = date('Y'); //lấy năm hiện tại
+												if(count($km) != 0){
+													$t = 0;
+													foreach ($km as $valkm) {
+														if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht)) < strtotime($valkm->ngaykt)){
 
-			                                    $km = DB::table('khuyen_mai as km')
-			                                        	->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-			                                        	->where('ctkm.masp',$val->masp)
-			                                        	->first();
-			                                    if(count($km) != 0){
-			                                        if((strtotime($ngayht) > strtotime($km->ngaybd)) && (strtotime($ngayht)) < strtotime($km->ngaykt)){
-			                                        	?>
-			                                        		<div class="gia">
-																<label class="giakm">
-																	{{number_format($val->dongia-($val->dongia*0.01*$km->chietkhau),0,'.','.')}} đ
+															echo '<div class="gia">
+																<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
 																</label>
-																<del class="giagoc">{{number_format($val->dongia,0,'.','.')}} đ</del>
-															</div>
-			                                        		
-			                                        <?php	}
-			                                        } else { ?>
+																<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ</del>
+															</div>';
+															break;
+														} else{
+															$t +=1;
+														}
+													}
+													if($t == count($km)){ ?>
+														<div class="gia">
+															<label class="giakm">{{number_format($val->dongia,0,".",'.')}} đ</label>
+														</div>
+													<?php }	
+			                                    } else { ?>
 			                                        	<div class="gia">
 															<label class="giakm">{{number_format($val->dongia,0,".",'.')}} đ</label>
 														</div>

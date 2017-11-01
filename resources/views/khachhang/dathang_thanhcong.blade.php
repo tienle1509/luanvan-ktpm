@@ -19,21 +19,12 @@
 							<span class="fa fa-angle-down"></span>
 						</button>
 						<div class="dropdown-content">
-							<a href="{{asset('chitiet-danhmuc')}}">Apple</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Samsung</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Nokia</a>				
-							<a href="{{asset('chitiet-danhmuc')}}">Oppo</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Sony</a>
-							<a href="{{asset('chitiet-danhmuc')}}">HTC</a>
-							<a href="{{asset('chitiet-danhmuc')}}">LG</a>								
-							<a href="{{asset('chitiet-danhmuc')}}">Asus</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Masstel</a>				
-							<a href="{{asset('chitiet-danhmuc')}}">Motorola</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Xiaomi</a>
-							<a href="{{asset('chitiet-danhmuc')}}">MobiiStar</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Wiko</a>
-							<a href="{{asset('chitiet-danhmuc')}}">Lenovo</a>
-							<a href="{{asset('chitiet-danhmuc')}}">BlackBery</a>
+							<?php
+								$dmleft = DB::table('danhmuc_sanpham')->get();
+							?>
+							@foreach($dmleft as $val)
+								<a href="{{asset('chitiet-danhmuc/'.$val->madm)}}">{{$val->tendanhmuc}}</a>
+							@endforeach
 						</div>
 					</li>
 					<li>
@@ -54,20 +45,29 @@
 	<!-- Body -->
 	<div class="container panel-thongbao">
 		<h3><span class="fa fa-check-circle"></span>&nbsp;&nbsp;ĐẶT HÀNG THÀNH CÔNG</h3>
-		<p>Chào <label class="label-ten">Nguyễn Văn A,</label></p>
+		<p>Chào <label class="label-ten">
+			<?php
+				if(isset($_SESSION['makh'])){
+					$kh = DB::table('khach_hang')->where('makh',$_SESSION['makh'])->first();
+					echo $kh->tenkh;
+				}
+			?>
+		,</label></p>
 		<p>
-			Quý khách vừa đặt thành công sản phẩm của shop <label class="label-shop">ANHDUY</label>, mã đơn hàng của quý khách là: 
-			<label class="label-ma">1423567.</label>
-		</p>
-		<p>
-			Sau khi xác nhận, sản phẩm sẽ được giao hàng đến địa chỉ của quý khách tại 
-			<label>Hồ Chí Minh</label> trong 1-2 ngày.
+			Quý khách vừa đặt thành công, mã đơn hàng của quý khách là: 
+			<label class="label-ma">
+				<?php
+					if(isset($_SESSION['madh'])){
+						echo $_SESSION['madh'];
+					}
+				?>
+			.</label>
 		</p>
 		<div class="link-btn">
 			<a href="{{asset('donhang')}}">Chi tiết đơn hàng</a>
 			<a href="{{asset('home')}}">Tiếp tục mua sắm</a>
 		</div>
-		<p>Mọi thông tin về đơn hàng sẽ được gửi tới email của quý khách, vui lòng kiểm tra email để biết thêm chi tiết.</p>
+		<p>Nếu có nhu cầu xem lại thông tin mua hàng, vui lòng chọn click chọn kiểm tra đơn hàng và thực hiện các bước.</p>
 		<p>Cảm ơn quý khách đã tin tưởng và giao dịch tại <a href="{{asset('home')}}">www.mobilestore.vn</a></p>
 		<p>Ban quản trị Mobile Store.</p>
 		<div class="label-lienhe">

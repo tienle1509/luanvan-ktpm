@@ -193,7 +193,11 @@ body {
 	height: 50px;
 }
 
-.content-donhang .chitietsp .col-md-5, .content-donhang .chitietsp .col-md-4 {
+.content-donhang .chitietsp .col-md-5 {
+	padding-top: 5px;
+}
+
+.content-donhang .chitietsp .col-md-4 {
 	padding-top: 5px;
 	text-align: center;
 }

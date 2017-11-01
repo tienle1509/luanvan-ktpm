@@ -188,6 +188,16 @@ Route::get('muahang', ['uses'=>'GioHangController@getMuaHang']);
 Route::get('xoa-sanpham', ['uses'=>'GioHangController@getXoaSanPham']);
 Route::get('sua-sanpham', ['uses'=>'GioHangController@getSuaSanPham']);
 
+//Đặt hàng
+Route::get('nhap-thongtin-donhang',['uses'=>'HomeKhachHangController@getNhapThongTin']);
+Route::get('chontinh', ['uses'=>'GioHangController@getChonTinh']);
+Route::post('nhap-thongtin-donhang', ['uses'=>'HomeKhachHangController@postNhapThongTin']);
+
+
+Route::get('hinhthucthanhtoan', ['uses'=>'HomeKhachHangController@getHinhThucThanhToan']);
+Route::post('dathang', ['uses'=>'DatHangController@postDatHang']);
+
+Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanhCong']);
 
 
 /*---------------GIAO DIỆN KHÁCH HÀNG---------------------------------*/
@@ -197,16 +207,6 @@ Route::get('chitiet-danhmuc',function(){
 Route::get('donhang',function(){
 	return view('khachhang.donhang');
 });
-Route::get('nhap-thongtin-donhang', function(){
-	return view('khachhang.nhap_thongtin_donhang');
-});
-Route::get('hinhthucthanhtoan', function(){
-	return view('khachhang.hinhthucthanhtoan');
-});
-Route::get('dathang-thanhcong',function(){
-	return view('khachhang.dathang_thanhcong');
-});
-
 //-------------------------------------------------------------------------------------
 
 Route::get('taobang2', function(){
@@ -217,8 +217,14 @@ Route::get('taobang2', function(){
 	});
 });
 
-Route::get('demo2', function () {
-	for ($i=20; $i >= 1 ; $i--) { 
-		echo $i.'<br>';
-	}
+Route::get('demo', function(){
+	$n = 389738;
+	$count = 0;
+	do {
+		 	$n = $n%10;
+		 	$count+=1;
+		 } while ( $n > 0);	
+	echo $count; 
+
 });
+

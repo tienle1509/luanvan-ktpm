@@ -63,6 +63,15 @@ class GioHangController extends Controller
     		$_SESSION['tongtien'] = $tong;
     		if ($sl == 0) {
     			unset($_SESSION['content']);
+
+    			//Khi đã nhập thông tin
+    			unset($_SESSION['tenkh']);
+    			unset($_SESSION['sdt']);
+    			unset($_SESSION['mailkh']);
+    			unset($_SESSION['tinh']);
+    			unset($_SESSION['diachi']);
+    			unset($_SESSION['tentinh']);
+    			unset($_SESSION['matinh']);
     		}
 
     		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
@@ -89,7 +98,6 @@ class GioHangController extends Controller
     		} else {
     			Cart::update($id, $qty);
 
-    			
     			//Thay đổi khi sử dụng script
 				$content = Cart::content();
 				$sl = Cart::count();
@@ -104,5 +112,23 @@ class GioHangController extends Controller
     	}
     }
 
+/*---------------------------Chọn tỉnh thành giao hàng----------------------------*/
+	public function getChonTinh(){
+		if(Request::ajax()){
+			$matinh = Request::get('matinh');
+			$tongtien = Request::get('tongtien');
+
+			if($tongtien > 300000){
+				return Response::json(['success'=>false]);
+			} else{
+				$phiship = DB::table('phi_vanchuyen as pvc')
+						->join('khu_vuc as kv', 'kv.makv', '=', 'pvc.makv')
+						->where('pvc.matinh', $matinh)
+						->first();
+
+				return Response::json(['success'=>true, 'phiship'=>$phiship->giacuoc]);
+			}
+		}
+	}
 
 }

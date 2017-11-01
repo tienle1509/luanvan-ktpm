@@ -7,6 +7,7 @@
 @section('noidung')
 
 	<link rel="stylesheet" type="text/css" href="{{asset('public/css/style-chitiet-sanpham.css')}}">
+	
 
 
 
@@ -225,7 +226,7 @@
 				    	<option value="26">Hải Dương</option>
 				    	<option value="27">Hải Phòng</option>
 				    	<option value="28">Hòa Bình</option>
-				    	<option value="30">Khánh Hòa</option>
+				    	
 				    	<option value="32">Lai Châu</option>
 				    	<option value="33">Lâm Đồng</option>
 				    	<option value="34">Lạng Sơn</option>

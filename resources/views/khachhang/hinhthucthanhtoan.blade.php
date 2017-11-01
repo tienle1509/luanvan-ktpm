@@ -1,3 +1,11 @@
+<?php
+	if(!isset($_SESSION['tenkh'])){
+		header("Location: http://localhost/luanvan-ktpm/home");	
+		exit;
+	}	
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +33,214 @@
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">
+
+	<script type="text/javascript">
+		
+//Xóa sản phẩm trong gio hàng
+$(document).ready(function(){
+	$("body").on("click", ".XoaSP",function(){
+	    var url = "http://localhost/luanvan-ktpm/xoa-sanpham";
+	    var id = $(this).attr('id');
+
+	    $.ajax({
+	    	url : url,
+	    	type : "GET",
+	    	dataType : "JSON",
+	    	data : {"id":id},
+	    	success : function(result){
+	    		if(result.success){
+	    			$('#numCart').html(result.soluong);
+	    			$('#btnCart').html(result.soluong);
+	    			var box = '';
+	    			var duongdan = '';
+	    			var ten = '';
+	    			var gia = '';
+	    			var soluong = '';
+	    			var tongtien = '';
+	    			var ndGioHang = '';
+	    			var rowid = '';
+	    			var masp = '';
+	    			var donhang = '';
+
+if(result.soluong == 0){
+ndGioHang = '<div class="modal-footer"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><br><div class="text-center" style="margin-bottom: 40px;"><img src="{{asset('public/img/Cart.png')}}"><h4><b>Giỏ hàng của bạn hiện đang trống</b></h4><p>Hãy nhanh tay sở hữu những sản phẩm yêu thích của bạn</p><button type="button" class="btn btn-danger" data-dismiss="modal">Tiếp tục mua sắm&nbsp;&nbsp;<span class="fa fa-long-arrow-right"></span></button></div></div>';
+
+
+$('#ndGioHang').html(ndGioHang);
+
+setTimeout(function(){
+	window.location = "http://localhost/luanvan-ktpm/home";
+}, 1000);
+
+} else {
+
+	for (var i in result.content) {
+	   //console.log(result.content[i]['qty']);
+	   	masp = result.content[i]['id'];
+	    rowid = result.content[i]['rowid'];
+	    duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    ten = result.content[i]['name'];
+	    gia = result.content[i]['price'];
+	    soluong = result.content[i]['qty']
+	    tongtien = result.tongtien;
+
+box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 sl-cart" id="'+ masp +'"><input type="number" id="'+ rowid +'" class="inputSL" min="1" max="100" value="'+ soluong +'"></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+	
+donhang += '<div class="row chitietsp"><div class="col-md-3 col-sm-3"><img src="'+ duongdan +'"></div><div class="col-md-5 col-sm-5"><div class="row">'+ ten +'</div></div><div class="col-md-4 col-sm-4"><div class="row">'+ soluong +' x '+ gia.toLocaleString('de-DE') +' đ</div></div></div>';
+
+	}
+
+
+ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div id="erroCart" class="alert alert-danger hide" style="margin:15px;"></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><form action="{{url("nhap-thongtin-donhang")}}" method="get"><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></form></div></div>';
+
+if(tongtien > 300000){
+	$('.thanhtien').html(tongtien.toLocaleString('de-DE'));
+	$('.gia-ship').html('Miễn phí');
+}else{	
+	$('.thanhtien').html((tongtien+<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
+	$('.gia-ship').html((<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
+}
+$('.label-gia').html(tongtien.toLocaleString('de-DE'));
+$('.sldonhang').html(result.soluong);
+$('.content-donhang').html(donhang);
+$('#ndGioHang').html(ndGioHang); 
+
+	    				}
+	    			} 
+	    		}
+	    	}); 
+	    }); 
+	});  
+
+
+
+
+//Cập nhật số lượng trong giỏ hàng
+$(document).ready(function(){
+	$('body').on('change', '.inputSL', function(){
+		var url = "http://localhost/luanvan-ktpm/sua-sanpham";
+		//var soluong = $(this).attr('value');
+		var soluong = $(this).val();
+		var id = $(this).attr('id');
+		var masp = $(this).parent().attr('id');
+
+
+		$.ajax({
+			url : url,
+			type : "GET",
+			dataType : "JSON",
+			data : {"soluong":soluong, "id":id, "masp":masp},
+			success : function(result){
+				if(!result.success){
+					var loi = '';
+					$.each(result.errors, function(key, item){
+						loi += item;
+					});
+					$('#erroCart').removeClass('hide');
+					$('#erroCart').html(loi);
+				} else {
+					$('#erroCart').addClass('hide');
+					
+					$('#numCart').html(result.soluong);
+	    			$('#btnCart').html(result.soluong);
+	    			var box = '';
+	    			var duongdan = '';
+	    			var ten = '';
+	    			var gia = '';
+	    			var soluong = '';
+	    			var tongtien = '';
+	    			var ndGioHang = '';
+	    			var rowid = '';
+	    			var masp = '';
+
+	    			//Panel đơn hàng
+	    			var donhang = '';
+
+for (var i in result.content) {
+	  // console.log(result.content[i]['qty']);
+	   	masp = result.content[i]['id'];
+	    rowid = result.content[i]['rowid'];
+	    duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    ten = result.content[i]['name'];
+	    gia = result.content[i]['price'];
+	    soluong = result.content[i]['qty']
+	    tongtien = result.tongtien;
+
+box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 sl-cart" id="'+ masp +'"><input type="number" id="'+ rowid +'" class="inputSL" min="1" max="100" value="'+ soluong +'"></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+	
+donhang += '<div class="row chitietsp"><div class="col-md-3 col-sm-3"><img src="'+ duongdan +'"></div><div class="col-md-5 col-sm-5"><div class="row">'+ ten +'</div></div><div class="col-md-4 col-sm-4"><div class="row">'+ soluong +' x '+ gia.toLocaleString('de-DE') +' đ</div></div></div>';
+
+
+	}
+
+
+ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div id="erroCart" class="alert alert-danger hide" style="margin:15px;"></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><form action="{{url("nhap-thongtin-donhang")}}" method="get"><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></form></div></div>';
+
+if(tongtien > 300000){
+	$('.thanhtien').html(tongtien.toLocaleString('de-DE'));
+	$('.gia-ship').html('Miễn phí');
+}else{	
+	$('.thanhtien').html((tongtien+<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
+	$('.gia-ship').html((<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
+}
+$('.label-gia').html(tongtien.toLocaleString('de-DE'));
+$('.sldonhang').html(result.soluong);
+$('.content-donhang').html(donhang);
+$('#ndGioHang').html(ndGioHang); 
+
+				}
+			}
+		});  
+	}); 
+});
+
+
+	$(document).ready(function(){
+		$('#tructuyen').click(function(){
+			$('#panelCard').removeClass('hide');			
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#cod').click(function(){
+			$('#panelCard').addClass('hide');
+		});
+	});
+
+	$(document).ready(function(){
+		$('#btnDatHang').click(function(){
+			var url = "http://localhost/luanvan-ktpm/dathang";
+			var _token = $("#formThanhToan input[name='_token']").val();
+			var httt = $("#formThanhToan input[type='radio']:checked").val();
+			var mathe = $('#mathe').val();
+			var thang = $('#thang').val();
+			var nam = $('#nam').val();
+			var ccv = $('#ccv').val();
+
+			$.ajax({
+				url : url,
+				type : "POST",
+				dataType : "JSON",
+				data : {"httt":httt, "_token":_token, "mathe":mathe, "thang":thang, "nam":nam, "ccv":ccv},
+				success : function(result){
+					if(result.success){
+						window.location = "http://localhost/luanvan-ktpm/dathang-thanhcong";
+					} else {
+						var er = '';
+						$.each(result.errors, function(key, item){
+							er += '<li>' + item + '</li>';
+						});
+						$('#erroThanhToan').removeClass('hide');
+						$('#erroThanhToan').html(er);
+					}
+				}
+			});  
+		});
+	});
+
+	</script>
+
+
 
 
 </head>
@@ -98,20 +314,24 @@
 					<h4>ĐỊA CHỈ NHẬN HÀNG</h4>
 				</div>
 				<div class="thongtingiao col-md-9 col-sm-9">
-					<label>Nguyễn Văn A</label>
-					<p>Đường 3/2, Phường Xuân Khánh, Quận Ninh Kiều, Cần Thơ</p>
-					Điện thoại di động: 0927385686
+					<label>{{$_SESSION['tenkh']}}</label>
+					<p>{{$_SESSION['diachi'].' , '.$_SESSION['tentinh']}}</p>
+					Điện thoại di động: {{$_SESSION['sdt']}}
 				</div>	
 				<div class="thaydoi col-md-3 col-sm-3">
-					<a href="dathang1.php">Thay đổi</a>
+					<a href="{{asset('nhap-thongtin-donhang')}}">Thay đổi</a>
 				</div>			
 			</div>
+
+		<form id="formThanhToan" action="{{action('DatHangController@postDatHang')}}" method="post">
+
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			<div class="panel-thanhtoan row">
 				<div class="title-thanhtoan"><h4>PHƯƠNG THỨC THANH TOÁN</h4></div>
 				<div class="ht-thanhtoan">
 					<div class="col-md-1 col-sm-1">
-						<input type="radio" name="httt">
+						<input id="cod" type="radio" name="httt" value="1" checked="">
 					</div>
 					<div class="col-md-11 col-sm-11">
 						<table class="table table-bordered">
@@ -130,7 +350,7 @@
 
 				<div class="ht-thanhtoan">
 					<div class="col-md-1 col-sm-1">
-						<input type="radio" name="httt">
+						<input id="tructuyen" type="radio" name="httt" value="2">
 					</div>
 					<div class="col-md-11 col-sm-11">
 						<table class="table table-bordered">
@@ -142,6 +362,38 @@
 										<p>Thẻ ATM của bạn cần đăng kí sử dụng dịch vụ Internet Banking.</p>
 									</td>
 								</tr>
+								<tr id="panelCard" class="hide">
+									<td colspan="2" style="padding: 20px 280px 20px 20px;">
+
+										<div id="erroThanhToan" class="alert alert-danger hide" role="alert">
+											
+										</div>
+
+
+										<form action="{{url('dathang')}}" method="post">
+											<div class="form-group">
+											    <div>Số thẻ</div>
+											    <input type="text" id="mathe" class="form-control" name="txtSoThe" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+											  </div>											  
+											</div>
+											<div class="form-group">
+												<div class="col-md-6 row">
+												  <div>Ngày hết hạn</div>
+												  <div class="col-md-7 row">				
+												  	<input type="text" class="form-control" placeholder="mm" name="txtThang" id="thang" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+												  </div>
+												  <div class="form-group col-md-7">				
+												  	<input type="text" class="form-control" placeholder="yyyy" name="txtNam" id="nam" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+												  </div>
+												</div>
+											  	<div class="col-md-6" style="width: 210px;">
+												  <div>CCV</div>
+												  <div class="form-group col-md-12 row">			<input type="text" class="form-control" name="txtCCV" id="ccv" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+												</div>
+											</div>
+										</form>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -149,163 +401,109 @@
 			</div>
 
 			<div class="text-right">
-				<button type="button" class="btn btn-danger">ĐẶT HÀNG</button>
+				<button id="btnDatHang" type="button" class="btn btn-danger">ĐẶT HÀNG</button>
 			</div>
+		</form>
 		</div> <!-- end panel thanh toán -->
 
-
-
-
-		<div class="panel-donhang col-md-4 col-sm-4">
-			<div class="title-donhang row">
-				ĐƠN HÀNG (Có 1 sản phẩm)<a href="#" data-toggle="modal" data-target="#modalCart">Thay đổi</a>
-			</div>
-
-
-			<!-- Modal Giỏ hàng -->
+		<!-- Modal Giỏ hàng -->
 			<div class="modal" id="modalCart" tabindex="-1" role="dialog">
 				<div class="modal-dialog">
-					<div class="modal-content">
-					  	<div class="modal-header">
-					  		<button type="button" class="close1" data-dismiss="modal">
-					  			<span aria-hidden="true">&times;</span>
-					  			<span class="sr-only">Close</span>
-					  		</button>
-					  		<h5 class="modal-title">
-					  			<span class="fa fa-shopping-cart"></span>
-					  				&nbsp;<b style="font-size: 14px; text-align: center;">GIỎ HÀNG </b>
-					  			( <b style="color: #DA0000">9</b> sản phẩm )
-					  		</h5>	  				
-					  	</div>
-					  	<div class="modal-body">
-					  		<div class="container-fluid list-cart">
-					  			<div class="title-cart">
-						  			<div class="row">
-							  			<div class="col-md-6">Sản phẩm</div>
-							  			<div class="col-md-2" style="text-align: center;">Số lượng</div>
-							  			<div class="col-md-2" style="text-align: right;">Giá thành</div>
-							  			<div class="col-md-2"></div>
-						  			</div> 
-					  			</div>
-					  			<div class="box-scroll">			
-							  		<div class="row detail-cart">
-							  			<div class="col-md-6">
-							  				<img id="imageProduct" src="{{asset('public/anh-sanpham/GalaxyS7_32GB.jpg')}}" alt="imageProduct">
-							  				<div class="ten-sp">
-								  				<label>ĐIỆN THOẠI SAMSUNG GALAXY S7 Edge 32GB (BẠC) FULL BOX</label>
-								  				<a href="#"><span class="fa fa-heart-o">&nbsp;&nbsp;Thêm vào danh sách yêu thích</span></a>
-							  				</div>
-							  			</div>
-							  			<div class="col-md-2 sl-cart">
-							  				<select name="" id="">
-							  					<option value="1">1</option>
-							  					<option selected="" value="2">2</option>
-							  					<option value="3">3</option>
-							  					<option value="4">4</option>
-							  					<option value="5">5</option>
-							  				</select>
-							  			</div>
-							  			<div class="col-md-2 gia-cart">
-							  				<label>3.790.000 đ</label>
-							  			</div>			  					
-							  			<div class="col-md-2 xoasp-cart">
-							  				<button type="submit"><span class="fa fa-trash-o"></span></button>
-							  			</div>
-							  		</div>							  				
-							  				
-							  		<div class="row detail-cart">
-							  			<div class="col-md-6">
-							  				<img id="imageProduct" src="{{asset('public/anh-sanpham/GalaxyS7_32GB.jpg')}}" alt="imageProduct">
-							  				<div class="ten-sp">
-								  				<label>ĐIỆN THOẠI SAMSUNG GALAXY S7 Edge 32GB (BẠC) FULL BOX</label>
-								  				<a href="#"><span class="fa fa-heart-o">&nbsp;&nbsp;Thêm vào danh sách yêu thích</span></a>
-							  				</div>
-							  			</div>
-							  			<div class="col-md-2 sl-cart">
-							  				<select name="" id="">
-							  					<option value="1">1</option>
-							  					<option selected="" value="2">2</option>
-							  					<option value="3">3</option>
-							  					<option value="4">4</option>
-							  					<option value="5">5</option>
-							  				</select>
-							  			</div>
-							  			<div class="col-md-2 gia-cart">
-							  				<label>3.790.000 đ</label>
-							  			</div>			  					
-							  			<div class="col-md-2 xoasp-cart">
-							  				<button type="submit"><span class="fa fa-trash-o"></span></button>
-							  			</div>
-							  		</div>
-
-							  		<div class="row detail-cart">
-							  			<div class="col-md-6">
-							  				<img id="imageProduct" src="{{asset('public/anh-sanpham/GalaxyS7_32GB.jpg')}}" alt="imageProduct">
-							  				<div class="ten-sp">
-								  				<label>ĐIỆN THOẠI SAMSUNG GALAXY S7 Edge 32GB (BẠC) FULL BOX</label>
-								  				<a href="#"><span class="fa fa-heart-o">&nbsp;&nbsp;Thêm vào danh sách yêu thích</span></a>
-							  				</div>
-							  			</div>
-							  			<div class="col-md-2 sl-cart">
-							  				<select name="" id="">
-							  					<option value="1">1</option>
-							  					<option selected="" value="2">2</option>
-							  					<option value="3">3</option>
-							  					<option value="4">4</option>
-							  					<option value="5">5</option>
-							  				</select>
-							  			</div>
-							  			<div class="col-md-2 gia-cart">
-							  				<label>3.790.000 đ</label>
-							  			</div>			  					
-							  			<div class="col-md-2 xoasp-cart">
-							  				<button type="submit"><span class="fa fa-trash-o"></span></button>
-							  			</div>
-							  		</div>							  				  				
-							  	</div>	
-					  		</div>
+					<div id="ndGioHang" class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close1" data-dismiss="modal">
+							  	<span aria-hidden="true">&times;</span>
+							  	<span class="sr-only">Close</span>
+							</button>
+							<h5 class="modal-title">
+							  	<span class="fa fa-shopping-cart"></span>
+							  	&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>
+							  	( <b style="color: #DA0000" id="numCart">
+							  		{{$sl}}
+							  	</b> sản phẩm )
+							</h5>	  				
 						</div>
-					  	<div class="modal-footer">
-					  		<label class="label-thanhtien">Thành tiền:</label>
-					  		<label class="label-tong"> 17.980.000 VND</label>
-					  		<div class="label-vat">(Đã bao gồm VAT)</div>
-					  		<div class="footer-cart">
-					  			<a class="tieptuc-cart" href="{{asset('home')}}"><span class="fa fa-undo">&nbsp;&nbsp;Tiếp tục mua hàng</span></a>
-					  			<button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button>
-					  		</div>
-					  	</div>
+
+						<div id="erroCart" class="alert alert-danger hide" style="margin:15px;">
+							
+						</div>
+
+						<div class="modal-body">
+							<div class="container-fluid list-cart">
+							  	<div class="title-cart">
+								  	<div class="row">
+									  	<div class="col-md-6">Sản phẩm</div>
+									  	<div class="col-md-2" style="text-align: center;">Giá thành</div>
+									  	<div class="col-md-2" style="text-align: center;">Số lượng</div>
+									  	<div class="col-md-2">Thành tiền</div>
+								  	</div> 
+							  	</div>
+							  	<div class="box-scroll">
+							  		@foreach($content as $item)
+							  			<div class="row detail-cart">
+										  	<div class="col-md-6">
+										  		<img id="imageProduct" src="{{asset('public/anh-sanpham/'.$item['options']['img'])}}" alt="imageProduct">
+										  		<div class="ten-sp">
+											  		<label>{{$item['name']}}</label>
+											  		<div class="xoasp-cart">
+											  			<button class="XoaSP" id="{{$item['rowid']}}"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button>
+										  			</div>
+										  		</div>
+										  	</div>
+										  	<div class="col-md-2 gia-cart">
+										  		<label>{{number_format($item['price'],0,'.','.')}} đ</label>
+										  	</div>
+										  	<div class="col-md-2 sl-cart" id="{{$item['id']}}">
+										  		<input type="number" class="inputSL" min="1" max="100" value="{{$item['qty']}}" id="{{$item['rowid']}}">
+										  	</div>				
+										  	<div class="col-md-2 tong-cart">
+										  		<label>{{number_format($item['price']*$item['qty'],0,'.','.')}} đ</label>
+										  	</div>
+										</div>
+							  		@endforeach				  				 				
+								</div>	
+							</div>
+						</div>
+						<div class="modal-footer">
+							<label class="label-thanhtien">Thành tiền:</label>
+							<label class="label-tong"> 
+								{{number_format($_SESSION['tongtien'],0,'.','.')}}
+								 VND</label>
+							<div class="label-vat">(Đã bao gồm VAT)</div>
+							<div class="footer-cart">
+							  	<a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;">
+							  		<span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a>
+							  	<form action="{{url('nhap-thongtin-donhang')}}" method="get">
+							  		<button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button>
+							  	</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div> <!-- end modal giỏ hàng -->
 
 
+		<div class="panel-donhang col-md-4 col-sm-4">
+			<div class="title-donhang row">
+				ĐƠN HÀNG (Có <b class="sldonhang">{{$sl}}</b> sản phẩm)<a href="#" data-toggle="modal" data-target="#modalCart">Thay đổi</a>
+			</div>	
 
 			<!--Thông tin đơn hàng-->
 			<div class="content-donhang row">
-				<div class="row chitietsp">
-					<div class="col-md-3 col-sm-3">
-						<img src="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
+				@foreach($content as $item)
+					<div class="row chitietsp">
+						<div class="col-md-3 col-sm-3">
+							<img src="{{asset('public/anh-sanpham/'.$item['options']['img'])}}">
+						</div>
+						<div class="col-md-5 col-sm-5">
+							<div class="row">{{$item['name']}}</div>						
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<div class="row">
+								{{$item['qty']}} x {{number_format($item['price'],0,'.','.')}} đ</div>
+						</div>
 					</div>
-					<div class="col-md-5 col-sm-5">
-						<div class="row">Điện thoại samsung galaxy s7 edge 32gb (bạc) full box</div>						
-					</div>
-					<div class="col-md-4 col-sm-4">
-						<div class="row">1 x 3.790.000 đ</div>
-					</div>
-				</div>
-
-
-				<div class="row chitietsp">
-					<div class="col-md-3 col-sm-3">
-						<img src="{{asset('public/anh-sanpham/galaxyj7_1.jpg')}}">
-					</div>
-					<div class="col-md-5 col-sm-5">
-						<div class="row">Điện thoại samsung galaxy s7 edge 32gb (bạc) full box</div>						
-					</div>
-					<div class="col-md-4 col-sm-4">
-						<div class="row">1 x 3.790.000 đ</div>
-					</div>
-				</div>
+				@endforeach
 			</div>
 			<!--end thông tin đơn hàng -->
 
@@ -316,8 +514,22 @@
 					<div class="label-phi">Phí vận chuyển</div>
 				</div>
 				<div class="col-md-7 col-sm-7 text-right">
-					<div class="label-gia">19.389.000đ</div>
-					<div class="label-phi">Miễn phí</div>
+					<div class="label-gia">
+						{{number_format($tongtien,0,'.','.')}} đ
+					</div>
+					@if($tongtien > 300000)
+						<div class="label-phi gia-ship">Miễn phí</div>
+					@else
+						<div class="label-phi gia-ship">
+							<?php
+								$phiship = DB::table('phi_vanchuyen as vc')
+											->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
+											->where('vc.matinh', $_SESSION['matinh'])
+											->first();
+								echo number_format($phiship->giacuoc,0, '.','.');
+							?>
+						</div>
+					@endif
 				</div>
 				<div class="clearfix"></div>
 				<hr>
@@ -326,7 +538,13 @@
 						<label>Tổng tiền</label>
 					</div>
 					<div class="col-md-7 col-sm-7 text-right">
-						<label>19.389.000đ</label>
+						@if($tongtien > 300000)
+							<div class="thanhtien">{{number_format($tongtien,0,'.','.')}} đ</div>
+						@else
+							<div class="thanhtien">
+								{{number_format($tongtien+$phiship->giacuoc,0,'.','.')}} đ
+							</div>
+						@endif
 					</div>
 				</div>
 			</div>

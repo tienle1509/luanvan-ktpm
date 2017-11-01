@@ -203,7 +203,11 @@ body {
 	height: 50px;
 }
 
-.content-donhang .chitietsp .col-md-5, .content-donhang .chitietsp .col-md-4 {
+.content-donhang .chitietsp .col-md-5 {
+	padding-top: 5px;
+}
+
+.content-donhang .chitietsp .col-md-4 {
 	padding-top: 5px;
 	text-align: center;
 }
@@ -260,7 +264,7 @@ body {
 }
 
 #modalCart .modal-content {
-	max-height: 485px;
+	max-height: 650px;
 }
 
 #modalCart .modal-body {
@@ -324,7 +328,7 @@ body {
 }
 
 .box-scroll .gia-cart {
-	text-align: right;
+	text-align: center;
 	margin-top: 20px;
 	font-size: 13px;
 }
@@ -334,16 +338,24 @@ body {
 	text-align: center;
 }
 
-.box-scroll .xoasp-cart {
+.box-scroll .tong-cart{
+	margin-top: 20px;
+	text-align: center;
+}
+
+.box-scroll .xoasp-cart span {
 	color: #DA0000;
-	padding-left: 60px;
-	font-size: 19px;
+	font-size: 16px;
+}
+
+.box-scroll .xoasp-cart button {
+	font-size: 13px;
+	color: #4B3AFF;
 }
 
 .box-scroll .xoasp-cart button {
 	border: none;
 	background-color: #FFFFFF;
-	margin-top: 14px;
 	outline: none;
 }
 
@@ -379,4 +391,4 @@ body {
 
 .footer-cart .thanhtoan-cart {
 	font-size: 14px;
-} /* End giỏ hàng */
+}
