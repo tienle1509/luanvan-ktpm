@@ -112,7 +112,7 @@
 								        			$t+=1;
 								        		}
 							        		}
-							        		if($t != 0){
+							        		if($t == count($giamgia)){
 							        			echo "-";
 							        		}
 							        	?>
