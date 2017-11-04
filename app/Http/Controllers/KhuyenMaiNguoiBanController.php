@@ -72,4 +72,5 @@ class KhuyenMaiNguoiBanController extends Controller
 
     	return view('nguoiban.khuyenmai.ds_sanpham_km')->with('spkm',$spkm)->with('sp',$sp)->with('km',$km);
     }
+
 }

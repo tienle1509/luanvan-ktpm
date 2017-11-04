@@ -195,6 +195,7 @@ Route::post('nhap-thongtin-donhang', ['uses'=>'HomeKhachHangController@postNhapT
 
 
 Route::get('hinhthucthanhtoan', ['uses'=>'HomeKhachHangController@getHinhThucThanhToan']);
+//Route::post('dathang', ['uses'=>'HomeKhachHangController@postDatHang']);
 Route::post('dathang', ['uses'=>'DatHangController@postDatHang']);
 
 Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanhCong']);
@@ -218,13 +219,8 @@ Route::get('taobang2', function(){
 });
 
 Route::get('demo', function(){
-	$n = 389738;
-	$count = 0;
-	do {
-		 	$n = $n%10;
-		 	$count+=1;
-		 } while ( $n > 0);	
-	echo $count; 
-
+	return view('khachhang.demothanhtoan');
 });
+
+Route::post('demo', ['uses'=>'HomeKhachHangController@demo']);
 

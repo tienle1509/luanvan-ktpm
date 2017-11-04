@@ -35,7 +35,7 @@ class DatHangController extends Controller
         return $madh;
 	}
 
-	/*---------------------------Nhập thông tin đặt hàng-------------------------------*/
+/*---------------------------Nhập thông tin đặt hàng-------------------------------*/
 	public function maKhachHang(){
 		$kh = DB::table('khach_hang')->select('makh')->get();
 		$max = 0;
@@ -55,7 +55,7 @@ class DatHangController extends Controller
         return $makh;
 	}
 
-	/*---------------------------Đặt hàng-------------------------------*/
+/*---------------------------Đặt hàng-------------------------------*/
 	public function postDatHang(){
 		if(Request::ajax()){
 			$httt = Request::get('httt');
@@ -125,36 +125,10 @@ class DatHangController extends Controller
 				$_SESSION['madh'] = $madh;
 				return Response::json(['success'=>true]);
 			} else {
-
-				$mathe = Request::get('mathe');
-				$thang = Request::get('thang');
-				$nam = Request::get('nam');
-				$ccv = Request::get('ccv');
-
-				$v = Validator::make(Request::all(),
-					[
-						'mathe'=>'required',
-						'thang'=>'required|between:1,12',
-						'nam'=>'required',
-						'ccv'=>'required'
-					],
-					[
-						'mathe.required'=>'Mã số thẻ không được trống',
-						'thang.required'=>'Tháng hết hạn không được trống',
-						'thang.between'=>'Tháng không đúng',
-						'nam.required'=>'Năm hết hạn không được trống',
-						'ccv.required'=>'Mã bảo mật không được trống',
-					]);
-				if($v->fails()){
-					return Response::json(['success'=>false, 'errors'=>$v->errors()->toArray()]);
-				} else {
-
-					//Stripe::setApiKey("sk_test_BIOovV7j4J8IVvamJ21CMMPz");
-					echo $thang;
-
-				}
+				echo 'tkoen : '.Request::get('stripeToken');
 			}
 		}
 	}
+
 
 }
