@@ -35,19 +35,9 @@
 									Hạn đăng kí:  {{date('d/m/Y', strtotime($val->handangki))}}
 								</div>
 								<div class="col-sm-5 text-right" style="margin-top: -20px">
-									<?php
-										$today = date('d'); //lấy ngày hiện tại
-                                        $month_cur = date('m'); //lấy tháng hiện tại
-                                        $year = date('Y'); //lấy năm hiện tại
-									?>
-
-									@if(date('d',strtotime($val->handangki)) != $today || date('m',strtotime($val->handangki)) != $month_cur)
-										@if(strtotime($val->handangki) < strtotime($ngayht))
+									@if(strtotime(date('Y-m-d',strtotime($ngayht))) > strtotime($val->handangki))
 										<button type="button" class="btn btn-default btn-block">Hết hạn</button>
-										@else
-										<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai/'.$val->makm)}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
-										@endif
-									@elseif(date('d',strtotime($val->handangki)) == $today && date('m',strtotime($val->handangki)) == $month_cur && date('Y',strtotime($val->handangki)) == $year)
+									@else
 										<a href="{{asset('nguoiban/khuyenmai/chitiet-khuyenmai/'.$val->makm)}}" type="button" class="btn btn-warning btn-block">Tham gia</a>
 									@endif
 								</div>

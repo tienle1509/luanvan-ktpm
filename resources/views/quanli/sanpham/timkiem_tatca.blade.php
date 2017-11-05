@@ -60,7 +60,7 @@
 								        	<img src="{{asset('public/anh-sanpham/'.$valSearch->anh)}}">
 								        </td>
 								        <td class="tensp">{{$valSearch->tensp}}</td>
-								        <td class="dongia">{{number_format($valSearch->dongia)}}</td>
+								        <td class="dongia">{{number_format($valSearch->dongia,0,'.','.')}}</td>
 								        <td>-</td>
 								        <td>{{$valSearch->soluong}}</td>
 								        <td>
@@ -94,8 +94,8 @@
 										        	<?php
 										        		$t = 0;
 										        		foreach ($km as $valkm) {
-										        			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){
-										        				echo number_format($valSearch->dongia-($valSearch->dongia*$valkm->chietkhau*0.01));
+										        			if(strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd) && strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt)){
+										        				echo number_format($valSearch->dongia-($valSearch->dongia*$valkm->chietkhau*0.01),0,'.','.');
 										        				break;
 										        			} else {
 										        				$t+=1;

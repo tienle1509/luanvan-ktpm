@@ -105,8 +105,8 @@
 							        					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')->where('ctkm.masp',$val->masp)->get();
 							        		$t = 0;
 							        		foreach ($giamgia as $valkm) {
-							        			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) &&(strtotime($ngayht))< strtotime($valkm->ngaykt)){
-								        			echo number_format($val->dongia-($val->dongia*$valkm->chietkhau*0.01));
+							        			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt)){
+								        			echo number_format($val->dongia-($val->dongia*$valkm->chietkhau*0.01),0,'.','.');
 								        			break;
 								        		}else {
 								        			$t+=1;
@@ -134,7 +134,7 @@
 							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
 							        </td>
 							        <td class="name-pro">{{$val->tensp}}</td>
-							        <td class="price-pro">{{$val->dongia}}</td>
+							        <td class="price-pro">{{number_format($val->dongia,0,'.','.')}}</td>
 							        <td>-</td>
 							        <td width="130px;">
 							        	<input type="text" name="soluong" class="form-control" value="0">

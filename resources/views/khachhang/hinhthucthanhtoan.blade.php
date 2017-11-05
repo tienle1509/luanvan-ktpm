@@ -29,7 +29,6 @@
 	<script type="text/javascript" src="{{asset('public/jquery/jquery-3.2.1.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/bootstrap.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/bootstrap-select.min.js')}}"></script>
-	<script src="https://js.stripe.com/v2/"></script>
 	
 
 	<!-- Font Awesome -->
@@ -196,18 +195,6 @@ $('#ndGioHang').html(ndGioHang);
 });
 
 
-	$(document).ready(function(){
-		$('#tructuyen').click(function(){
-			$('#panelCard').removeClass('hide');			
-		});
-	});
-	
-	$(document).ready(function(){
-		$('#cod').click(function(){
-			$('#panelCard').addClass('hide');
-		});
-	});
-
 
 	</script>
 
@@ -294,7 +281,7 @@ $('#ndGioHang').html(ndGioHang);
 				</div>			
 			</div>
 
-		<form id="formThanhToan" action="" method="post">
+		<form id="formThanhToan" action="{{url('dathang')}}" method="post">
 
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -331,39 +318,7 @@ $('#ndGioHang').html(ndGioHang);
 									<td>
 										<label>Thanh toán trực tuyến</label>
 									</td>
-								</tr>
-								<tr id="panelCard" class="hide">
-									<td colspan="2" style="padding: 20px 280px 20px 20px;">
-
-											<div class="card-errors" style="color: red; margin-top: -10px; margin-bottom: 10px"></div>
-
-											<div class="token">
-												
-											</div>
-
-											<div class="form-group">
-											    <div>Số thẻ</div>
-											    <input type="text" data-stripe="number" class="form-control" name="txtSoThe" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-											  </div>											  
-											</div>
-											<div class="form-group">
-												<div class="col-md-6 row">
-												  <div>Ngày hết hạn</div>
-												  <div class="col-md-7 row">				
-												  	<input type="text" data-stripe="exp_month" class="form-control" placeholder="mm" name="txtThang" id="thang" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-												  </div>
-												  <div class="form-group col-md-7">				
-												  	<input type="text" data-stripe="exp_year" class="form-control" placeholder="yyyy" name="txtNam" id="nam" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-												  </div>
-												</div>
-											  	<div class="col-md-6" style="width: 210px;">
-												  <div>CVC</div>
-												  <div class="form-group col-md-12 row">			<input type="text" data-stripe="cvc" class="form-control" name="txtCCV" id="ccv" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-												</div>
-											</div>
-										</form>
-									</td>
-								</tr>
+								</tr>								
 							</tbody>
 						</table>
 					</div>
@@ -371,7 +326,7 @@ $('#ndGioHang').html(ndGioHang);
 			</div>
 
 			<div class="text-right">
-				<button id="btnSubmit" type="button"  class="btn btn-danger">ĐẶT HÀNG</button>
+				<button type="submit"  class="btn btn-danger">ĐẶT HÀNG</button>
 			</div>
 		</form>
 		</div> <!-- end panel thanh toán -->
@@ -523,97 +478,6 @@ $('#ndGioHang').html(ndGioHang);
 
 
 
-	
-
-	<script type="text/javascript">
-	/*	$(document).ready(function(){
-			var httt = $('[name="httt"]:radio:checked').val();
-			if(httt == 2){
-				Stripe.setPublishableKey('pk_test_LyJ4pVYJuAVnevX0lILvCMlG');
-
-				var stripeResponseHandler = function(status, response) {
-				  // Grab the form:
-				  var form = document.getElementById('formThanhToan');
-
-				  if (response.error) { // Problem!
-				    $('.card-errors').html(response.error.message);
-				  } else { // Token was created!
-				    // Get the token ID:
-				    var token = response.id;
-
-				    // Insert the token ID into the form so it gets submitted to the server
-				    var form = document.getElementById('formThanhToan');
-				    var hiddenInput = document.createElement('input');
-				    hiddenInput.setAttribute('type', 'hidden');
-				    hiddenInput.setAttribute('name', 'stripeToken');
-				    hiddenInput.setAttribute('value', token);
-				    form.appendChild(hiddenInput);
-
-				    // Submit the form
-				    form.submit();
-				  }
-				};
-
-				// Create a token when the form is submitted
-				var form = document.getElementById('formThanhToan');
-				form.addEventListener('submit', function(e) {
-				  e.preventDefault();
-				  Stripe.card.createToken(form, stripeResponseHandler);
-				});
-			}
-		});   */
-		
-
-		$(document).ready(function(){
-			$('#btnSubmit').click(function(){
-				var url = "http://localhost/luanvan-ktpm/dathang";
-				var _token = $('input[name="_token"]').val();				
-				var httt = $('[name="httt"]:radio:checked').val();
-
-				if(httt == 1){
-					$.ajax({
-						url : url,
-						type : "POST", 
-						dataType : "JSON",
-						data : {'httt':httt, "_token":_token},
-						success : function(result){
-							if(result.success){
-								window.location = "http://localhost/luanvan-ktpm/dathang-thanhcong";
-							}
-						}
-					});
-				}
-				if(httt == 2){
-					Stripe.setPublishableKey('pk_test_LyJ4pVYJuAVnevX0lILvCMlG');
-
-					var stripeResponseHandler = function(status, response) {
-					  
-					  if (response.error) { // Problem!
-					  	if(response.error.type == "invalid_request_error"){
-					  		$('.card-errors').html('Vui lòng điền thông tin thẻ');
-					  	}	
-					  	if(response.error.type == "card_error"){
-					  		$('.card-errors').html('Số thẻ không hợp lệ');
-					  	}	
-					  	if(response.error.codes == "invalid_request_error"){
-					  		$('.card-errors').html('Vui lòng điền thông tin thẻ');
-					  	}				    
-					  } else { // Token was created!
-					    // Get the token ID:
-					    var token = response.id;
-					    var form = document.getElementById('formThanhToan');
-					    $('.token').append('<input type="hidden" name="stripeToken" value="'+token+'">');
-					  }
-					};
-
-					// Create a token when the form is submitted
-					var form = document.getElementById('formThanhToan');
-					Stripe.card.createToken(form, stripeResponseHandler);
-				}
-			});
-		});
-
-	</script>
 
 </body>
 </html>

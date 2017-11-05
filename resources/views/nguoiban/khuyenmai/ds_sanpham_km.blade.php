@@ -78,9 +78,9 @@
 								        	<img src="{{asset('public/anh-sanpham/'.$valsp->anh)}}">
 								        </td>
 								        <td class="name-pro">{{$valsp->tensp}}</td>
-								        <td class="price-pro">{{number_format($valsp->dongia)}}</td>
+								        <td class="price-pro">{{number_format($valsp->dongia,0,'.','.')}}</td>
 								        <td>
-								        	{{number_format($valsp->dongia-($valsp->dongia*$km->chietkhau*0.01))}}
+								        	{{number_format($valsp->dongia-($valsp->dongia*$km->chietkhau*0.01),0,'.','.')}}
 								        </td>
 								        <td>{{$valsp->soluong}}</td>
 								        <td>{{$km->chietkhau}}%</td>

@@ -214,7 +214,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 												      	<?php 
 												      		if(count($listKM) != 0){
 													      		foreach ($listKM as $valkm) {
-													      			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ ?>
+													      			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
 													      				<div class="chietkhau">
 														      				{{$valkm->chietkhau}}%
 														      			</div>
@@ -227,7 +227,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 												      		if(count($listKM) != 0){
 												      			$t = 0;
 													      		foreach ($listKM as $valkm) {
-													      			if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ 
+													      			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
 													      				echo '<div class="gia">
 														      			<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
 														      			</label>
@@ -293,14 +293,14 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 
 
 		<!-- Panel Sản phẩm bán chạy -->
-		<div class="container">
+	<!--	<div class="container">
 			<div class="row panel-product">
 				<div class="panel-title col-md-12 col-sm-12">
 					<h4>Sản phẩm bán chạy</h4>
 				</div>
 				<div class="col-md-12 col-sm-12">
 					<div class="row">
-						<!-- Slick slider -->
+						
 				    	<div class="slider-fastPro">
 				    		<div>
 							     <a id="sanpham" href="detailpro.php">
@@ -492,11 +492,11 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 								    </div>
 							    </a>
 							</div>
-				    	</div><!-- Slick slider -->
+				    	</div>
 					</div>
 				</div>
 			</div>
-		</div> <!-- Panel sản bán chạy-->
+		</div> --> <!-- Panel sản bán chạy-->
 
 
 		<!-- Các sản phẩm đặc trưng -->
@@ -519,7 +519,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 										<?php
 											if(count($dskm) != 0){
 												foreach ($dskm as $valkm) {
-													if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ ?>
+													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
 														<div class="chietkhau">
 															{{$valkm->chietkhau}}%
 														</div>
@@ -532,7 +532,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 											if(count($dskm) != 0){
 												$t = 0;
 												foreach ($dskm as $valkm) {
-													if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){ 
+													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
 
 														echo '<div class="gia">
 															<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ

@@ -195,9 +195,9 @@ Route::post('nhap-thongtin-donhang', ['uses'=>'HomeKhachHangController@postNhapT
 
 
 Route::get('hinhthucthanhtoan', ['uses'=>'HomeKhachHangController@getHinhThucThanhToan']);
-//Route::post('dathang', ['uses'=>'HomeKhachHangController@postDatHang']);
-Route::post('dathang', ['uses'=>'DatHangController@postDatHang']);
-
+Route::post('dathang', ['uses'=>'HomeKhachHangController@postDatHang']);
+Route::get('thanhtoan-tructuyen', ['uses'=>'HomeKhachHangController@getThanhToanTrucTuyen']);
+Route::post('thanhtoan-tructuyen',['uses'=>'HomeKhachHangController@postThanhToanTrucTuyen']);
 Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanhCong']);
 
 
@@ -218,9 +218,8 @@ Route::get('taobang2', function(){
 	});
 });
 
-Route::get('demo', function(){
-	return view('khachhang.demothanhtoan');
-});
+
+
 
 Route::post('demo', ['uses'=>'HomeKhachHangController@demo']);
 

@@ -73,7 +73,7 @@
 							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
 							        </td>
 							        <td class="tensp">{{$val->tensp}}</td>
-							        <td class="dongia">{{number_format($val->dongia)}}</td>
+							        <td class="dongia">{{number_format($val->dongia,0,'.','.')}}</td>
 							        <td>{{$val->soluong}}</td>
 							        <td class="tenshop">{{$val->tengianhang}}</td>
 							        <td>

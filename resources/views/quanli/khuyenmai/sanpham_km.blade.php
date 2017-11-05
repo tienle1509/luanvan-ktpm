@@ -55,8 +55,8 @@
 							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
 							        </td>
 							        <td class="name-pro">{{$val->tensp}}</td>
-							        <td class="price-pro">{{number_format($val->dongia)}}</td>
-							        <td>{{number_format($val->dongia-($val->dongia*$val->chietkhau*0.01))}}</td>
+							        <td class="price-pro">{{number_format($val->dongia,0,'.','.')}}</td>
+							        <td>{{number_format($val->dongia-($val->dongia*$val->chietkhau*0.01),0,'.','.')}}</td>
 							        <td>{{$val->soluong}}</td>
 							        <td>{{$val->chietkhau}}%</td>
 							        <td style="color: blue">

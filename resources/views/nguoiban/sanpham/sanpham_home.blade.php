@@ -30,7 +30,7 @@
 							        	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
 							        </td>
 							        <td class="name-pro">{{$val->tensp}}</td>
-							        <td class="price-pro">{{number_format($val->dongia)}}</td>
+							        <td class="price-pro">{{number_format($val->dongia,0,'.','.')}}</td>
 							        <td>-</td>
 							        <td>{{$val->soluong}}</td>
 							        <td>

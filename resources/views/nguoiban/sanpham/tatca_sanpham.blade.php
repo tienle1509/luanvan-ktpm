@@ -54,7 +54,7 @@
 											        	<img src="{{asset('public/anh-sanpham/'.$all->anh)}}">
 											        </td>
 											        <td class="name-pro">{{$all->tensp}}</td>
-											        <td class="price-pro">{{number_format($all->dongia)}}</td>
+											        <td class="price-pro">{{number_format($all->dongia,0,'.','.')}}</td>
 											        <td>-</td>
 											        <td>
 											        	{{$all->soluong}}
@@ -89,15 +89,15 @@
 											        	<img src="{{asset('public/anh-sanpham/'.$all->anh)}}">
 											        </td>
 											        <td class="name-pro">{{$all->tensp}}</td>
-											        <td class="price-pro">{{number_format($all->dongia)}}</td>
+											        <td class="price-pro">{{number_format($all->dongia,0,'.','.')}}</td>
 											        <td>
 											        	<?php
 											        		$giamgia = DB::table('khuyen_mai as km')
 											        					->join('chitiet_khuyenmai as ctkm','ctkm.makm', '=', 'km.makm')->where('ctkm.masp', $all->masp)->get();
 											        		$t = 0;
 												        	foreach ($giamgia as $valkm) {
-												        		if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){
-												        			echo number_format($all->dongia-($valkm->chietkhau*$all->dongia*0.01));
+												        		if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt)){
+												        			echo number_format($all->dongia-($valkm->chietkhau*$all->dongia*0.01),0,'.','.');
 												        			break;
 												        		} else{
 												        			$t+=1;

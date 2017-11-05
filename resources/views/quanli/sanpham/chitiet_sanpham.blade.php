@@ -44,7 +44,7 @@
 							<div class="form-group">
 							    <label class="col-sm-2 control-label">Giá</label>
 							    <div class="col-sm-4">
-							      <input type="text" class="form-control" value="{{number_format($chitietsp->dongia)}}" readonly="">
+							      <input type="text" class="form-control" value="{{number_format($chitietsp->dongia,0,'.','.')}}" readonly="">
 							    </div>	
 							    <label class="col-sm-2 control-label">Số lượng</label>
 							    <div class="col-sm-4">

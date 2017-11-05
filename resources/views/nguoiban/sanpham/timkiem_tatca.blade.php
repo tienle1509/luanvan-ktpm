@@ -64,7 +64,7 @@
 											<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
 										</td>
 										<td class="name-pro">{{$db->tensp}}</td>
-										<td class="price-pro">{{number_format($db->dongia)}}</td>
+										<td class="price-pro">{{number_format($db->dongia,0,'.','.')}}</td>
 										<td>-</td>
 										<td>
 											{{$db->soluong}}
@@ -95,13 +95,13 @@
 											<img src="{{asset('public/anh-sanpham/'.$db->anh)}}">
 										</td>
 										<td class="name-pro">{{$db->tensp}}</td>
-										<td class="price-pro">{{number_format($db->dongia)}}</td>
+										<td class="price-pro">{{number_format($db->dongia,0,'.','.')}}</td>
 										<td>
 											<?php
 												$t = 0;
 												foreach ($km as $valkm) {
-													if((strtotime($ngayht) > strtotime($valkm->ngaybd)) && (strtotime($ngayht) < strtotime($valkm->ngaykt))){
-													echo number_format($db->dongia-($db->dongia*$valkm->chietkhau*0.01));
+													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt)){
+													echo number_format($db->dongia-($db->dongia*$valkm->chietkhau*0.01),0,'.','.');
 													} else {
 														$t+=1;
 													}

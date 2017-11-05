@@ -211,7 +211,13 @@ class HomeKhachHangController extends Controller
         }
         return $makh;
 	}
-
+/*---------------------------Thanh toán trực tuyến---------------------------*/
+	public function getThanhToanTrucTuyen(){
+		if(Cart::total() == ''){
+			return redirect('home');
+		}
+		return view('khachhang.thanhtoantructuyen');
+	}
 
 /*---------------------------Đặt hàng -------------------------------*/
 	public function postDatHang(Request $request){
@@ -250,8 +256,8 @@ class HomeKhachHangController extends Controller
 				$dh->tongtien = $tongtien;
 				$dh->trangthai = 0;
 				$dh->makh =$makh;
-				$dh->maql = 'QL001';
-				$dh->mattdh = 1;
+				$dh->maql = '';
+				$dh->mattdh = 0;
 				$dh->mahttt = 1;
 				$dh->save();
 
@@ -282,8 +288,87 @@ class HomeKhachHangController extends Controller
 				$_SESSION['madh'] = $madh;
 				return redirect('dathang-thanhcong');
 			} else {
-				echo 'tkoen : '.$request->stripeToken;
+				return redirect('thanhtoan-tructuyen');
 			}
+	}
+
+/*---------------------------Thanh toán trực tuyến-------------------------------*/
+	public function postThanhToanTrucTuyen(Request $request){
+		$makh = $this->maKhachHang();
+		$madh = $this->maDonHang();
+		if(Cart::total() > 300000){
+			$tongtien = Cart::total();
+		}else{
+			$phiship = DB::table('phi_vanchuyen as vc')
+						->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
+						->where('vc.matinh', $_SESSION['matinh'])
+						->first();
+			$tongtien = Cart::total()+$phiship->giacuoc;
+		}
+		
+		\Stripe\Stripe::setApiKey("sk_test_5Dk4nOpbO6NiOkPiSzoXGv3X");
+		try {
+			\Stripe\Charge::create(array(
+  				"amount" => number_format(($tongtien/22714.34),2)*100,
+  				"currency" => "usd",
+  				"source" => $request->stripeToken, // obtained with Stripe.js
+  				"description" => $_SESSION['mailkh']
+			));
+
+			//Thêm thông tin vô bảng khách hàng
+			$kh = new KhachHang();
+			$kh->makh = $makh;
+			$kh->tennguoidung = '';
+			$kh->tenkh = $_SESSION['tenkh'];
+			$kh->email = $_SESSION['mailkh'];
+			$kh->matkhau = '';
+			$kh->sodienthoai = $_SESSION['sdt'];
+			$kh->diachithanhtoan = $_SESSION['diachi'].' , '.$_SESSION['tentinh'];
+			$kh->diachigiaohang = $_SESSION['diachi'].' , '.$_SESSION['tentinh'];
+			$kh->thanhvien = 0;
+			$kh->save();
+
+			//Thêm thông tin vô bảng đơn hàng
+			$dh = new DonHang();
+			$dh->madh = $madh;
+			$dh->ngaydat = date('Y-m-d',strtotime(Carbon::now()));
+			$dh->tongtien = $tongtien;
+			$dh->trangthai = 0;
+			$dh->makh =$makh;
+			$dh->maql = '';
+			$dh->mattdh = 0;
+			$dh->mahttt = 2;
+			$dh->save();
+
+			$con = Cart::content();
+			//Thêm vô bảng chi tiết đơn hàng					
+			foreach ($con as $item) {
+				$ct = new ChiTietDonHang();	
+				$ct->madh = $madh;
+				$ct->masp = $item['id'];
+				$ct->soluong = $item['qty'];
+				$ct->save();
+			}	
+
+			//Xóa session
+			unset($_SESSION['tenkh']);
+			unset($_SESSION['sdt']);
+			unset($_SESSION['mailkh']);
+			unset($_SESSION['tinh']);
+			unset($_SESSION['diachi']);
+			unset($_SESSION['tentinh']);
+			unset($_SESSION['matinh']);
+			unset($_SESSION['content']);
+			unset($_SESSION['soluong']);
+			unset($_SESSION['tongtien']);
+			Cart::destroy();
+
+			$_SESSION['makh'] = $makh;
+			$_SESSION['madh'] = $madh;
+			return redirect('dathang-thanhcong');
+		} catch (Exception $e) {
+			return redirect()->back()->withErrors($e->getMessage());
+		}  
 	}
 
 
