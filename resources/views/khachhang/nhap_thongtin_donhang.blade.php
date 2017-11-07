@@ -285,7 +285,7 @@
 							<div class="row">{{$item['name']}}</div>						
 						</div>
 						<div class="col-md-4 col-sm-4">
-							<div class="row">{{$item['qty']}} x {{$item['price']}} đ</div>
+							<div class="row">{{$item['qty']}} x {{number_format($item['price'],0,'.','.')}} đ</div>
 						</div>
 					</div>
 				@endforeach

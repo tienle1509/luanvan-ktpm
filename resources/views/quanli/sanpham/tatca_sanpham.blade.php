@@ -8,7 +8,7 @@
 				
 				@if(count($errors) > 0)
 					<div class="alert alert-danger" role="alert">
-						<strong>Lỗi ! </strong> {{$errors->first('txtNull')}}
+						<strong>Lỗi ! </strong> {{$errors->first('key')}}
 					</div>
 				@endif
 
@@ -63,7 +63,7 @@
 								        <td>{{$all->soluong}}</td>
 								        <td>
 								        	<?php 
-								        		$count_mua = DB::table('chitiet_donhang')->where('masp', $all->masp)->count('masp');
+								        		$count_mua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluongct');
 								        		echo $count_mua;
 								        	?>
 								        </td>
@@ -110,7 +110,7 @@
 										        <td>{{$all->soluong}}</td>
 										        <td>
 										        	<?php 
-										        		$count_mua = DB::table('chitiet_donhang')->where('masp', $all->masp)->count('masp');
+										        		$count_mua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluongct');
 										        		echo $count_mua;
 										        	?>
 										        </td>
@@ -139,7 +139,7 @@
 										        <td>{{$all->soluong}}</td>
 										        <td>
 										        	<?php 
-										        		$count_mua = DB::table('chitiet_donhang')->where('masp', $all->masp)->count('masp');
+										        		$count_mua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluongct');
 										        		echo $count_mua;
 										        	?>
 										        </td>

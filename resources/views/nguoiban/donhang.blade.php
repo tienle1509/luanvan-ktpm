@@ -27,7 +27,18 @@
 							  		<img src="{{asset('public/img/icondonhang.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">40</div>
+							  		<div class="huge">
+							  			<?php
+							  				$tatca_dh = DB::table('don_hang as dh')
+							  							->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+							  							->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							  							->where('dh.trangthai',1)
+							  							->where('sp.manb',$_SESSION['manb'])
+							  							->distinct()
+							  							->count('dh.madh');
+							  				echo $tatca_dh;
+							  			?>
+							  		</div>
 							  		Tất cả <br> Đơn hàng
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -56,7 +67,29 @@
 							  		<img src="{{asset('public/img/donhangtrongngay.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">4</div>
+							  		<div class="huge">
+							  		<?php
+							  			$today = date('d'); //lấy ngày hiện tại
+                                        $month = date('m'); //lấy tháng hiện tại
+                                        $year = date('Y'); //lấy năm hiện tại
+
+                                        $count_trongngay = 0;
+                                        $donhang = DB::table('don_hang as dh')
+                                        			->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+                                        			->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+                                        			->where('dh.trangthai',1)
+                                        			->where('sp.manb', $_SESSION['manb'])
+                                        			->select('dh.ngaydat')
+                                        			->distinct()
+                                        			->get();
+                                        foreach ($donhang as $val) {
+                                        	if(date('d',strtotime($val->ngaydat)) == $today && date('m',strtotime($val->ngaydat)) == $month && date('Y',strtotime($val->ngaydat)) == $year){
+                                        		$count_trongngay +=1;
+                                        	}
+                                        }
+                                        echo $count_trongngay;
+                                    ?>
+							  		</div>
 							  		Đơn hàng<br> Trong ngày
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -85,7 +118,19 @@
 							  		<img src="{{asset('public/img/icondangxuli.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">12</div>
+							  		<div class="huge">
+							  			<?php
+							  				$donhang_xl = DB::table('don_hang as dh')
+							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							  								->where('dh.trangthai',1)
+							  								->where('dh.mattdh',1)
+							  								->where('sp.manb',$_SESSION['manb'])
+							  								->distinct()
+							  								->count('dh.madh');
+							  				echo $donhang_xl;
+							  			?>
+							  		</div>
 							  		Đơn hàng <br> Đang xử lí
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -115,7 +160,19 @@
 							  		<img src="{{asset('public/img/icondanggiao.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">2</div>
+							  		<div class="huge">
+							  			<?php
+							  				$donhang_danggiao = DB::table('don_hang as dh')
+							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							  								->where('dh.trangthai',1)
+							  								->where('dh.mattdh',2)
+							  								->where('sp.manb',$_SESSION['manb'])
+							  								->distinct()
+							  								->count('dh.madh');
+							  				echo $donhang_danggiao;
+							  			?>
+							  		</div>
 							  		Đơn hàng<br> Đang giao đi
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -146,7 +203,19 @@
 							  		<img src="{{asset('public/img/iconhuydonhang.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">43</div>
+							  		<div class="huge">
+							  			<?php
+							  				$donhang_thatbai = DB::table('don_hang as dh')
+							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							  								->where('dh.trangthai',1)
+							  								->where('dh.mattdh',3)
+							  								->where('sp.manb',$_SESSION['manb'])
+							  								->distinct()
+							  								->count('dh.madh');
+							  				echo $donhang_thatbai;
+							  			?>
+							  		</div>
 							  		Giao hàng <br> Thất bại
 							  	</div>
 							  	<div class="clearfix"></div>
@@ -175,7 +244,19 @@
 							  		<img src="{{asset('public/img/iconhoanthanh.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">20</div>
+							  		<div class="huge">
+							  			<?php
+							  				$donhang_thanhcong = DB::table('don_hang as dh')
+							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							  								->where('dh.trangthai',1)
+							  								->where('dh.mattdh',4)
+							  								->where('sp.manb',$_SESSION['manb'])
+							  								->distinct()
+							  								->count('dh.madh');
+							  				echo $donhang_thanhcong;
+							  			?>
+							  		</div>
 							  		Đơn hàng<br> Đã giao
 							  	</div>
 							  	<div class="clearfix"></div>

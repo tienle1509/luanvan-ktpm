@@ -234,8 +234,8 @@ class HomeKhachHangController extends Controller
 				$kh->email = $_SESSION['mailkh'];
 				$kh->matkhau = '';
 				$kh->sodienthoai = $_SESSION['sdt'];
-				$kh->diachithanhtoan = $_SESSION['diachi'].' , '.$_SESSION['tentinh'];
-				$kh->diachigiaohang = $_SESSION['diachi'].' , '.$_SESSION['tentinh'];
+				$kh->diachithanhtoan = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
+				$kh->diachigiaohang = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
 				$kh->thanhvien = 0;
 				$kh->save();
 
@@ -267,9 +267,17 @@ class HomeKhachHangController extends Controller
 					$ct = new ChiTietDonHang();	
 					$ct->madh = $madh;
 					$ct->masp = $item['id'];
-					$ct->soluong = $item['qty'];
+					$ct->soluongct = $item['qty'];
 					$ct->save();
-				}						
+				}
+
+				//Giảm số lượng sản phẩm xuống
+				foreach ($con as $item) {
+					$sp = DB::table('san_pham')->where('masp',$item['id'])->first();
+
+					DB::table('san_pham')->where('masp',$item['id'])
+										->update(['soluong'=>$sp->soluong-$item['qty']]);
+				}
 
 				//Xóa session
 				unset($_SESSION['tenkh']);
@@ -323,8 +331,8 @@ class HomeKhachHangController extends Controller
 			$kh->email = $_SESSION['mailkh'];
 			$kh->matkhau = '';
 			$kh->sodienthoai = $_SESSION['sdt'];
-			$kh->diachithanhtoan = $_SESSION['diachi'].' , '.$_SESSION['tentinh'];
-			$kh->diachigiaohang = $_SESSION['diachi'].' , '.$_SESSION['tentinh'];
+			$kh->diachithanhtoan = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
+			$kh->diachigiaohang = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
 			$kh->thanhvien = 0;
 			$kh->save();
 
@@ -346,9 +354,17 @@ class HomeKhachHangController extends Controller
 				$ct = new ChiTietDonHang();	
 				$ct->madh = $madh;
 				$ct->masp = $item['id'];
-				$ct->soluong = $item['qty'];
+				$ct->soluongct = $item['qty'];
 				$ct->save();
 			}	
+
+			//Giảm số lượng sản phẩm xuống
+			foreach ($con as $item) {
+				$sp = DB::table('san_pham')->where('masp',$item['id'])->first();
+
+				DB::table('san_pham')->where('masp',$item['id'])
+									->update(['soluong'=>$sp->soluong-$item['qty']]);
+			}
 
 			//Xóa session
 			unset($_SESSION['tenkh']);

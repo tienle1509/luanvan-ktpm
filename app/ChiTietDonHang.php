@@ -10,6 +10,6 @@ class ChiTietDonHang extends Model
     public $timestamps = false;
 
     protected $fillable = [
-    	'madh', 'masp', 'soluong'
+    	'madh', 'masp', 'soluongct'
     ];
 }

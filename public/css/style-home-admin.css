@@ -321,18 +321,12 @@ body {
 	background-color: #C0C2FF;
 }
 
-#table-donhang-admin .guiden {
-	width: 20%;
-}
 
 #table-donhang-admin .guiden label {
 	color: #FF3737;
 	font-weight: normal;
 }
 
-#table-donhang-admin .httt {
-	width: 10%;
-}
 
 #table-donhang-admin .chitietdh label {
 	color: #3745FF;
@@ -422,7 +416,7 @@ body {
 	margin-bottom: 50px;
 }
 
-.detailOrderRow2 button {
+.detailOrderRow2 a {
 	text-decoration: none;
 	width: 200px;
 }

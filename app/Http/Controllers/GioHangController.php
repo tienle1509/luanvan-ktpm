@@ -28,7 +28,7 @@ class GioHangController extends Controller
 
 			$giasp = $sp_mua->dongia;
 			foreach ($checkKM as $val) {
-				if((strtotime($ngayht) > strtotime($val->ngaybd)) && (strtotime($ngayht)<strtotime($val->ngaykt))){
+				if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($val->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($val->ngaykt))){
 					$giasp = $sp_mua->dongia-($sp_mua->dongia*$val->chietkhau*0.01);
 				}
 			}

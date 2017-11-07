@@ -61,7 +61,7 @@
 											        </td>
 											        <td>
 											        	<?php 
-											        		$count_luotmua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluong');
+											        		$count_luotmua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluongct');
 											        		echo $count_luotmua;
 											        	?>
 											        </td>
@@ -113,7 +113,7 @@
 											        </td>
 											        <td>
 											        	<?php 
-											        		$count_luotmua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluong');
+											        		$count_luotmua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluongct');
 											        		echo $count_luotmua;
 											        	?>
 											        </td>
@@ -145,7 +145,7 @@
 											        </td>
 											        <td>
 											        	<?php 
-											        		$count_luotmua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluong');
+											        		$count_luotmua = DB::table('chitiet_donhang')->where('masp', $all->masp)->sum('soluongct');
 											        		echo $count_luotmua;
 											        	?>
 											        </td>

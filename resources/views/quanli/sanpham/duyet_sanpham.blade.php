@@ -19,7 +19,7 @@
 					if(result.success){
 						$('.alert-success').removeClass('hide');
 						$('.alert-success').html('Duyệt sản phẩm thành công !');
-						setTimeout("location.reload(true);",1900);	
+						setTimeout("location.reload(true);",1500);	
 					}
 				}
 			});

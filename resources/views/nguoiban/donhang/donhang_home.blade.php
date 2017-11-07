@@ -8,71 +8,104 @@
 				      <tr>
 				        <th>Mã ĐH</th>
 				        <th>Ngày đặt</th>
-				        <th>Ngày giao</th>
 				        <th>Thông tin giao hàng</th>
 				        <th>Tên sản phẩm</th>
-				        <th>Hình thức thanh toán</th>
-				        <th>Tình trạng</th>
+				        <th>Hình thức thanh toán</th>				        
 				        <th>Tổng tiền</th>
+				        <th>Tình trạng</th>
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td class="madh">123456</td>
-				        <td class="ngaydat">12/03/2017</td>
-				        <td class="ngaygiao">18/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td class="tinhtrangdh">
-				        	<label class="label label-warning">Đang xử lí</label>
-				        </td>				        
-				        <td class="tongtien">12,057,000</td>
-				      </tr>
-				      
-				      <tr>
-				        <td class="madh">123456</td>
-				        <td class="ngaydat">12/03/2017</td>
-				        <td class="ngaygiao">18/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td class="tinhtrangdh">
-				        	<label class="label label-warning">Đang xử lí</label>
-				        </td>			        
-				        <td class="tongtien">12,057,000</td>
-				      </tr>
+				    	@if(count($dhmoi) == 0)
+				    		<tr>
+				    			<td align="center" colspan="7" style="color: red"><h4>Không có đơn hàng mới !</h4></td>
+				    		</tr>
+				    	@else
+				    		@foreach($dhmoi as $val)
+				    			<tr>
+							        <td class="madh">{{$val->madh}}</td>
+							        <td class="ngaydat">{{date('d/m/Y',strtotime($val->ngaydat))}}</td>
+							        <td class="guiden">
+							        	<label>{{$val->tenkh}}</label><br> {{$val->diachigiaohang}}
+							        	<br>{{$val->sodienthoai}}
+							        </td>
+							        <td class="chitietdh">
+							        	<?php						        		
+											//Chi tiết đơn hàng
+							        		$ctdh = DB::table('chitiet_donhang as ct')
+							        					->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							        					->where('ct.madh',$val->madh)
+							        					->where('sp.manb', $_SESSION['manb'])
+							        					->get();
 
-				      <tr>
-				        <td class="madh">123456</td>
-				        <td class="ngaydat">12/03/2017</td>
-				        <td class="ngaygiao">18/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td class="tinhtrangdh">
-				        	<label class="label label-warning">Đang xử lí</label>
-				        </td>			        
-				        <td class="tongtien">12,057,000</td>
-				      </tr>
+							        		$thanhtien = 0;
+							        		foreach ($ctdh as $valct) { 
+							        			//Kiểm tra sản phẩm có khuyến mãi không
+							        				$km = DB::table('khuyen_mai as km')
+							        					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+							        					->where('ctkm.masp',$valct->masp)
+							        					->get();
+							        				if(count($km) != 0){
+							        					$t = 0;
+								        				foreach ($km as $valkm) {
+								        					if(strtotime($val->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($val->ngaydat) <= strtotime($valkm->ngaykt)){ ?>
+
+								        						<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau),0,'.','.')}}
+				        										<br>
+
+								        					<?php 
+								        						$thanhtien += $valct->soluongct*($valct->dongia-$valct->dongia*0.01*$valkm->chietkhau);
+								        					break; } else{
+								        						$t +=1;
+								        					}
+								        				}
+								        				if($t == count($km)){ ?>
+								        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+				        									<br>
+								        				<?php 
+								        					$thanhtien += $valct->soluongct*$valct->dongia;
+								        				}
+								        			}else{ ?>
+								        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+				        								<br>
+								        			<?php 
+								        				$thanhtien += $valct->soluongct*$valct->dongia;
+								        			}
+							        		?>
+							        		<?php }
+							        	?>
+							        </td>
+							        <td class="httt">
+							        	<?php
+							        		$ht_thanhtoan = DB::table('hinhthuc_thanhtoan')->where('mahttt',$val->mahttt)->first();
+							        		echo $ht_thanhtoan->tenhttt;
+							        	?>
+							        </td>
+							        <td class="tongtien">
+							        	<?php						        		
+											if($thanhtien >= 300000){
+												echo number_format($thanhtien,0,'.','.');
+											}
+								        	else{
+								        		if($val->tongtien-27500 >= 300000)
+								        			echo number_format($thanhtien,0,'.','.');
+								        		else
+								        			echo number_format($val->tongtien,0,'.','.');
+								        	}
+							        	?>
+							        </td>
+							        <td class="tinhtrangdh">
+							        	<label class="label label-warning">Đang xử lí</label>
+							        </td>	
+							    </tr>
+				    		@endforeach
+				    	@endif				      
 				    </tbody>
+				    <tfoot>
+				    	<tr>
+				    		<td align="center" colspan="7">{!! $dhmoi->render() !!}</td>
+				    	</tr>
+				    </tfoot>
 				</table>
 
 @stop

@@ -27,12 +27,14 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('public/css/style-home-ban.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('public/css/bootstrap-theme.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('public/css/fileinput.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('public/css/jquery-ui.css')}}">
 
   	<!-- jQuery, Bootstrap JS -->
 	<script type="text/javascript" src="{{asset('public/jquery/jquery-3.2.1.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/bootstrap.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/ckeditor/ckeditor.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/fileinput.js')}}"></script>
+	<script type="text/javascript" src="{{asset('public/js/jquery-ui.js')}}"></script>
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">

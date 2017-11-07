@@ -258,7 +258,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 												      		</div>
 												      		<div class="luotvote row">
 												      			<?php
-																	$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+																	$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
 																?>
 												      			@if($luotmua != 0)
 																	<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
@@ -565,7 +565,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 										</div>
 										<div class="luotvote row">
 											<?php
-												$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+												$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
 											?>
 											@if($luotmua != 0)
 												<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">

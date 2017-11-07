@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 /*-----------------BẬT SESSION CHO TOÀN HỆ THỐNG----------------------*/
 session_start();
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 
 
@@ -48,33 +49,23 @@ Route::group(['prefix'=>'quanli'],function(){
 		Route::get('dssanphamkm/{makm}',['uses'=>'KhuyenMaiQuanLiController@getDSSanPhamKhuyenMai']);
 	});
 
+	//Chỉnh sửa thông tin quản lí
 	Route::post('sua-taikhoan',['uses'=>'EditAccountQuanLiController@postSuaTaiKhoan']);
-});
 
-
-
-/*--------------------GIAO DIỆN QUẢN LÍ----------------------------*/
-
-Route::group(['prefix'=>'quanli'], function(){
 	//Quản lí đơn hàng
-	Route::get('ql-donhang',function () {
-		return view('quanli.donhang.donhang_home');
-	});
+	Route::get('ql-donhang', ['uses'=>'DonHangQuanLiController@getHomeDonHang']);
 	Route::group(['prefix'=>'ql-donhang'], function(){
-		Route::get('duyet-donhang',function(){
-			return view('quanli.donhang.duyet_donhang');
-		});
-		Route::get('donhang-trongngay',function(){
-			return view('quanli.donhang.donhang_trongngay');
-		});
-		Route::get('tatca-donhang',function(){
-			return view('quanli.donhang.tatca_donhang');
-		});
-		Route::get('chitiet-donhang',function(){
-			return view('quanli.donhang.chitiet_donhang');
-		});
+		Route::get('duyet-donhang', ['uses'=>'DonHangQuanLiController@getDuyetDonHang']);
+		Route::get('duyet', ['uses'=>'DuyetDonHangController@getDuyetDonHang']);
+		Route::get('donhang-trongngay', ['uses'=>'DonHangQuanLiController@getDonHangTrongNgay']);
+		Route::get('timkiem-trongngay', ['uses'=>'DonHangQuanLiController@getTimKiemTrongNgay']);
+		Route::get('tatca-donhang', ['uses'=>'DonHangQuanLiController@getTatCaDonHang']);
+		Route::get('timkiem-tatca', ['uses'=>'DonHangQuanLiController@getTimKiemTatCaDH']);
+		Route::get('chitiet-donhang/{madh}',['uses'=>'DonHangQuanLiController@getChiTietDonHang']);
 	});
 });
+
+
 
 
 
@@ -134,6 +125,14 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	//Thay đổi thông tin, tài khoản nhà bán
 	Route::post('sua-thongtin', ['uses'=>'EditProfileNguoiBanController@postSuaThongTin']);
 	Route::post('sua-taikhoan', ['uses'=>'EditProfileNguoiBanController@postSuaTaiKhoan']);
+
+	//Quản lí đơn hàng
+	Route::get('donhang',['uses'=>'DonHangNguoiBanController@getHomeDonHang']);
+	Route::group(['prefix'=>'donhang'], function(){
+		Route::get('tatca-donhang', ['uses'=>'DonHangNguoiBanController@getTatCaDonHang']);
+		Route::get('timkiem-tatca', ['uses'=>'DonHangNguoiBanController@getTimKiemTatCaDH']);
+		Route::get('chitiet-donhang/{madh}', ['uses'=>'DonHangNguoiBanController@getChiTietDonHang']);
+	});
 });
 
 
@@ -148,13 +147,7 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	});
 
 	//Quản lí đơn hàng
-	Route::get('donhang', function(){
-		return view('nguoiban.donhang.donhang_home');
-	});
 	Route::group(['prefix'=>'donhang'], function(){
-		Route::get('tatca-donhang', function(){
-			return view('nguoiban.donhang.tatca_donhang');
-		});
 		Route::get('donhang-trongngay', function(){
 			return view('nguoiban.donhang.donhang_trongngay');
 		});
@@ -169,9 +162,6 @@ Route::group(['prefix'=>'nguoiban'], function(){
 		});
 		Route::get('donhang-dagiao', function(){
 			return view('nguoiban.donhang.donhang_dagiao');
-		});
-		Route::get('chitiet-donhang', function(){
-			return view('nguoiban.donhang.chitiet_donhang');
 		});
 	});
 });
@@ -209,17 +199,18 @@ Route::get('donhang',function(){
 	return view('khachhang.donhang');
 });
 //-------------------------------------------------------------------------------------
+use Carbon\Carbon;
+Route::get('demo', function(){
+	$d = Carbon::now();
+	echo $d.'<br>';
+	echo date('Y-m-d H:i:s').'<br>';
 
-Route::get('taobang2', function(){
-	Schema::create('mau_sanpham', function($tab){
-		$tab->integer('mamau');
-		$tab->primary('mamau');
-		$tab->string('tenmau',50);
-	});
+	
+	echo 'The time is ' . date('Y-m-d H:i:s');
+});
+Route::get('demo1', function(){
+	return view('khachhang.demo');
 });
 
 
-
-
-Route::post('demo', ['uses'=>'HomeKhachHangController@demo']);
 

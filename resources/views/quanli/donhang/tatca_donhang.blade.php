@@ -3,29 +3,52 @@
 @section('title','Tất cả đơn hàng')
 
 @section('chitiet')
+
+<script type="text/javascript">
+	// datepicker		
+	$(function () {
+            $("#startdate").datepicker({
+               	dateFormat : 'dd-mm-yy',
+                    onClose: function (selectedDate) {
+           	        if (selectedDate != ""){ 
+                       $("#Enddate").datepicker("option", "minDate", selectedDate); }
+            	    }
+                });
+                $("#Enddate").datepicker({
+                	dateFormat : 'dd-mm-yy',
+                    minDate: 'selectedDate',
+                });
+        });
+</script>
+
+
 <h2>Tất cả đơn hàng</h2>
+				
+				@if(count($errors) > 0)
+					<div class="alert alert-danger" role="alert">
+						<strong>Lỗi ! </strong> {{$errors->first('txtkey')}}
+					</div>
+				@endif
+
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
-						<form id="form-searchOrder" class="form-horizontal" role="form">
-							<div class="col-sm-2 form-group">
-							  	<input type="text" class="form-control" id="" placeholder="Mã đơn hàng">
+						<form id="form-searchOrder" class="form-horizontal" role="form" method="get" action="{{url('quanli/ql-donhang/timkiem-tatca')}}">
+							<div class="col-sm-5 form-group">
+							  	<input type="text" class="form-control" name="txtkey" placeholder="Nhập mã đơn hàng, tên khách hàng cần tìm ...">
 							</div>
-							<div class="col-sm-3">
-							  	<input type="text" class="form-control" id="" placeholder="Tên khách hàng">
-							</div>	
-							<div class="col-sm-3 form-group">
+							<div class="col-sm-3 ">
 							  	<div class="input-group">
-							        <input class="form-control date" type="text" id="Sdate" name="txtSDate" placeholder="Từ ngày" />
+							        <input class="form-control date" type="text" id="startdate" name="txtngaybd" placeholder="Từ ngày" />
 							        	<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
 							    </div>
 							</div>
 							<div class="col-sm-3">
 							  	<div class="input-group">
-							        <input class="form-control date" type="text" id="Edate" name="txtEDate" placeholder="Đến ngày" />
+							        <input class="form-control date" type="text" id="Enddate" name="txtngaykt" placeholder="Đến ngày" />
 							        	<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
 							    </div>
 							</div>				    
-							<button type="button" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
+							<button type="submit" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
 						</form>
 					</div>
 				</div>
@@ -37,7 +60,6 @@
 				      <tr>
 				        <th>Mã ĐH</th>
 				        <th>Ngày đặt</th>
-				        <th>Ngày giao</th>
 				        <th class="guiden">Thông tin giao hàng</th>
 				        <th>Tên sản phẩm</th>
 				        <th>Hình thức thanh toán</th>
@@ -48,80 +70,101 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>123456</td>
-				        <td>12/03/2017</td>
-				        <td>18/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td class="tongtien">12,057,000</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				        <td>
-				        	<label class="label label-warning">Đang xử lí</label>
-				        </td>
-				        <td>
-				        	<a href="{{asset('quanli/ql-donhang/chitiet-donhang')}}" type="button" class="btn btn-info">Chi tiết</a>
-				        </td>
-				      </tr>
-				      
-				      <tr>
-				        <td>123456</td>
-				        <td>12/03/2017</td>
-				        <td>18/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td class="tongtien">12,057,000</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				        <td>
-				        	<label class="label label-success">Đã giao hàng</label>
-				        </td>
-				        <td>
-				        	<a href="{{asset('quanli/ql-donhang/chitiet-donhang')}}" type="button" class="btn btn-info">Chi tiết</a>
-				        </td>
-				      </tr>
+				    	@if(count($tatcadh) == 0)
+				    		<tr>
+					      		<td align="center" colspan="9" style="color: red"><h4>Không có đơn hàng !</h4></td>
+					      	</tr>
+				    	@else
+				    		<?php
+				    			foreach ($tatcadh as $val) { ?>
+				    				<tr>
+								        <td>{{$val->madh}}</td>
+								        <td>{{date('d/m/Y', strtotime($val->ngaydat))}}</td>
+								        <td class="guiden">
+								        	<label>{{$val->tenkh}}</label><br> {{$val->diachigiaohang}}
+							        		<br>{{$val->sodienthoai}}
+								        </td>
+								        <td class="chitietdh">
+								        	<?php						        		
+												//Chi tiết đơn hàng
+									       		$ctdh = DB::table('chitiet_donhang as ct')
+									       					->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+									       					->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
+									       					->where('ct.madh',$val->madh)
+									       					->get();
+									       		foreach ($ctdh as $valct) { 
+									       			//Kiểm tra sản phẩm có khuyến mãi không
+									       				$km = DB::table('khuyen_mai as km')
+									       					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+									       					->where('ctkm.masp',$valct->masp)
+									       					->get();
+									       				if(count($km) != 0){
+									       					$t = 0;
+									        				foreach ($km as $valkm) {
+									        					if(strtotime($val->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($val->ngaydat) <= strtotime($valkm->ngaykt)){ ?>
 
-				      <tr>
-				        <td>123456</td>
-				        <td>12/03/2017</td>
-				        <td>18/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td class="tongtien">12,057,000</td>
-				        <td>
-				        	<label class="label label-warning">Chờ duyệt</label>
-				        </td>
-				        <td>
-				        	<label class="label label-danger">Giao hàng thất bại</label>
-				        </td>
-				        <td>
-				        	<a href="{{asset('quanli/ql-donhang/chitiet-donhang')}}" type="button" class="btn btn-info">Chi tiết</a>
-				        </td>
-				      </tr>
+									        						<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau),0,'.','.')}}
+									        						 x {{$valct->tengianhang}}
+						        									<br>
+
+									        					<?php break; } else{
+									        						$t +=1;
+									        					}
+									        				}
+									        				if($t == count($km)){ ?>
+									        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+									        					 x {{$valct->tengianhang}}
+						        								<br>
+									        				<?php }
+									        			}else{ ?>
+									        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+									        				 x {{$valct->tengianhang}}
+						        							<br>
+									        			<?php }
+									       		?>
+									       		<?php }
+									       	?>
+								        </td>
+								        <td class="httt">
+								        	<?php
+									       		$ht_thanhtoan = DB::table('hinhthuc_thanhtoan')->where('mahttt',$val->mahttt)->first();
+									        	echo $ht_thanhtoan->tenhttt;
+									       	?>
+								        </td>
+								        <td class="tongtien">
+								        	{{number_format($val->tongtien,0,'.','.')}}
+								        </td>
+								        <td>
+								        	@if($val->trangthai == 0)
+									        	<label class="label label-warning">Chờ duyệt</label>
+									        @else
+									        	<label class="label label-success">Đã duyệt</label>
+									        @endif
+								        </td>
+								        <td>
+								        	@if($val->trangthai == 1 && $val->mattdh == 1)
+									        	<label class="label label-warning">Đang xử lí</label>
+									        @elseif($val->trangthai == 1 && $val->mattdh == 2)
+									        	<label class="label label-info">Đang giao đi</label>
+									        @elseif($val->trangthai == 1 && $val->mattdh == 3)
+									        	<label class="label label-danger">Giao hàng thất bại</label>
+									        @elseif($val->trangthai == 1 && $val->mattdh == 4)
+									        	<label class="label label-success">Giao hàng thành công</label>
+									       	@endif
+								        </td>
+								        <td>
+								        	<a href="{{asset('quanli/ql-donhang/chitiet-donhang/'.$val->madh)}}" type="button" class="btn btn-info">Chi tiết</a>
+								    </td>
+								      </tr>
+				    			<?php }
+				    		?>
+				    	@endif
 				    </tbody>
+				    <tfoot>
+				    	<tr>
+				    		<td align="center" colspan="9">{!! $tatcadh->render() !!}</td>
+				    	</tr>
+				    </tfoot>
 				</table>
 
 

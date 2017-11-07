@@ -23,7 +23,12 @@
 						  <div class="panel-heading">
 						  	<div class="row text-center">
 							  	<img src="{{asset('public/img/icondonhang-admin.png')}}">
-							  	<div class="huge">29</div>
+							  	<div class="huge">
+							  		<?php
+							  			$count_choduyet = DB::table('don_hang')->where('trangthai',0)->count('madh');
+							  			echo $count_choduyet;
+							  		?>
+							  	</div>
 							</div>
 						  </div>
 						  <a href="{{asset('quanli/ql-donhang/duyet-donhang')}}">
@@ -40,7 +45,22 @@
 						  <div class="panel-heading">
 						  	<div class="row text-center">
 							  	<img src="{{asset('public/img/iconcartadmin.png')}}">
-							  	<div class="huge">29</div>
+							  	<div class="huge">
+							  		<?php
+							  			$today = date('d'); //lấy ngày hiện tại
+                                        $month = date('m'); //lấy tháng hiện tại
+                                        $year = date('Y'); //lấy năm hiện tại
+
+                                        $count_trongngay = 0;
+                                        $donhang = DB::table('don_hang')->get();
+                                        foreach ($donhang as $val) {
+                                        	if(date('d',strtotime($val->ngaydat)) == $today && date('m',strtotime($val->ngaydat)) == $month && date('Y',strtotime($val->ngaydat)) == $year){
+                                        		$count_trongngay +=1;
+                                        	}
+                                        }
+                                        echo $count_trongngay;
+							  		?>
+							  	</div>
 							</div>
 						  </div>
 						  <a href="{{asset('quanli/ql-donhang/donhang-trongngay')}}">
@@ -58,7 +78,12 @@
 						  <div class="panel-heading">
 						  	<div class="row text-center">
 							  	<img src="{{asset('public/img/allorder-admin.png')}}">
-							  	<div class="huge">29</div>
+							  	<div class="huge">
+							  		<?php
+							  			$count_tatca = DB::table('don_hang')->count('madh');
+							  			echo $count_tatca;
+							  		?>
+							  	</div>
 							</div>
 						  </div>
 						  <a href="{{asset('quanli/ql-donhang/tatca-donhang')}}">
