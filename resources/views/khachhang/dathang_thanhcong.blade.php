@@ -47,18 +47,22 @@
 		<h3><span class="fa fa-check-circle"></span>&nbsp;&nbsp;ĐẶT HÀNG THÀNH CÔNG</h3>
 		<p>Chào <label class="label-ten">
 			<?php
-				if(isset($_SESSION['makh'])){
-					$kh = DB::table('khach_hang')->where('makh',$_SESSION['makh'])->first();
+				$kh = DB::table('khach_hang')->where('makh',$_SESSION['makh'])->first();
 					echo $kh->tenkh;
-				}
 			?>
 		,</label></p>
 		<p>
 			Quý khách vừa đặt thành công, mã đơn hàng của quý khách là: 
 			<label class="label-ma">
 				<?php
-					if(isset($_SESSION['madh'])){
-						echo $_SESSION['madh'];
+					$ct = DB::table('don_hang as dh')
+							->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
+							->where('dh.makh', $_SESSION['makh'])
+							->select('dh.madh')
+							->distinct()
+							->get();
+					foreach ($ct as $val) {
+						echo $val->madh.', ';
 					}
 				?>
 			.</label>
@@ -75,6 +79,8 @@
 		</div>
 	</div>
 
-
+	<?php
+		unset($_SESSION['makh'])
+	?>
 
 @stop

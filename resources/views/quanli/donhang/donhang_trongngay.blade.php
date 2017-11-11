@@ -34,6 +34,7 @@
 				        <th class="guiden">Thông tin giao hàng</th>
 				        <th>Tên sản phẩm</th>
 				        <th>Hình thức thanh toán</th>
+				        <th>Nhà bán hàng</th>
 				        <th>Tổng tiền</th>
 				        <th>Trạng thái</th>	
 				        <th>Tình trạng</th>
@@ -67,7 +68,6 @@
 													//Chi tiết đơn hàng
 									        		$ctdh = DB::table('chitiet_donhang as ct')
 									        					->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
-									        					->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
 									        					->where('ct.madh',$val->madh)
 									        					->get();
 									        		foreach ($ctdh as $valct) { 
@@ -82,7 +82,6 @@
 										        					if(strtotime($val->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($val->ngaydat) <= strtotime($valkm->ngaykt)){ ?>
 
 										        						<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau),0,'.','.')}}
-										        						 x {{$valct->tengianhang}}
 						        										<br>
 
 										        					<?php break; } else{
@@ -91,12 +90,10 @@
 										        				}
 										        				if($t == count($km)){ ?>
 										        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
-										        					 x {{$valct->tengianhang}}
 						        									<br>
 										        				<?php }
 										        			}else{ ?>
 										        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
-										        				 x {{$valct->tengianhang}}
 						        								<br>
 										        			<?php }
 									        		?>
@@ -109,6 +106,21 @@
 									        		echo $ht_thanhtoan->tenhttt;
 									        	?>
 									        </td>
+									        <td>
+										       	<?php						        		
+													//Chi tiết đơn hàng
+										       		$ctdh = DB::table('chitiet_donhang as ct')
+										    				->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+										       				->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
+										        			->where('ct.madh',$val->madh)
+										        			->select('nb.tengianhang')
+										        			->distinct()
+										        			->get();
+										        	foreach ($ctdh as $valct) {
+										        		echo $valct->tengianhang;
+										        	}
+										        ?>
+										    </td>
 									        <td class="tongtien">{{number_format($val->tongtien,0,'.','.')}}</td>
 									        <td>
 									        	@if($val->trangthai == 0)

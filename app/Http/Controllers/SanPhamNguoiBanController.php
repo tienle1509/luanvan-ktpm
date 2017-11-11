@@ -27,6 +27,7 @@ class SanPhamNguoiBanController extends Controller
 		$list_spMoi = DB::table('san_pham as sp')
 						->join('danhmuc_sanpham as dm','dm.madm','=','sp.madm')
 						->where('sp.trangthai',0)->where('sp.manb', $manguoiban)
+						->orderBy('sp.masp', 'desc')
 						->paginate(10); //Phân trang 
 				
 		$num_masp = DB::table('san_pham')->where('trangthai',0)->where('manb',$manguoiban)->count('masp');
@@ -195,6 +196,7 @@ class SanPhamNguoiBanController extends Controller
 							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 							->where('sp.trangthai',0)
 							->where('sp.manb', $_SESSION['manb'])
+							->orderBy('sp.masp', 'desc')
 							->paginate(10);
 
 		return view('nguoiban.sanpham.sanpham_choduyet')->with('list_choduyet', $list_choduyet);
@@ -209,12 +211,14 @@ class SanPhamNguoiBanController extends Controller
 							->where('sp.soluong',0)
 							->where('sp.trangthai',1)
 							->where('sp.manb',$_SESSION['manb'])
+							->orderBy('sp.masp', 'desc')
 							->paginate(10);
 
 		$list_khuyenmai = DB::table('khuyen_mai as km')
 							->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 							->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
 							->where('sp.manb', $_SESSION['manb'])
+							->orderBy('sp.masp', 'desc')
 							->get();
 							
 		$masp_khuyenmai = array();
@@ -275,12 +279,14 @@ class SanPhamNguoiBanController extends Controller
 		$list_tatca = DB::table('san_pham as sp')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 						->where('sp.manb',$_SESSION['manb'])
+						->orderBy('sp.masp', 'desc')
 						->get();
 		
 		$list_khuyenmai = DB::table('khuyen_mai as km')
 							->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 							->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
 							->where('sp.manb', $_SESSION['manb'])
+							->orderBy('sp.masp', 'desc')
 							->get();
 		$masp_khuyenmai = array();
 		foreach ($list_khuyenmai as $val) {

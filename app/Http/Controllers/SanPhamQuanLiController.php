@@ -14,6 +14,7 @@ class SanPhamQuanLiController extends Controller
     	$list_spmoi = DB::table('san_pham as sp')
     					->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
     					->where('sp.trangthai',0)
+    					->orderBy('sp.masp', 'desc')
     					->paginate(10); //Phân trang
 
     	return view('quanli.sanpham.sanpham_home')->with('list_spmoi', $list_spmoi);
@@ -24,6 +25,7 @@ class SanPhamQuanLiController extends Controller
 		$list_duyetsp = DB::table('san_pham as sp')
 							->join('nguoi_ban as nb', 'nb.manb', '=','sp.manb')
 							->where('sp.trangthai',0)
+							->orderBy('sp.masp', 'desc')
 							->paginate(10);
 
 		return view('quanli.sanpham.duyet_sanpham')->with('list_duyetsp',$list_duyetsp);
@@ -36,6 +38,7 @@ class SanPhamQuanLiController extends Controller
 		$list_all = DB::table('san_pham as sp')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 						->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
+						->orderBy('sp.masp', 'desc')
 						->paginate(10);
 
 		$list_khuyenmai = DB::table('khuyen_mai as km')

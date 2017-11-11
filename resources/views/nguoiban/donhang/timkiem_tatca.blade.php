@@ -57,7 +57,7 @@
 
 				<!-- Tìm kiếm theo tên khách hàng, mã đơn hàng -->
 				@if(isset($result_arr))
-					<div style="margin-top: 10px; font-size: 15px;">Tìm thấy : <b>{{count($result_arr)}}</b> sản phẩm</div>
+					<div style="margin-top: 10px; font-size: 15px;">Tìm thấy : <b>{{count($result_arr)}}</b> đơn hàng</div>
 
 
 					@if(count($result_arr) != 0)
@@ -100,7 +100,7 @@
 										       				->where('ct.madh',$dh_theoma->madh)
 										       				->where('sp.manb', $_SESSION['manb'])
 										       				->get();
-										       		$thanhtien = 0;
+
 										       		foreach ($ctdh as $valct) { 
 										       			//Kiểm tra sản phẩm có khuyến mãi không
 										       				$km = DB::table('khuyen_mai as km')
@@ -116,7 +116,6 @@
 							        									<br>
 
 										        					<?php 
-										        						$thanhtien += $valct->soluongct*($valct->dongia-$valct->dongia*0.01*$valkm->chietkhau);
 										        					break; } else{
 										        						$t +=1;
 										        					}
@@ -125,13 +124,11 @@
 										        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 							        								<br>
 										        				<?php 
-										        					$thanhtien += $valct->soluongct*$valct->dongia;
 										        				}
 										        			}else{ ?>
 										        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 							        							<br>
 										        			<?php 
-										        			$thanhtien += $valct->soluongct*$valct->dongia;
 										        		}
 										       		?>
 										       		<?php }
@@ -143,19 +140,7 @@
 											    	echo $ht_thanhtoan->tenhttt;
 											    ?>
 									        </td>				        			        
-									        <td class="tongtien">
-									        	<?php						        		
-													if($thanhtien >= 300000){
-														echo number_format($thanhtien,0,'.','.');
-													}
-										        	else{
-										        		if($dh_theoma->tongtien-27500 >= 300000)
-										        			echo number_format($thanhtien,0,'.','.');
-										        		else
-										        			echo number_format($dh_theoma->tongtien,0,'.','.');
-										        	}
-								        		?>
-									        </td>
+									        <td class="tongtien">{{number_format($dh_theoma->tongtien,0,'.','.')}}</td>
 									        <td class="tinhtrangdh">
 									        	@if($dh_theoma->mattdh == 1)
 											       	<label class="label label-warning">Đang xử lí</label>
@@ -229,7 +214,7 @@
 										       				->where('ct.madh',$dh_theoma->madh)
 										       				->where('sp.manb', $_SESSION['manb'])
 										       				->get();
-										       		$thanhtien = 0;
+										       		
 										       		foreach ($ctdh as $valct) { 
 										       			//Kiểm tra sản phẩm có khuyến mãi không
 										       				$km = DB::table('khuyen_mai as km')
@@ -245,7 +230,6 @@
 							        									<br>
 
 										        					<?php 
-										        						$thanhtien += $valct->soluongct*($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau));
 										        					break; } else{
 										        						$t +=1;
 										        					}
@@ -254,13 +238,11 @@
 										        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 							        								<br>
 										        				<?php 
-										        					$thanhtien += $valct->soluongct*$valct->dongia;
 										        				}
 										        			}else{ ?>
 										        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 							        							<br>
 										        			<?php 
-										        			$thanhtien += $valct->soluongct*$valct->dongia;
 										        		}
 										       		?>
 										       		<?php }
@@ -272,19 +254,7 @@
 											    	echo $ht_thanhtoan->tenhttt;
 											    ?>
 									        </td>				        			        
-									        <td class="tongtien">
-									        	<?php						        		
-													if($thanhtien >= 300000){
-														echo number_format($thanhtien,0,'.','.');
-													}
-										        	else{
-										        		if($dh_theoma->tongtien-27500 >= 300000)
-										        			echo number_format($thanhtien,0,'.','.');
-										        		else
-										        			echo number_format($dh_theoma->tongtien,0,'.','.');
-										        	}
-								        		?>
-									        </td>
+									        <td class="tongtien">{{number_format($dh_theoma->tongtien,0,'.','.')}}</td>
 									        <td class="tinhtrangdh">
 									        	@if($dh_theoma->mattdh == 1)
 											       	<label class="label label-warning">Đang xử lí</label>

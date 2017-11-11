@@ -126,12 +126,24 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	Route::post('sua-thongtin', ['uses'=>'EditProfileNguoiBanController@postSuaThongTin']);
 	Route::post('sua-taikhoan', ['uses'=>'EditProfileNguoiBanController@postSuaTaiKhoan']);
 
+	//Thống kê doanh thu bán hàng
+	Route::get('thongke', ['uses'=>'ThongKeNguoiBanController@getThongKe']);
+
 	//Quản lí đơn hàng
 	Route::get('donhang',['uses'=>'DonHangNguoiBanController@getHomeDonHang']);
 	Route::group(['prefix'=>'donhang'], function(){
 		Route::get('tatca-donhang', ['uses'=>'DonHangNguoiBanController@getTatCaDonHang']);
 		Route::get('timkiem-tatca', ['uses'=>'DonHangNguoiBanController@getTimKiemTatCaDH']);
 		Route::get('chitiet-donhang/{madh}', ['uses'=>'DonHangNguoiBanController@getChiTietDonHang']);
+		Route::get('donhang-trongngay', ['uses'=>'DonHangNguoiBanController@getDonHangTrongNgay']);
+		Route::get('donhang-dangxuli', ['uses'=>'DonHangNguoiBanController@getDonHangDangXuLi']);
+		Route::get('timkiem-dhdangxuli', ['uses'=>'DonHangNguoiBanController@getTimKiemDHDangXuLi']);
+		Route::get('xoa-donhang', ['uses'=>'CapNhatDonHangController@getXoaDonHang']);
+		Route::get('capnhat-donhang', ['uses'=>'CapNhatDonHangController@getCapNhatDonHang']);
+		Route::get('donhang-danggiaodi', ['uses'=>'DonHangNguoiBanController@getDonHangDangGiao']);
+		Route::get('timkiem-danggiao', ['uses'=>'DonHangNguoiBanController@getTimKiemDangGiao']);
+		Route::get('donhang-thatbai', ['uses'=>'DonHangNguoiBanController@getDonHangThatBai']);
+		Route::get('donhang-dagiao', ['uses'=>'DonHangNguoiBanController@getDonHangDaGiao']);
 	});
 });
 
@@ -143,25 +155,6 @@ Route::group(['prefix'=>'nguoiban'], function(){
 	Route::group(['prefix'=>'ql-sanpham'], function(){		
 		Route::get('sanpham-banchay', function() {
 			return view('nguoiban.sanpham.sanpham_banchay');
-		});
-	});
-
-	//Quản lí đơn hàng
-	Route::group(['prefix'=>'donhang'], function(){
-		Route::get('donhang-trongngay', function(){
-			return view('nguoiban.donhang.donhang_trongngay');
-		});
-		Route::get('donhang-dangxuli', function(){
-			return view('nguoiban.donhang.donhang_dangxuli');
-		});
-		Route::get('donhang-danggiaodi', function(){
-			return view('nguoiban.donhang.donhang_danggiaodi');
-		});
-		Route::get('donhang-thatbai', function(){
-			return view('nguoiban.donhang.donhang_thatbai');
-		});
-		Route::get('donhang-dagiao', function(){
-			return view('nguoiban.donhang.donhang_dagiao');
 		});
 	});
 });
@@ -207,9 +200,6 @@ Route::get('demo', function(){
 
 	
 	echo 'The time is ' . date('Y-m-d H:i:s');
-});
-Route::get('demo1', function(){
-	return view('khachhang.demo');
 });
 
 

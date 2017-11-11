@@ -343,17 +343,6 @@
 	font-weight: normal;
 }
 
-.detailOrderRow1 {
-	font-size: 14px;
-	margin-bottom: -30px;
-	margin-top: -5px;
-}
-
-.detailOrderRow1 span {
-	font-size: 18px;
-	color: #5D5D5D;
-}
-
 #table-detailOrder .img-detailOrder {
 	width: 12%;
 }
@@ -382,14 +371,6 @@
 	width: 10%;
 }
 
-.tongtien-detailOrder {
-	font-size: 15px;
-}
-
-.tongtien-detailOrder b {
-	color: red;
-}
-
 .detailOrderRow2 {
 	margin-top: 50px;
 	margin-bottom: 50px;
@@ -399,9 +380,6 @@
 	text-decoration: none;
 	width: 200px;
 }
-
-
-
 
 /* Quản lí khuyến mãi*/
 .panel-promotion {

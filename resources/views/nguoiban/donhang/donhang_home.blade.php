@@ -35,10 +35,9 @@
 							        		$ctdh = DB::table('chitiet_donhang as ct')
 							        					->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 							        					->where('ct.madh',$val->madh)
-							        					->where('sp.manb', $_SESSION['manb'])
+							        					->where('ct.manb', $_SESSION['manb'])
 							        					->get();
 
-							        		$thanhtien = 0;
 							        		foreach ($ctdh as $valct) { 
 							        			//Kiểm tra sản phẩm có khuyến mãi không
 							        				$km = DB::table('khuyen_mai as km')
@@ -54,7 +53,6 @@
 				        										<br>
 
 								        					<?php 
-								        						$thanhtien += $valct->soluongct*($valct->dongia-$valct->dongia*0.01*$valkm->chietkhau);
 								        					break; } else{
 								        						$t +=1;
 								        					}
@@ -63,15 +61,13 @@
 								        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 				        									<br>
 								        				<?php 
-								        					$thanhtien += $valct->soluongct*$valct->dongia;
 								        				}
 								        			}else{ ?>
 								        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 				        								<br>
 								        			<?php 
-								        				$thanhtien += $valct->soluongct*$valct->dongia;
 								        			}
-							        		?>
+							        			?>
 							        		<?php }
 							        	?>
 							        </td>
@@ -81,19 +77,7 @@
 							        		echo $ht_thanhtoan->tenhttt;
 							        	?>
 							        </td>
-							        <td class="tongtien">
-							        	<?php						        		
-											if($thanhtien >= 300000){
-												echo number_format($thanhtien,0,'.','.');
-											}
-								        	else{
-								        		if($val->tongtien-27500 >= 300000)
-								        			echo number_format($thanhtien,0,'.','.');
-								        		else
-								        			echo number_format($val->tongtien,0,'.','.');
-								        	}
-							        	?>
-							        </td>
+							        <td class="tongtien">{{number_format($val->tongtien,0,'.','.')}}</td>
 							        <td class="tinhtrangdh">
 							        	<label class="label label-warning">Đang xử lí</label>
 							        </td>	

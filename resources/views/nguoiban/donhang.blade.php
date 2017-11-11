@@ -31,9 +31,8 @@
 							  			<?php
 							  				$tatca_dh = DB::table('don_hang as dh')
 							  							->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
-							  							->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 							  							->where('dh.trangthai',1)
-							  							->where('sp.manb',$_SESSION['manb'])
+							  							->where('ct.manb',$_SESSION['manb'])
 							  							->distinct()
 							  							->count('dh.madh');
 							  				echo $tatca_dh;
@@ -76,10 +75,9 @@
                                         $count_trongngay = 0;
                                         $donhang = DB::table('don_hang as dh')
                                         			->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
-                                        			->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
                                         			->where('dh.trangthai',1)
-                                        			->where('sp.manb', $_SESSION['manb'])
-                                        			->select('dh.ngaydat')
+                                        			->where('ct.manb', $_SESSION['manb'])
+                                        			->select('dh.ngaydat', 'dh.madh')
                                         			->distinct()
                                         			->get();
                                         foreach ($donhang as $val) {
@@ -122,10 +120,9 @@
 							  			<?php
 							  				$donhang_xl = DB::table('don_hang as dh')
 							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
-							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 							  								->where('dh.trangthai',1)
 							  								->where('dh.mattdh',1)
-							  								->where('sp.manb',$_SESSION['manb'])
+							  								->where('ct.manb',$_SESSION['manb'])
 							  								->distinct()
 							  								->count('dh.madh');
 							  				echo $donhang_xl;
@@ -164,10 +161,9 @@
 							  			<?php
 							  				$donhang_danggiao = DB::table('don_hang as dh')
 							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
-							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 							  								->where('dh.trangthai',1)
 							  								->where('dh.mattdh',2)
-							  								->where('sp.manb',$_SESSION['manb'])
+							  								->where('ct.manb',$_SESSION['manb'])
 							  								->distinct()
 							  								->count('dh.madh');
 							  				echo $donhang_danggiao;
@@ -207,10 +203,9 @@
 							  			<?php
 							  				$donhang_thatbai = DB::table('don_hang as dh')
 							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
-							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 							  								->where('dh.trangthai',1)
 							  								->where('dh.mattdh',3)
-							  								->where('sp.manb',$_SESSION['manb'])
+							  								->where('ct.manb',$_SESSION['manb'])
 							  								->distinct()
 							  								->count('dh.madh');
 							  				echo $donhang_thatbai;
@@ -248,10 +243,9 @@
 							  			<?php
 							  				$donhang_thanhcong = DB::table('don_hang as dh')
 							  								->join('chitiet_donhang as ct', 'ct.madh', '=', 'dh.madh')
-							  								->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 							  								->where('dh.trangthai',1)
 							  								->where('dh.mattdh',4)
-							  								->where('sp.manb',$_SESSION['manb'])
+							  								->where('ct.manb',$_SESSION['manb'])
 							  								->distinct()
 							  								->count('dh.madh');
 							  				echo $donhang_thanhcong;

@@ -61,6 +61,7 @@ $(document).ready(function(){
 	    			var rowid = '';
 	    			var masp = '';
 	    			var donhang = '';
+	    			var count_manb = '';
 
 if(result.soluong == 0){
 ndGioHang = '<div class="modal-footer"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><br><div class="text-center" style="margin-bottom: 40px;"><img src="{{asset('public/img/Cart.png')}}"><h4><b>Giỏ hàng của bạn hiện đang trống</b></h4><p>Hãy nhanh tay sở hữu những sản phẩm yêu thích của bạn</p><button type="button" class="btn btn-danger" data-dismiss="modal">Tiếp tục mua sắm&nbsp;&nbsp;<span class="fa fa-long-arrow-right"></span></button></div></div>';
@@ -83,6 +84,7 @@ setTimeout(function(){
 	    gia = result.content[i]['price'];
 	    soluong = result.content[i]['qty']
 	    tongtien = result.tongtien;
+	    count_manb = result.count_manb;
 
 box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 sl-cart" id="'+ masp +'"><input type="number" id="'+ rowid +'" class="inputSL" min="1" max="100" value="'+ soluong +'"></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
 	
@@ -93,14 +95,14 @@ donhang += '<div class="row chitietsp"><div class="col-md-3 col-sm-3"><img src="
 
 ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div id="erroCart" class="alert alert-danger hide" style="margin:15px;"></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><form action="{{url("nhap-thongtin-donhang")}}" method="get"><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></form></div></div>';
 
-if(tongtien > 300000){
-	$('.thanhtien').html(tongtien.toLocaleString('de-DE'));
+if(count_manb == 0){
+	$('.thanhtien').html(tongtien.toLocaleString('de-DE')+ ' đ');
 	$('.gia-ship').html('Miễn phí');
 }else{	
-	$('.thanhtien').html((tongtien+<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
-	$('.gia-ship').html((<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
+	$('.thanhtien').html((tongtien+(<?php echo $phiship->giacuoc; ?>)*count_manb).toLocaleString('de-DE')+ ' đ');
+	$('.gia-ship').html((<?php echo $phiship->giacuoc; ?>*count_manb).toLocaleString('de-DE'));
 }
-$('.label-gia').html(tongtien.toLocaleString('de-DE'));
+$('.label-gia').html(tongtien.toLocaleString('de-DE') + ' đ');
 $('.sldonhang').html(result.soluong);
 $('.content-donhang').html(donhang);
 $('#ndGioHang').html(ndGioHang); 
@@ -152,6 +154,7 @@ $(document).ready(function(){
 	    			var ndGioHang = '';
 	    			var rowid = '';
 	    			var masp = '';
+	    			var count_manb = '';
 
 	    			//Panel đơn hàng
 	    			var donhang = '';
@@ -165,6 +168,7 @@ for (var i in result.content) {
 	    gia = result.content[i]['price'];
 	    soluong = result.content[i]['qty']
 	    tongtien = result.tongtien;
+	    count_manb = result.count_manb;
 
 box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 sl-cart" id="'+ masp +'"><input type="number" id="'+ rowid +'" class="inputSL" min="1" max="100" value="'+ soluong +'"></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
 	
@@ -176,14 +180,14 @@ donhang += '<div class="row chitietsp"><div class="col-md-3 col-sm-3"><img src="
 
 ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div id="erroCart" class="alert alert-danger hide" style="margin:15px;"></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><form action="{{url("nhap-thongtin-donhang")}}" method="get"><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></form></div></div>';
 
-if(tongtien > 300000){
-	$('.thanhtien').html(tongtien.toLocaleString('de-DE'));
+if(count_manb == 0){
+	$('.thanhtien').html(tongtien.toLocaleString('de-DE')+' đ');
 	$('.gia-ship').html('Miễn phí');
 }else{	
-	$('.thanhtien').html((tongtien+<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
-	$('.gia-ship').html((<?php echo $phiship->giacuoc; ?>).toLocaleString('de-DE'));
+	$('.thanhtien').html((tongtien+(<?php echo $phiship->giacuoc; ?>)*count_manb).toLocaleString('de-DE')+ ' đ');
+	$('.gia-ship').html((<?php echo $phiship->giacuoc; ?>*count_manb).toLocaleString('de-DE'));
 }
-$('.label-gia').html(tongtien.toLocaleString('de-DE'));
+$('.label-gia').html(tongtien.toLocaleString('de-DE')+' đ');
 $('.sldonhang').html(result.soluong);
 $('.content-donhang').html(donhang);
 $('#ndGioHang').html(ndGioHang); 
@@ -442,7 +446,7 @@ $('#ndGioHang').html(ndGioHang);
 					<div class="label-gia">
 						{{number_format($tongtien,0,'.','.')}} đ
 					</div>
-					@if($tongtien > 300000)
+					@if($count_manb == 0)
 						<div class="label-phi gia-ship">Miễn phí</div>
 					@else
 						<div class="label-phi gia-ship">
@@ -451,7 +455,7 @@ $('#ndGioHang').html(ndGioHang);
 											->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
 											->where('vc.matinh', $_SESSION['matinh'])
 											->first();
-								echo number_format($phiship->giacuoc,0, '.','.');
+								echo number_format($phiship->giacuoc*$count_manb,0, '.','.');
 							?>
 						</div>
 					@endif
@@ -463,11 +467,11 @@ $('#ndGioHang').html(ndGioHang);
 						<label>Tổng tiền</label>
 					</div>
 					<div class="col-md-7 col-sm-7 text-right">
-						@if($tongtien > 300000)
+						@if($count_manb == 0)
 							<div class="thanhtien">{{number_format($tongtien,0,'.','.')}} đ</div>
 						@else
 							<div class="thanhtien">
-								{{number_format($tongtien+$phiship->giacuoc,0,'.','.')}} đ
+								{{number_format($tongtien+($phiship->giacuoc*$count_manb),0,'.','.')}} đ
 							</div>
 						@endif
 					</div>

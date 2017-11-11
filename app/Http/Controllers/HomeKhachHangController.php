@@ -79,8 +79,6 @@ class HomeKhachHangController extends Controller
 		}
 	}
 
-
-
 /*---------------------------Chi tiết sản phẩm-------------------------------------*/
 	public function getChiTietSanPham($masp){
 		$ngayht = Carbon::now();
@@ -88,6 +86,7 @@ class HomeKhachHangController extends Controller
 		$chitietsp = DB::table('san_pham as sp')
 						->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+						->join('chitiet_donhang as ct', 'ct.masp', '=', 'sp.masp')
 						->where('sp.masp', $masp)
 						->first();
 
@@ -98,12 +97,41 @@ class HomeKhachHangController extends Controller
 
 /*---------------------------Nhập thông tin đặt hàng-------------------------------*/
 	public function getNhapThongTin(){
+		$ngayht = Carbon::now();
+
 		//Thay đổi khi sử dụng script
 		$content = Cart::content();
 		$sl = Cart::count();
 		$tongtien = Cart::total();
 
-		return view('khachhang.nhap_thongtin_donhang', compact('content', 'sl', 'tongtien'));
+		//Lấy mã từng nhà bán hàng
+		$arr_manb = array();
+		foreach ($content as $item) {
+			$sanpham = DB::table('san_pham')->where('masp',$item['id'])->first();
+			if(!in_array($sanpham->manb, $arr_manb)){
+				$arr_manb[] = $sanpham->manb;
+			}
+		}
+
+		//Lấy tổng tiền theo từng nhà bán hàng
+		$count_manb = 0; //Đếm số nhà bán hàng có đơn hàng lớn hơn 300000		
+		foreach ($arr_manb as $val) {
+			$tongtien_manb = 0;
+			foreach ($content as $item) {
+				$sp = DB::table('san_pham')
+						->where('masp',$item['id'])
+						->where('manb',$val)
+						->get();				
+				foreach ($sp as $valsp) {
+					$tongtien_manb += $item['qty']*$item['price'];
+				}
+			}
+			if($tongtien_manb < 300000){
+				$count_manb += 1;
+			}
+		}
+
+		return view('khachhang.nhap_thongtin_donhang', compact('content', 'sl', 'tongtien', 'count_manb'));
 	}
 
 
@@ -161,6 +189,8 @@ class HomeKhachHangController extends Controller
 
 /*---------------------------Hình thức thanh toán-------------------------------*/
 	public function getHinhThucThanhToan(){
+		$ngayht = Carbon::now();
+
 		$content = Cart::content();
 		$sl = Cart::count();
 		$tongtien = Cart::total();
@@ -169,7 +199,35 @@ class HomeKhachHangController extends Controller
 						->where('vc.matinh',$_SESSION['matinh'])
 						->first();
 
-		return view('khachhang.hinhthucthanhtoan', compact('content', 'sl', 'tongtien','phiship'));
+		//Lấy mã từng nhà bán hàng
+		$arr_manb = array();
+		foreach ($content as $item) {
+			$sanpham = DB::table('san_pham')->where('masp',$item['id'])->first();
+			if(!in_array($sanpham->manb, $arr_manb)){
+				$arr_manb[] = $sanpham->manb;
+			}
+		}
+
+		//Lấy tổng tiền theo từng nhà bán hàng
+		$count_manb = 0; //Đếm số nhà bán hàng có đơn hàng lớn hơn 300000		
+		foreach ($arr_manb as $val) {
+			$tongtien_manb = 0;
+			foreach ($content as $item) {
+				$sp = DB::table('san_pham')
+						->where('masp',$item['id'])
+						->where('manb',$val)
+						->get();				
+				foreach ($sp as $valsp) {
+					$tongtien_manb += $item['qty']*$item['price'];
+				}
+			}
+			if($tongtien_manb < 300000){
+				$count_manb += 1;
+			}
+		}
+
+
+		return view('khachhang.hinhthucthanhtoan', compact('content', 'sl', 'tongtien','phiship', 'count_manb'));
 	}
 
 /*---------------------------Mã đơn hàng tự tăng-------------------------------*/
@@ -221,107 +279,20 @@ class HomeKhachHangController extends Controller
 
 /*---------------------------Đặt hàng -------------------------------*/
 	public function postDatHang(Request $request){
-		$httt = $request->httt;
-		$makh = $this->maKhachHang();
-		$madh = $this->maDonHang();
+		$ngayht = Carbon::now();
+		$httt = $request->httt;	
+		$makh = $this->maKhachHang();	
 
-		if($httt == 1){
-				//Thêm thông tin vô bảng khách hàng
-				$kh = new KhachHang();
-				$kh->makh = $makh;
-				$kh->tennguoidung = '';
-				$kh->tenkh = $_SESSION['tenkh'];
-				$kh->email = $_SESSION['mailkh'];
-				$kh->matkhau = '';
-				$kh->sodienthoai = $_SESSION['sdt'];
-				$kh->diachithanhtoan = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
-				$kh->diachigiaohang = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
-				$kh->thanhvien = 0;
-				$kh->save();
-
-				if(Cart::total() > 300000){
-					$tongtien = Cart::total();
-				}else{
-					$phiship = DB::table('phi_vanchuyen as vc')
-									->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
-									->where('vc.matinh', $_SESSION['matinh'])
-									->first();
-					$tongtien = Cart::total()+$phiship->giacuoc;
+		if($httt == 1){			
+			$content = Cart::content();
+			//Lấy mã từng nhà bán hàng
+			$arr_manb = array();
+			foreach ($content as $item) {
+				$sanpham = DB::table('san_pham')->where('masp',$item['id'])->first();
+				if(!in_array($sanpham->manb, $arr_manb)){
+					$arr_manb[] = $sanpham->manb;
 				}
-
-				//Thêm thông tin vô bảng đơn hàng
-				$dh = new DonHang();
-				$dh->madh = $madh;
-				$dh->ngaydat = date('Y-m-d',strtotime(Carbon::now()));
-				$dh->tongtien = $tongtien;
-				$dh->trangthai = 0;
-				$dh->makh =$makh;
-				$dh->maql = '';
-				$dh->mattdh = 0;
-				$dh->mahttt = 1;
-				$dh->save();
-
-				$con = Cart::content();
-				//Thêm vô bảng chi tiết đơn hàng					
-				foreach ($con as $item) {
-					$ct = new ChiTietDonHang();	
-					$ct->madh = $madh;
-					$ct->masp = $item['id'];
-					$ct->soluongct = $item['qty'];
-					$ct->save();
-				}
-
-				//Giảm số lượng sản phẩm xuống
-				foreach ($con as $item) {
-					$sp = DB::table('san_pham')->where('masp',$item['id'])->first();
-
-					DB::table('san_pham')->where('masp',$item['id'])
-										->update(['soluong'=>$sp->soluong-$item['qty']]);
-				}
-
-				//Xóa session
-				unset($_SESSION['tenkh']);
-				unset($_SESSION['sdt']);
-				unset($_SESSION['mailkh']);
-				unset($_SESSION['tinh']);
-				unset($_SESSION['diachi']);
-				unset($_SESSION['tentinh']);
-				unset($_SESSION['matinh']);
-				unset($_SESSION['content']);
-				unset($_SESSION['soluong']);
-				unset($_SESSION['tongtien']);
-				Cart::destroy();
-
-				$_SESSION['makh'] = $makh;
-				$_SESSION['madh'] = $madh;
-				return redirect('dathang-thanhcong');
-			} else {
-				return redirect('thanhtoan-tructuyen');
 			}
-	}
-
-/*---------------------------Thanh toán trực tuyến-------------------------------*/
-	public function postThanhToanTrucTuyen(Request $request){
-		$makh = $this->maKhachHang();
-		$madh = $this->maDonHang();
-		if(Cart::total() > 300000){
-			$tongtien = Cart::total();
-		}else{
-			$phiship = DB::table('phi_vanchuyen as vc')
-						->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
-						->where('vc.matinh', $_SESSION['matinh'])
-						->first();
-			$tongtien = Cart::total()+$phiship->giacuoc;
-		}
-		
-		\Stripe\Stripe::setApiKey("sk_test_5Dk4nOpbO6NiOkPiSzoXGv3X");
-		try {
-			\Stripe\Charge::create(array(
-  				"amount" => number_format(($tongtien/22714.34),2)*100,
-  				"currency" => "usd",
-  				"source" => $request->stripeToken, // obtained with Stripe.js
-  				"description" => $_SESSION['mailkh']
-			));
 
 			//Thêm thông tin vô bảng khách hàng
 			$kh = new KhachHang();
@@ -336,37 +307,67 @@ class HomeKhachHangController extends Controller
 			$kh->thanhvien = 0;
 			$kh->save();
 
-			//Thêm thông tin vô bảng đơn hàng
-			$dh = new DonHang();
-			$dh->madh = $madh;
-			$dh->ngaydat = date('Y-m-d',strtotime(Carbon::now()));
-			$dh->tongtien = $tongtien;
-			$dh->trangthai = 0;
-			$dh->makh =$makh;
-			$dh->maql = '';
-			$dh->mattdh = 0;
-			$dh->mahttt = 2;
-			$dh->save();
+			//Mỗi nhà bán hàng là 1 đơn hàng      
+            foreach ($arr_manb as $val) {               	
+				$madh = $this->maDonHang();               	
+				
+				$tongtien_manb = 0;
+                foreach ($content as $item) {
+                    $sp = DB::table('san_pham')
+                            ->where('masp',$item['id'])
+                            ->where('manb',$val)
+                            ->get();                
+                    foreach ($sp as $valsp) {
+                       $tongtien_manb += $item['qty']*$item['price'];
+                    }
+                }                
 
-			$con = Cart::content();
-			//Thêm vô bảng chi tiết đơn hàng					
-			foreach ($con as $item) {
-				$ct = new ChiTietDonHang();	
-				$ct->madh = $madh;
-				$ct->masp = $item['id'];
-				$ct->soluongct = $item['qty'];
-				$ct->save();
-			}	
+                if($tongtien_manb >= 300000){
+                	$tongtien_manb = $tongtien_manb;
+                }else{
+                	$phiship = DB::table('phi_vanchuyen as vc')
+								->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
+								->where('vc.matinh', $_SESSION['matinh'])
+								->first();
+					$tongtien_manb = $tongtien_manb + $phiship->giacuoc;
+                }
 
-			//Giảm số lượng sản phẩm xuống
-			foreach ($con as $item) {
-				$sp = DB::table('san_pham')->where('masp',$item['id'])->first();
+                //Thêm thông tin vô bảng đơn hàng
+				$dh = new DonHang();
+				$dh->madh = $madh;
+				$dh->ngaydat = date('Y-m-d',strtotime(Carbon::now()));
+				$dh->tongtien = $tongtien_manb;
+				$dh->trangthai = 0;
+				$dh->makh =$makh;
+				$dh->maql = '';
+				$dh->mattdh = 0;
+				$dh->mahttt = 1;
+				$dh->save();	
 
-				DB::table('san_pham')->where('masp',$item['id'])
-									->update(['soluong'=>$sp->soluong-$item['qty']]);
-			}
 
-			//Xóa session
+				foreach ($content as $item) {
+                    $sp = DB::table('san_pham')
+                            ->where('masp',$item['id'])
+                            ->where('manb',$val)
+                            ->get();                
+                    foreach ($sp as $valsp) {
+                       	//Thêm vô bảng chi tiết đơn hàng					
+						$ct = new ChiTietDonHang();	
+						$ct->madh = $madh;
+						$ct->masp = $item['id'];
+						$ct->manb = $valsp->manb;
+						$ct->soluongct = $item['qty'];
+						$ct->save();
+
+						//Giảm số lượng sản phẩm xuống
+						DB::table('san_pham')->where('masp',$item['id'])
+							->update(['soluong'=>$valsp->soluong-$item['qty']]);
+                    }
+                }    						
+            }
+
+
+            //Xóa session
 			unset($_SESSION['tenkh']);
 			unset($_SESSION['sdt']);
 			unset($_SESSION['mailkh']);
@@ -380,16 +381,139 @@ class HomeKhachHangController extends Controller
 			Cart::destroy();
 
 			$_SESSION['makh'] = $makh;
-			$_SESSION['madh'] = $madh;
-			return redirect('dathang-thanhcong');
+			return redirect('dathang-thanhcong');	
+		} else {
+			return redirect('thanhtoan-tructuyen');
+		}
+	}
+
+/*---------------------------Thanh toán trực tuyến-------------------------------*/
+	public function postThanhToanTrucTuyen(Request $request){
+		$makh = $this->maKhachHang();
+		
+		$content = Cart::content();
+		//Lấy mã từng nhà bán hàng
+		$arr_manb = array();
+		foreach ($content as $item) {
+			$sanpham = DB::table('san_pham')->where('masp',$item['id'])->first();
+			if(!in_array($sanpham->manb, $arr_manb)){
+				$arr_manb[] = $sanpham->manb;
+			}
+		}
+
+		//Thêm thông tin vô bảng khách hàng
+		$kh = new KhachHang();
+		$kh->makh = $makh;
+		$kh->tennguoidung = '';
+		$kh->tenkh = $_SESSION['tenkh'];
+		$kh->email = $_SESSION['mailkh'];
+		$kh->matkhau = '';
+		$kh->sodienthoai = $_SESSION['sdt'];
+		$kh->diachithanhtoan = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
+		$kh->diachigiaohang = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
+		$kh->thanhvien = 0;
+		$kh->save();
+
+		//Mỗi nhà bán hàng là 1 đơn hàng   
+		$tongtien_tatcadh = 0;   
+        foreach ($arr_manb as $val) {               	
+			$madh = $this->maDonHang();               	
+			
+			$tongtien_manb = 0;
+    		foreach ($content as $item) {
+                $sp = DB::table('san_pham')
+                       ->where('masp',$item['id'])
+                       ->where('manb',$val)
+                       ->get();                
+                foreach ($sp as $valsp) {
+                    $tongtien_manb += $item['qty']*$item['price'];
+                }
+            }                
+
+            if($tongtien_manb >= 300000){
+              	$tongtien_manb = $tongtien_manb;
+              	$tongtien_tatcadh += $tongtien_manb;
+            }else{
+              	$phiship = DB::table('phi_vanchuyen as vc')
+							->join('khu_vuc as kv', 'kv.makv', '=', 'vc.makv')
+							->where('vc.matinh', $_SESSION['matinh'])
+							->first();
+				$tongtien_manb = $tongtien_manb + $phiship->giacuoc;
+				$tongtien_tatcadh += $tongtien_manb;
+            }
+
+            //Thêm thông tin vô bảng đơn hàng
+			$dh = new DonHang();
+			$dh->madh = $madh;
+			$dh->ngaydat = date('Y-m-d',strtotime(Carbon::now()));
+			$dh->tongtien = $tongtien_manb;
+			$dh->trangthai = 0;
+			$dh->makh =$makh;
+			$dh->maql = '';
+			$dh->mattdh = 0;
+			$dh->mahttt = 2;
+			$dh->save();	
+
+
+
+			foreach ($content as $item) {
+                $sp = DB::table('san_pham')
+                        ->where('masp',$item['id'])
+                        ->where('manb',$val)
+                        ->get();                
+                foreach ($sp as $valsp) {
+                  	//Thêm vô bảng chi tiết đơn hàng					
+					$ct = new ChiTietDonHang();	
+					$ct->madh = $madh;
+					$ct->masp = $item['id'];
+					$ct->manb = $valsp->manb;
+					$ct->soluongct = $item['qty'];
+					$ct->save();
+
+					//Giảm số lượng sản phẩm xuống
+					DB::table('san_pham')->where('masp',$item['id'])
+						->update(['soluong'=>$valsp->soluong-$item['qty']]);
+                }
+            }               				
+        }
+
+        \Stripe\Stripe::setApiKey("sk_test_5Dk4nOpbO6NiOkPiSzoXGv3X");
+		try {
+			\Stripe\Charge::create(array(
+	  			"amount" => number_format(($tongtien_tatcadh/22714.34),2)*100,
+	  			"currency" => "usd",
+	  			"source" => $request->stripeToken, // obtained with Stripe.js
+	  			"description" => $_SESSION['mailkh']
+	  		));
 		} catch (Exception $e) {
 			return redirect()->back()->withErrors($e->getMessage());
-		}  
+		} 
+					
+		//Xóa session
+		unset($_SESSION['tenkh']);
+		unset($_SESSION['sdt']);
+		unset($_SESSION['mailkh']);
+		unset($_SESSION['tinh']);
+		unset($_SESSION['diachi']);
+		unset($_SESSION['tentinh']);
+		unset($_SESSION['matinh']);
+		unset($_SESSION['content']);
+		unset($_SESSION['soluong']);
+		unset($_SESSION['tongtien']);
+		Cart::destroy();
+
+		$_SESSION['makh'] = $makh;
+		return redirect('dathang-thanhcong');		 
 	}
 
 
 /*---------------------------Đặt hàng thành công-------------------------------*/
 	public function getDatHangThanhCong(){
+		if(!isset($_SESSION['makh'])){
+			header("Location: http://localhost/luanvan-ktpm/home");	
+			exit;
+		}
+
 		return view('khachhang.dathang_thanhcong');
 	}
 

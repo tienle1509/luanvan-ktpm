@@ -138,7 +138,7 @@
 											        	<img src="{{asset('public/anh-sanpham/'.$all->anh)}}">
 											        </td>
 											        <td class="name-pro">{{$all->tensp}}</td>
-											        <td class="price-pro">{{number_format($all->dongia)}}</td>
+											        <td class="price-pro">{{number_format($all->dongia,0,'.','.')}}</td>
 											        <td>-</td>
 											        <td>
 											        	{{$all->soluong}}	        	

@@ -40,18 +40,17 @@
 			window.location = window.location = "http://localhost/luanvan-ktpm/home";
 		}
 
-
 		$(document).ready(function(){
 			$('#cbxTinh').change(function(){
 				var url = "http://localhost/luanvan-ktpm/chontinh";
 				var matinh = $(this).val();
-				var tongtien = $(this).parent().attr('id');
+				var count_manb = $(this).parent().attr('id');
 
 				$.ajax({
 					url : url,
 					type : "GET",
 					dataType : "JSON",
-					data : {"matinh":matinh, "tongtien":tongtien},
+					data : {"matinh":matinh, "count_manb":count_manb},
 					success : function(result){
 						if(result.success){
 							$('.gia-ship').html(result.phiship.toLocaleString('de-DE'));
@@ -143,72 +142,6 @@
 			}
 		?>		
 
-
-		@if(isset($_SESSION['tenkh']))
-			<div class="panel-diachi col-md-8 col-sm-8">
-				<div class="title-diachi row"><h4><span class="fa fa-map-marker"></span>&nbsp;&nbsp;&nbsp;ĐỊA CHỈ GIAO HÀNG</h4></div>
-				<form id="form-diachi" action="{{url('nhap-thongtin-donhang')}}" class="form-horizontal" method="post">
-
-					<input type="hidden" name="_token" value="{{csrf_token()}}">
-
-				    <div class="form-group">
-				      <label class="control-label col-md-3 col-sm-3">Họ tên: </label>
-				      <div class="col-md-9 col-sm-9">
-				      	<input type="text" class="form-control input-sm" name="txtTen" placeholder="Ví dụ: Nguyễn Văn A" value="{{$_SESSION['tenkh']}}">
-				      	<div class="err">{{$errors->first('txtTen')}}</div>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label class="control-label col-md-3 col-sm-3">Điện thoại:</label>
-				      <div class="col-md-4 col-sm-4">
-				      	<input type="text" class="form-control input-sm" name="txtSDT" placeholder="Ví dụ: 0978592522" value="{{$_SESSION['sdt']}}">
-				      	<div class="err">{{$errors->first('txtSDT')}}</div>
-				      </div>
-				      <div class="col-md-5 col-sm-5">
-				      	<div class="row">Nhân viên giao hàng sẽ liên hệ với SĐT này<br> khi giao hàng</div>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label class="control-label col-md-3 col-sm-3">Email:</label>
-				      <div class="col-md-9 col-sm-9">
-				      	<input type="text" class="form-control input-sm" placeholder="mobilestore@gmail.com" name="txtMail" value="{{$_SESSION['mailkh']}}">
-				      	<div class="err">{{$errors->first('txtMail')}}</div>
-				      </div>
-				    </div>
-				    <div class="form-group">
-				      <label class="control-label col-md-3 col-sm-3">Tỉnh/Thành phố:</label>
-				      <div class="col-md-9 col-sm-9" id="{{$tongtien}}">
-					      <select id="cbxTinh" name="cbxtinh" class="input-sm form-control">
-						    	<option value=""> -- Chọn Tỉnh/Thành phố --</option>
-						    	<?php
-						    		$tinh = DB::table('phi_vanchuyen')->get();
-						    		foreach ($tinh as $val) { 
-						    			if($_SESSION['matinh'] == $val->matinh){
-						    				echo '<option value="'.$val->matinh.'" selected>'.$val->tentinh.'</option>';
-						    			} else{
-						    				echo '<option value="'.$val->matinh.'">'.$val->tentinh.'</option>';
-						    			}						    			
-						    		}
-						    	?>					    	
-						  </select>
-						  <div class="err">{{$errors->first('cbxtinh')}}</div>
-					  </div>
-				    </div>
-				    <div class="form-group">
-				      <label class="control-label col-md-3 col-sm-3">Địa chỉ chi tiết: </label>
-				      <div class="col-md-9 col-sm-9">
-				     	<textarea class="form-control" placeholder=" Ví dụ: số 5, đường 3/2, phường Xuân Khánh, quận Ninh Kiều" rows="2" name="txtDiaChi">
-				     		{{$_SESSION['diachi']}}
-				     	</textarea>
-				     	<div class="err">{{$errors->first('txtDiaChi')}}</div>
-				      </div>
-				    </div>
-				    <div class="text-right">
-				    	<button type="submit" class="btn btn-danger btn-md">TIẾP TỤC&nbsp;&nbsp;<span class="fa fa-long-arrow-right"></span></button>
-				    </div>			    
-				</form>
-			</div> <!-- end panel địa chỉ-->
-		@else
 			<div class="panel-diachi col-md-8 col-sm-8">
 				<div class="title-diachi row"><h4><span class="fa fa-map-marker"></span>&nbsp;&nbsp;&nbsp;ĐỊA CHỈ GIAO HÀNG</h4></div>
 				<form id="form-diachi" action="{{url('nhap-thongtin-donhang')}}" class="form-horizontal" method="post">
@@ -241,7 +174,7 @@
 				    </div>
 				    <div class="form-group">
 				      <label class="control-label col-md-3 col-sm-3">Tỉnh/Thành phố:</label>
-				      <div class="col-md-9 col-sm-9" id="{{$tongtien}}">
+				      <div class="col-md-9 col-sm-9" id="{{$count_manb}}">
 					      <select id="cbxTinh" name="cbxtinh" class="input-sm form-control">
 						    	<option value=""> -- Chọn Tỉnh/Thành phố --</option>
 						    	<?php
@@ -266,7 +199,6 @@
 				    </div>			    
 				</form>
 			</div> <!-- end panel địa chỉ-->
-		@endif
 
 
 		<div class="panel-donhang col-md-4 col-sm-4">
@@ -299,7 +231,7 @@
 				</div>
 				<div class="col-md-7 col-sm-7 text-right">
 					<div class="label-gia">{{number_format($tongtien,0,'.','.')}} đ</div>
-					@if($tongtien > 300000)
+					@if($count_manb == 0)
 						<div class="label-phi gia-ship">Miễn phí</div>
 					@else
 						<div class="label-phi gia-ship">
@@ -314,7 +246,7 @@
 						<label>Tổng tiền</label>
 					</div>
 					<div class="col-md-7 col-sm-7 text-right">
-						@if($tongtien > 300000)
+						@if($count_manb == 0)
 							<div>{{number_format($tongtien,0,'.','.')}} đ</div>
 						@else
 							<div class="thanhtien">

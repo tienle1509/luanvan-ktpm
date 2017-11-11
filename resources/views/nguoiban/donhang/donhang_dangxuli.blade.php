@@ -5,30 +5,76 @@
 
 @section('chitiet')
 
+<script type="text/javascript">
+	//Xóa đơn hàng
+	$(document).ready(function(){
+		$('.btnXoa').click(function(){
+			var url = "http://localhost/luanvan-ktpm/nguoiban/donhang/xoa-donhang";
+			var madh = $(this).closest('tr').find('td:nth-child(1)').text();			
+
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : "JSON",
+				data : {"madh":madh},
+				success : function(result){
+					if(result.success){
+						alert('Xóa đơn hàng thành công !');
+						setTimeout(function(){
+							location.reload();
+						}, 900);
+					}
+				}
+			});
+		});
+	});
+
+
+	//Cập nhật tình trạng đơn hàng
+	$(document).ready(function(){
+		$('.btnCapNhat').click(function(){
+			var url = "http://localhost/luanvan-ktpm/nguoiban/donhang/capnhat-donhang";
+			var mattdh = $(this).closest('tr').find('select[name=selectTTDH]').val();
+			var madh = $(this).closest('tr').find('td:nth-child(1)').text();
+
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : "JSON",
+				data : {"madh":madh, "mattdh":mattdh},
+				success : function(result){
+					if(result.success){
+						alert('Cập nhật tình trạng đơn hàng thành công !');
+						setTimeout(function(){
+							location.reload();
+						}, 900);
+					}
+				}
+			});
+		});
+	});
+
+</script>
+
+
 <h2>Đơn hàng đang xử lí</h2>
+				
+				@if(count($errors) > 0)
+					<div class="alert alert-danger" role="alert">
+						<strong>Lỗi ! </strong> {{$errors->first('txtkey')}}
+					</div>
+				@endif
+
 
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
-						<form id="form-searchOrder" class="form-horizontal" role="form">
-							<div class="col-sm-2 form-group">
-							  	<input type="text" class="form-control" id="" placeholder="Mã đơn hàng">
+						<form id="form-searchOrder" class="form-horizontal" role="form" method="get" action="{{url('nguoiban/donhang/timkiem-dhdangxuli')}}">
+							<div class="col-sm-5 form-group">
+							  	<input type="text" class="form-control" name="txtkey" placeholder="Nhập mã đơn hàng, tên khách hàng cần tìm ...">
 							</div>
-							<div class="col-sm-3">
-							  	<input type="text" class="form-control" id="" placeholder="Tên khách hàng">
+							<div class="col-sm-3 ">
+								<button type="submit" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
 							</div>	
-							<div class="col-sm-3 form-group">
-							  	<div class="input-group">
-							        <input class="form-control" type="text" id="Sdate" name="txtSDate" placeholder="Từ ngày" />
-							        	<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-							    </div>
-							</div>
-							<div class="col-sm-3">
-							  	<div class="input-group">
-							        <input class="form-control" type="text" id="Edate" name="txtEDate" placeholder="Đến ngày" />
-							        	<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-							    </div>
-							</div>				    
-							<button type="button" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
 						</form>
 					</div>
 				</div>
@@ -39,101 +85,106 @@
 				      <tr>
 				        <th>Mã ĐH</th>
 				        <th>Ngày đặt</th>
-				        <th>Ngày giao</th>
 				        <th>Thông tin giao hàng</th>
 				        <th>Tên sản phẩm</th>
 				        <th>Hình thức thanh toán</th>
-				        <th>Tình trạng</th>
-				        <th>Tổng tiền</th>
+				        <th>Tình trạng</th>	
+				        <th>Tổng tiền</th>			        
 				        <th>Thao tác</th>
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr>
-				        <td>123456</td>
-				        <td>12/03/2017</td>
-				        <td>12/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td >
-				        	<select class="form-control" style="width: 164px">
-				        		<option>Đang xử lí</option>
-				        		<option>Đang giao đi</option>
-				        		<option>Giao hàng thất bại</option>
-				        		<option>Đã giao hàng</option>
-				        	</select>
-				        </td>			        
-				        <td class="tongtien">12,057,000</td>
-				        <td>
-				        	<button type="button" class="btn btn-success">Cập nhật</button>
-				        	<button type="button" class="btn btn-danger btn-block" style="margin-top: 5px;">Xóa</button>
-				        </td>
-				      </tr>
-				      
-				      
-				      <tr>
-				        <td>123456</td>
-				        <td>12/03/2017</td>
-				        <td>12/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td >
-				        	<select class="form-control" style="width: 164px">
-				        		<option>Đang xử lí</option>
-				        		<option>Đang giao đi</option>
-				        		<option>Giao hàng thất bại</option>
-				        		<option>Đã giao hàng</option>
-				        	</select>
-				        </td>			        
-				        <td class="tongtien">12,057,000</td>
-				        <td>
-				        	<button type="button" class="btn btn-success">Cập nhật</button>
-				        	<button type="button" class="btn btn-danger btn-block" style="margin-top: 5px;">Xóa</button>
-				        </td>
-				      </tr>
+				    	@if(count($dh_dangxuli) == 0)
+				    		<tr>
+				    			<td align="center" colspan="8" style="color: red"><h4>Không có đơn hàng mới !</h4></td>
+				    		</tr>
+				    	@else
+				    		<?php
+				    			foreach ($dh_dangxuli as $val) { ?>
+				    				<tr>
+								        <td>{{$val->madh}}</td>
+								        <td>{{date('d/m/Y', strtotime($val->ngaydat))}}</td>
+								        <td class="guiden">
+								        	<label>{{$val->tenkh}}</label><br> {{$val->diachigiaohang}}
+								        	<br>{{$val->sodienthoai}}
+								        </td>
+								        <td class="chitietdh">
+								        	<?php						        		
+											//Chi tiết đơn hàng
+							        		$ctdh = DB::table('chitiet_donhang as ct')
+							        					->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+							        					->where('ct.madh',$val->madh)
+							        					->where('ct.manb', $_SESSION['manb'])
+							        					->get();
 
-				      <tr>
-				        <td>123456</td>
-				        <td>12/03/2017</td>
-				        <td>12/03/2017</td>
-				        <td class="guiden">
-				        	<label>Nguyễn Văn A</label><br> đường 3/2, phường Xuân Khánh, quận Ninh Kiều, Cần Thơ
-				        	<br>0964873862
-				        </td>
-				        <td class="chitietdh">
-				        	<label>Điện thoại samsung galaxy j7 32GB</label><br>1x12,075,000
-				        	<br><label>Điện thoại samsung galaxy j7 32GB</label> <br> 1x12,075,000
-				        </td>
-				        <td class="httt">Thanh toán khi nhận hàng</td>
-				        <td >
-				        	<select class="form-control" style="width: 164px">
-				        		<option>Đang xử lí</option>
-				        		<option>Đang giao đi</option>
-				        		<option>Giao hàng thất bại</option>
-				        		<option>Đã giao hàng</option>
-				        	</select>
-				        </td>			        
-				        <td class="tongtien">12,057,000</td>
-				        <td>
-				        	<button type="button" class="btn btn-success">Cập nhật</button>
-				        	<button type="button" class="btn btn-danger btn-block" style="margin-top: 5px;">Xóa</button>
-				        </td>
-				      </tr>
+							        		foreach ($ctdh as $valct) { 
+							        			//Kiểm tra sản phẩm có khuyến mãi không
+							        				$km = DB::table('khuyen_mai as km')
+							        					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+							        					->where('ctkm.masp',$valct->masp)
+							        					->get();
+							        				if(count($km) != 0){
+							        					$t = 0;
+								        				foreach ($km as $valkm) {
+								        					if(strtotime($val->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($val->ngaydat) <= strtotime($valkm->ngaykt)){ ?>
+
+								        						<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau),0,'.','.')}}
+				        										<br>
+
+								        					<?php 
+								        					break; } else{
+								        						$t +=1;
+								        					}
+								        				}
+								        				if($t == count($km)){ ?>
+								        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+				        									<br>
+								        				<?php 
+								        				}
+								        			}else{ ?>
+								        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+				        								<br>
+								        			<?php 
+								        			}
+							        			?>
+							        		<?php }
+							        	?>
+								        </td>
+								        <td class="httt">
+								        	<?php
+								        		$ht_thanhtoan = DB::table('hinhthuc_thanhtoan')->where('mahttt',$val->mahttt)->first();
+								        		echo $ht_thanhtoan->tenhttt;
+								        	?>
+								        </td>
+								        <td >
+								        	<select name="selectTTDH" class="form-control" style="width: 164px">
+								        		<?php 
+								        			$ttdh = DB::table('tinhtrang_donhang')->get();
+								        			foreach ($ttdh as $valttdh) {
+								        				if($val->mattdh == $valttdh->mattdh){
+								        					echo '<option value="'.$valttdh->mattdh.'" selected>'.$valttdh->tenttdh.'</option>';
+								        				}else{
+								        					echo '<option value="'.$valttdh->mattdh.'">'.$valttdh->tenttdh.'</option>';
+								        				}
+								        			}
+								        		?>
+								        	</select>
+								        </td>	
+								        <td class="tongtien">{{number_format($val->tongtien,0,'.','.')}}</td>
+								        <td>
+								        	<button type="button" class="btn btn-success btnCapNhat">Cập nhật</button>
+								        	<button type="button" class="btn btn-danger btn-block btnXoa" style="margin-top: 5px;">Xóa</button>
+								        </td>
+								    </tr>
+				    			<?php }
+				    		?>
+				    	@endif
 				    </tbody>
+				    <tfoot>
+				    	<tr>
+				    		<td align="center" colspan="9">{!! $dh_dangxuli->render() !!}</td>
+				    	</tr>
+				    </tfoot>
 				</table>
 
 

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class KhuyenMaiNguoiBanController extends Controller
 {
     public function getHomeKhuyenMai(){
-    	$dskm = DB::table('khuyen_mai')->get();
+    	$dskm = DB::table('khuyen_mai')->orderBy('makm', 'desc')->get();
     	$ngayht = Carbon::now();
 
     	return view('nguoiban.khuyenmai')->with('dskm', $dskm)->with('ngayht', $ngayht);

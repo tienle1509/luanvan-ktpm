@@ -121,7 +121,7 @@
 					<h4><b>{{$chitietsp->tensp}}</b></h4>
 					<div class="row">
 						<?php
-							$luotmua = DB::table('chitiet_donhang')->where('masp',$chitietsp->masp)->count('soluong');
+							$luotmua = DB::table('chitiet_donhang')->where('masp',$chitietsp->masp)->count('soluongct');
 						?>
 						@if($luotmua != 0)
 							<label class="number-buy" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có {{$luotmua}} lượt mua"><span class="fa fa-tag">{{$luotmua}}</span></label>
@@ -159,7 +159,7 @@
 							<option value="4">4</option>
 							<option value="5">5</option>
 
-						</select>(Còn lại {{$chitietsp->soluong}} sản phẩm)
+						</select>(Còn lại {{$chitietsp->soluongct}} sản phẩm)
 					</div>
 					<hr>
 					<?php 
@@ -655,7 +655,7 @@
 											</div>
 											
 												<?php
-													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluongct');
 																?>
 												      	@if($luotmua != 0)
 												      	<div class="luotvote" style="margin-bottom: -28px;">

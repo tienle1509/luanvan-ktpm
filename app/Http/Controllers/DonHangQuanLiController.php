@@ -14,6 +14,7 @@ class DonHangQuanLiController extends Controller
 		$ordernew = DB::table('don_hang as dh')
 						->join('khach_hang as kh', 'kh.makh','=','dh.makh')
 						->where('dh.trangthai',0)
+						->orderBy('dh.madh', 'desc')
 						->paginate(10);
 
 		return view('quanli.donhang.donhang_home')->with('ordernew',$ordernew);
@@ -24,6 +25,7 @@ class DonHangQuanLiController extends Controller
 		$duyet_donhang = DB::table('don_hang as dh')
 						->join('khach_hang as kh', 'kh.makh','=','dh.makh')
 						->where('dh.trangthai',0)
+						->orderBy('dh.madh', 'desc')
 						->paginate(10);
 
 		return view('quanli.donhang.duyet_donhang')->with('duyet_donhang',$duyet_donhang);
@@ -33,8 +35,9 @@ class DonHangQuanLiController extends Controller
 	public function getDonHangTrongNgay(){
 		$ngayht = Carbon::now();
 		$dh = DB::table('don_hang as dh')
-							->join('khach_hang as kh', 'kh.makh', '=', 'dh.makh')
-							->paginate(10);
+				->join('khach_hang as kh', 'kh.makh', '=', 'dh.makh')
+				->orderBy('dh.madh', 'desc')
+				->paginate(10);
 		
 		return view('quanli.donhang.donhang_trongngay')->with('dh',$dh)->with('ngayht',$ngayht);
 	}
@@ -67,6 +70,7 @@ class DonHangQuanLiController extends Controller
 		$ngayht = Carbon::now();
 		$tatcadh = DB::table('don_hang as dh')
 					->join('khach_hang as kh', 'kh.makh','=', 'dh.makh')
+					->orderBy('dh.madh', 'desc')
 					->paginate(10);
 
 		return view('quanli.donhang.tatca_donhang')->with('ngayht',$ngayht)->with('tatcadh',$tatcadh);
@@ -104,6 +108,7 @@ class DonHangQuanLiController extends Controller
 						->get();  */
 			$result_thoigian = DB::table('don_hang as dh')
 						->join('khach_hang as kh', 'kh.makh', '=', 'dh.makh')
+						->orderBy('dh.madh', 'desc')
 						->paginate(10);
 
 				

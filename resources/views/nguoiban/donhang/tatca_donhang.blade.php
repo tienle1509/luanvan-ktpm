@@ -83,48 +83,45 @@
 								    </td>
 							        <td class="chitietdh">
 							        	<?php						        		
-												//Chi tiết đơn hàng
-									       		$ctdh = DB::table('chitiet_donhang as ct')
-									       					->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
-									       					->where('ct.madh',$val->madh)
-									       					->where('sp.manb', $_SESSION['manb'])
-									       					->get();
-									       		$thanhtien = 0;
-									       		foreach ($ctdh as $valct) { 
-									       			//Kiểm tra sản phẩm có khuyến mãi không
-									       				$km = DB::table('khuyen_mai as km')
-									       					->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-									       					->where('ctkm.masp',$valct->masp)
-									       					->get();
-									       				if(count($km) != 0){
-									       					$t = 0;
-									        				foreach ($km as $valkm) {
-									        					if(strtotime($val->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($val->ngaydat) <= strtotime($valkm->ngaykt)){ ?>
+											//Chi tiết đơn hàng
+									    	$ctdh = DB::table('chitiet_donhang as ct')
+									     			->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
+									     			->where('ct.madh',$val->madh)
+									     			->where('sp.manb', $_SESSION['manb'])
+									     			->get();
+									     	
+									     	foreach ($ctdh as $valct) { 
+									    		//Kiểm tra sản phẩm có khuyến mãi không
+									    		$km = DB::table('khuyen_mai as km')
+									    			->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+									    			->where('ctkm.masp',$valct->masp)
+									    			->get();
+									    			if(count($km) != 0){
+									    				$t = 0;
+									      				foreach ($km as $valkm) {
+									       					if(strtotime($val->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($val->ngaydat) <= strtotime($valkm->ngaykt)){ ?>
 
-									        						<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau),0,'.','.')}}
-						        									<br>
-
-									        					<?php
-									        						$thanhtien += $valct->soluongct*($valct->dongia-$valct->dongia*0.01*$valkm->chietkhau);
-									        					 break; } else{
-									        						$t +=1;
-									        					}
-									        				}
-									        				if($t == count($km)){ ?>
-									        					<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+									       						<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia-($valct->dongia*0.01*$valkm->chietkhau),0,'.','.')}}
 						        								<br>
+
 									        				<?php
-									        					$thanhtien += $valct->soluongct*$valct->dongia;
+									        				break; } else{
+									        					$t +=1;
 									        				}
-									        			}else{ ?>
+									        			}
+									        			if($t == count($km)){ ?>
 									        				<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
 						        							<br>
-									        			<?php 
-									        			$thanhtien += $valct->soluongct*$valct->dongia;
-									        		}
-									       		?>
-									       		<?php }
-									    ?>
+									        			<?php
+									        			}
+									        		}else{ ?>
+									        			<label>{{$valct->tensp}}</label><br>{{$valct->soluongct}} x {{number_format($valct->dongia,0,'.','.')}}
+						        						<br>
+									        		<?php 
+									        	}
+									       	?>
+									    <?php }
+									?>
 							        </td>
 							        <td class="httt">
 							        	<?php
@@ -132,19 +129,7 @@
 									    	echo $ht_thanhtoan->tenhttt;
 									    ?>
 							        </td>				        			        
-							        <td class="tongtien">
-							        	<?php
-							        		if($thanhtien >= 300000){
-							        			echo number_format($thanhtien,0,'.','.');
-							        		}else{
-							        			if($val->tongtien-27500 >= 300000){
-							        				echo number_format($thanhtien,0,'.','.');
-							        			}else{
-							        				echo number_format($val->tongtien,0,'.','.');
-							        			}
-							        		}
-							        	?>
-							        </td>
+							        <td class="tongtien">{{number_format($val->tongtien,0,'.','.')}}</td>
 							        <td class="tinhtrangdh">
 							        	@if($val->mattdh == 1)
 									       	<label class="label label-warning">Đang xử lí</label>

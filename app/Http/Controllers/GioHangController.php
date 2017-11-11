@@ -20,6 +20,7 @@ class GioHangController extends Controller
     		$ngayht = Carbon::now();
 			$sp_mua = DB::table('san_pham')->where('masp',$masp)->first();
 
+            
 			//Kiểm tra sản phẩm có đang khuyến mãi hay không
 			$checkKM = DB::table('khuyen_mai as km')
 							->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
@@ -49,6 +50,7 @@ class GioHangController extends Controller
 
     public function getXoaSanPham(){
     	if(Request::ajax()){
+            $ngayht = Carbon::now();
     		$id = Request::get('id');
     		Cart::remove($id);
 
@@ -56,6 +58,33 @@ class GioHangController extends Controller
 			$content = Cart::content();
 			$sl = Cart::count();
 			$tong = Cart::total();
+
+            //Lấy mã từng nhà bán hàng
+            $arr_manb = array();
+            foreach ($content as $item) {
+                $sanpham = DB::table('san_pham')->where('masp',$item['id'])->first();
+                if(!in_array($sanpham->manb, $arr_manb)){
+                    $arr_manb[] = $sanpham->manb;
+                }
+            }
+
+            //Lấy tổng tiền theo từng nhà bán hàng
+            $count_manb = 0; //Đếm số nhà bán hàng có đơn hàng lớn hơn 300000       
+            foreach ($arr_manb as $val) {
+                $tongtien_manb = 0;
+                foreach ($content as $item) {
+                    $sp = DB::table('san_pham')
+                            ->where('masp',$item['id'])
+                            ->where('manb',$val)
+                            ->get();                
+                    foreach ($sp as $valsp) {
+                        $tongtien_manb += $item['qty']*$item['price'];
+                    }
+                }
+                if($tongtien_manb < 300000){
+                    $count_manb += 1;
+                }
+            }
 
 			//Lấy giá trị khi load lại trang
     		$_SESSION['content'] = $content;
@@ -74,7 +103,7 @@ class GioHangController extends Controller
     			unset($_SESSION['matinh']);
     		}
 
-    		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
+    		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong, 'count_manb'=>$count_manb]); 
     	}    	
     }
 
@@ -96,6 +125,7 @@ class GioHangController extends Controller
     			$errors[] = 'Số lượng sản phẩm phải lớn hơn không !';
     			return Response::json(['success'=>false, 'errors'=>$errors]);
     		} else {
+                $ngayht = Carbon::now();
     			Cart::update($id, $qty);
 
     			//Thay đổi khi sử dụng script
@@ -103,11 +133,38 @@ class GioHangController extends Controller
 				$sl = Cart::count();
 				$tong = Cart::total();
 
+                //Lấy mã từng nhà bán hàng
+                $arr_manb = array();
+                foreach ($content as $item) {
+                    $sanpham = DB::table('san_pham')->where('masp',$item['id'])->first();
+                    if(!in_array($sanpham->manb, $arr_manb)){
+                        $arr_manb[] = $sanpham->manb;
+                    }
+                }
+
+                //Lấy tổng tiền theo từng nhà bán hàng
+                $count_manb = 0; //Đếm số nhà bán hàng có đơn hàng lớn hơn 300000       
+                foreach ($arr_manb as $val) {
+                    $tongtien_manb = 0;
+                    foreach ($content as $item) {
+                        $sp = DB::table('san_pham')
+                                ->where('masp',$item['id'])
+                                ->where('manb',$val)
+                                ->get();                
+                        foreach ($sp as $valsp) {
+                            $tongtien_manb += $item['qty']*$item['price'];
+                        }
+                    }
+                    if($tongtien_manb < 300000){
+                        $count_manb += 1;
+                    }
+                }
+
 				//Lấy giá trị khi load lại trang
 	    		$_SESSION['content'] = $content;
 	    		$_SESSION['soluong'] = $sl;
 	    		$_SESSION['tongtien'] = $tong;
-	    		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
+	    		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong, 'count_manb'=>$count_manb]); 
     		}
     	}
     }
@@ -116,9 +173,9 @@ class GioHangController extends Controller
 	public function getChonTinh(){
 		if(Request::ajax()){
 			$matinh = Request::get('matinh');
-			$tongtien = Request::get('tongtien');
+			$count_manb = Request::get('count_manb');
 
-			if($tongtien > 300000){
+			if($count_manb == 0){
 				return Response::json(['success'=>false]);
 			} else{
 				$phiship = DB::table('phi_vanchuyen as pvc')
@@ -126,7 +183,7 @@ class GioHangController extends Controller
 						->where('pvc.matinh', $matinh)
 						->first();
 
-				return Response::json(['success'=>true, 'phiship'=>$phiship->giacuoc]);
+				return Response::json(['success'=>true, 'phiship'=>($phiship->giacuoc*$count_manb)]);
 			}
 		}
 	}

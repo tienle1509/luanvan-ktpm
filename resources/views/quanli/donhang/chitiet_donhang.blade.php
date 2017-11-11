@@ -65,6 +65,7 @@
 					  				->join('san_pham as sp', 'sp.masp', '=', 'ct.masp')
 					  				->where('ct.madh',$ctdh->madh)
 					  				->get();
+					  	$thanhtien = 0;
 					  	foreach ($sp as $valsp) { ?>
 					  		<tr>
 							    <td class="img-detailOrder">
@@ -104,13 +105,13 @@
 							    		$km = DB::table('khuyen_mai as km')
 							        			->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 							        				->where('ctkm.masp',$valsp->masp)
-							        				->get();
-
+							        				->get();							        	
 							        	if(count($km) != 0){
 							        		$count = 0;
 							        		foreach ($km as $valkm) {
 							        			if(strtotime($ctdh->ngaydat) >= strtotime($valkm->ngaybd) && strtotime($ctdh->ngaydat) <= strtotime($valkm->ngaykt)){
 							        				echo number_format(($valsp->dongia-($valsp->dongia*0.01*$valkm->chietkhau))*$valsp->soluongct,0,'.','.');
+							        				$thanhtien += $valsp->dongia-($valsp->dongia*0.01*$valkm->chietkhau)*$valsp->soluongct;
 							        				break;
 							        			}else{
 							        				$count +=1;
@@ -118,9 +119,11 @@
 							        		}
 							        		if($count == count($km)){
 							        			echo number_format($valsp->dongia*$valsp->soluongct,0,'.','.');
+							        			$thanhtien += $valsp->dongia*$valsp->soluongct;
 							        		}
 							        	}else{
 							        		echo number_format($valsp->dongia*$valsp->soluongct,0,'.','.');
+							        		$thanhtien += $valsp->dongia*$valsp->soluongct;
 							        	}
 							    	?>
 							    </td>
@@ -131,7 +134,19 @@
 					<hr>
 					<div class="tongtien-detailOrder row">
 						<div class="col-md-10 col-sm-10 text-right">
-							Tổng tiền:
+							Phí vận chuyển:
+						</div>
+						<div class="col-md-2 col-sm-2 text-right">
+							@if($thanhtien >= 300000)
+								Miễn phí
+							@else
+								{{number_format($ctdh->tongtien-$thanhtien, 0, '.', '.')}}
+							@endif
+						</div>
+					</div>
+					<div class="tongtien-detailOrder row" style="margin-top: 10px; font-size: 17px;">
+						<div class="col-md-10 col-sm-10 text-right">
+							<b style="color: black">Tổng tiền:</b>
 						</div>
 						<div class="col-md-2 col-sm-2 text-right">
 							<b>{{number_format($ctdh->tongtien,0,'.','.')}} đ</b>

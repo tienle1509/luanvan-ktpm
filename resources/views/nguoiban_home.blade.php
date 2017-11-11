@@ -298,7 +298,7 @@
 		     		<li><a class="@yield('khuyenmai')" href="{{asset('nguoiban/khuyenmai')}}">
 		     			<span class="fa fa-bullhorn"></span>&nbsp;&nbsp;Khuyến mãi</a>
 		     		</li>	     		
-		     		<li><a class="@yield('thongke')" href="">
+		     		<li><a class="@yield('thongke')" href="{{asset('nguoiban/thongke')}}">
 		     			<span class="fa fa-flag"></span>&nbsp;&nbsp;Thống kê</a>
 		     		</li>
 		     	</ul>
