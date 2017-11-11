@@ -37,7 +37,7 @@
 				        <th>Giá bán lẻ</th>
 				        <th>Giá khuyến mãi</th>
 				        <th>Số lượng</th>
-				        <th>Lượt mua</th>
+				        <th>Đã bán</th>
 				        <th>Trạng thái</th>
 				        <th>Hành động</th>
 				      </tr>

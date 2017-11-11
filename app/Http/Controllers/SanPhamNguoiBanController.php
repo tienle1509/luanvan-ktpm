@@ -477,6 +477,11 @@ class SanPhamNguoiBanController extends Controller
 
 	}
 
+	public function getSPBanChay(){
+		$ngayht = Carbon::now();
+		
 
+		return view('nguoiban.sanpham.sanpham_banchay')->with('ngayht',$ngayht);
+	}
 
 }

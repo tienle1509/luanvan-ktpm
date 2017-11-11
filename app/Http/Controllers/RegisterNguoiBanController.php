@@ -10,6 +10,7 @@ use App\User;
 use Hash;
 use App\NguoiBan;
 use Auth;
+use Carbon\Carbon;
 
 class RegisterNguoiBanController extends Controller
 {	
@@ -175,6 +176,7 @@ class RegisterNguoiBanController extends Controller
 		$nguoiban->matkhau = Hash::make($_SESSION['matkhau']);
 		$nguoiban->sodienthoai = $_SESSION['sdt'];
 		$nguoiban->diachi = $request->textareaDiaChi;
+        $nguoiban->ngaytao = date('Y-m-d',strtotime(Carbon::now()));
 		$nguoiban->save();
 
 

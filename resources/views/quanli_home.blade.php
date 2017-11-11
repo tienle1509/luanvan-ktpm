@@ -188,14 +188,17 @@
 		     		<li><a class="@yield('qldonhang')" href="{{asset('quanli/ql-donhang')}}">
 		     			<span class="fa fa-list-alt"></span>&nbsp;&nbsp;Quản lí đơn hàng</a>
 		     		</li>
-		     		<li><a class="@yield('qlnguoiban')" href="">
+		     		<li><a class="@yield('qlnguoiban')" href="{{asset('quanli/thongke-nhabanhang')}}">
 		     			<span class="fa fa-users"></span>&nbsp;&nbsp;Nhà bán hàng</a>
 		     		</li>
-		     		<li><a class="@yield('qlkhachhang')" href="">
+		     		<li><a class="@yield('qlkhachhang')" href="{{asset('quanli/thongke-khachhang')}}">
 		     			<span class="fa fa-users"></span>&nbsp;&nbsp;Khách hàng</a>
 		     		</li>
 		     		<li><a class="@yield('qlkhuyenmai')" href="{{asset('quanli/khuyenmai')}}">
 		     			<span class="fa fa-bullhorn"></span>&nbsp;&nbsp;Quản lí khuyến mãi</a>
+		     		</li>
+		     		<li><a class="@yield('qldoanhthu')" href="{{asset('quanli/doanhthu')}}">
+		     			<span class="fa fa-bar-chart"></span>&nbsp;&nbsp;Thống kê doanh thu</a>
 		     		</li>
 		     	</ul>
 		    </div>		    

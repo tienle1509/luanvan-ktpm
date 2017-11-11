@@ -63,6 +63,11 @@ Route::group(['prefix'=>'quanli'],function(){
 		Route::get('timkiem-tatca', ['uses'=>'DonHangQuanLiController@getTimKiemTatCaDH']);
 		Route::get('chitiet-donhang/{madh}',['uses'=>'DonHangQuanLiController@getChiTietDonHang']);
 	});
+
+	//Thống kê nhà bán hàng, khách hàng
+	Route::get('thongke-nhabanhang', ['uses'=>'ThongKeQuanLiController@getThongKeNhaBanHang']);
+	Route::get('thongke-khachhang', ['uses'=>'ThongKeQuanLiController@getThongKeKhachHang']);
+	Route::get('doanhthu', ['uses'=>'ThongKeQuanLiController@getDoanhThu']);
 });
 
 
@@ -110,6 +115,8 @@ Route::group(['prefix'=>'nguoiban'], function(){
 		Route::post('capnhat-sanpham', ['uses'=>'SanPhamNguoiBanController@postCapNhatSanPham']);
 		Route::get('xoa-anh', ['uses'=>'CapNhatSoLuongSanPhamController@getXoaAnhSanPham']);
 		Route::post('xoa-sanpham', ['uses'=>'CapNhatSoLuongSanPhamController@postXoaSanPham']);
+
+		Route::get('sanpham-banchay', ['uses'=>'SanPhamNguoiBanController@getSPBanChay']);
 	});
 	
 	//Khuyến mãi
@@ -148,16 +155,8 @@ Route::group(['prefix'=>'nguoiban'], function(){
 });
 
 
-/*--------------------------GIAO DIỆN NHÀ BÁN HÀNG-------------------------------*/
 
-Route::group(['prefix'=>'nguoiban'], function(){
-	//Quản lí sản phẩm
-	Route::group(['prefix'=>'ql-sanpham'], function(){		
-		Route::get('sanpham-banchay', function() {
-			return view('nguoiban.sanpham.sanpham_banchay');
-		});
-	});
-});
+
 
 
 /*------------------Giao diện khách hàng------------------*/

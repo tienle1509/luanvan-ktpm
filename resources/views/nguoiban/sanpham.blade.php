@@ -60,10 +60,8 @@
 							  		<img src="{{asset('public/img/banchay.png')}}">
 							  	</div>
 							  	<div class="col-md-9 col-sm-9 text-right">
-							  		<div class="huge">191822973
-							  			<?php
-							  				//$sp_banchay = DB::table('san_pham')->where('')
-							  			?>
+							  		<div class="huge" style="margin-top: 40px;">
+							  			
 							  		</div>
 							  		Sản phẩm bán chạy
 							  	</div>
