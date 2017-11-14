@@ -65,9 +65,19 @@ Route::group(['prefix'=>'quanli'],function(){
 	});
 
 	//Thống kê nhà bán hàng, khách hàng
-	Route::get('thongke-nhabanhang', ['uses'=>'ThongKeQuanLiController@getThongKeNhaBanHang']);
-	Route::get('thongke-khachhang', ['uses'=>'ThongKeQuanLiController@getThongKeKhachHang']);
-	Route::get('doanhthu', ['uses'=>'ThongKeQuanLiController@getDoanhThu']);
+	Route::get('nhabanhang', ['uses'=>'QuanLiNguoiBanController@getNhaBanHang']);
+	Route::group(['prefix'=>'nhabanhang'], function(){
+		Route::get('sua/{manb}', ['uses'=>'QuanLiNguoiBanController@getSuaNhaBanHang']);
+		Route::post('luu-thongtin', ['uses'=>'QuanLiNguoiBanController@postLuuThongTin']);
+		Route::post('luu-matkhau', ['uses'=>'QuanLiNguoiBanController@postLuuMatKhau']);
+		Route::get('thongke-doanhthu/{manb}', ['uses'=>'QuanLiNguoiBanController@getThongKeDoanhSo']);
+	});
+
+
+	Route::get('khachhang', ['uses'=>'ThongKeQuanLiController@getThongKeKhachHang']);
+
+	Route::get('thongke-taikhoan', ['uses'=>'ThongKeQuanLiController@getThongKeTaiKhoan']);
+	
 });
 
 
