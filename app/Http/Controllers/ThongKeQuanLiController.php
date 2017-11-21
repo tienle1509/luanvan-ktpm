@@ -133,9 +133,18 @@ class ThongKeQuanLiController extends Controller
 				->responsive(false);
 
 		//Thống kê khách hàng
+		$chart_khachhang = Charts::create('bar', 'highcharts')
+				->title('Biểu đồ thống kê khách hàng')
+				->elementLabel('Số khách hàng')
+				->labels(['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 
+        				'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'])
+				->values([7, 2, $count3, $count4, 6, $count6, 18, $count8, 23, $count10, $count11, $count12])
+				->dimensions(1000,500)
+				->loader(false)
+				->oneColor(true)
+				->responsive(false);
 
-
-		return view('quanli.thongke.thongke_taikhoan')->with('chart_nguoiban', $chart_nguoiban)->with('nguoiban', $nguoiban);
+		return view('quanli.thongke.thongke_taikhoan')->with('chart_nguoiban', $chart_nguoiban)->with('nguoiban', $nguoiban)->with('chart_khachhang',$chart_khachhang);
 	}
 
 

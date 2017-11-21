@@ -36,7 +36,7 @@
 	@else
 	<!--	<h3 style="margin-bottom: 10px;">Tổng : {{count($nguoiban)}} nhà bán hàng</h3> -->
 		<center>
-			{!! $chart_nguoiban->render() !!}
+			{!! $chart_khachhang->render() !!}
 		</center>	
 	@endif	
 
