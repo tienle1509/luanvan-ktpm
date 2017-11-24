@@ -256,6 +256,7 @@ body {
 /*Tùy chỉnh thông tin giao hàng */
 .box-detail .ship-product {	
 	width: 268px;
+	height: 436px;
 	background-color: #E7FAFC;
 	border-top: 1px solid #9C9999;
 	margin-left: 20px;
@@ -290,12 +291,12 @@ body {
 /* Tùy chỉnh Thanh ngang navbar-list */
 #navbar-list {
 	background-color: #A633D7;
-	height: 70px;
+	height: 60px;
 	border-radius: 0px;
 }
 
 #navbar-list a {
-	padding: 25px 50px 25px 50px;
+	padding: 20px 50px 20px 50px;
 	margin-top: -1px;
 	text-align: center;
 	font-size: 15px;
@@ -306,24 +307,6 @@ body {
 	background-color: #C742FF;
 }
 
-#navbar-list button {
-	margin-top: 14px;
-}
-
-#navbar-list .btn-addCart{	
-	height: 40px;
-	font-size: 15px;
-	color: #FFFFFF;
-	font-weight: bold;
-	outline: none;
-	background-color: #DE1717;
-	width: 210px;
-	margin-left: 50px;
-}
-
-#navbar-list .btn-addCart span {
-	font-size: 18px;
-}
 
 
 /* Tùy chỉnh mô tả, thông số kĩ thuật, câu hỏi, bình luận*/
@@ -545,12 +528,13 @@ body {
 /* sản phẩm gợi ý*/
 #panel-goiy {
 	margin-left: 5px;
-	width: 295px;
+	width: 295px;	
 }
 
 #panel-goiy .list-spgoiy {
 	background-color: #FFFFFF;
 	padding-left: 20px;
+	padding-bottom: 10px;
 }
 
 
@@ -563,7 +547,7 @@ body {
 }
 
 .thumbnail {
-	height: 360px;
+	height: 368px;
 	width: 225px;
 	border-radius: 0px;
 	background-color: #FFFFFF;	
@@ -606,6 +590,10 @@ body {
 	color: #504F4F;
 }
 
+.thumbnail .caption .tendt{
+	height: 40px;
+}
+
 .thumbnail .caption .tendt a {
 	font-size: 12px;
 	text-decoration: none;
@@ -621,13 +609,17 @@ body {
 .thumbnail .caption .luotvote {
 	margin-left: 18px;
 	padding: 5px;
+	bottom: 54px;
+	position: all;
+	width: 200px;
+	height: 30px;
 }
 
 .thumbnail .caption .luotvote a {
 	color: #504F4F;
 	cursor: default;
 	font-size: 14px;
-	margin-left: 10px;
+	margin-left: 30px;
 	outline: none;
 }
 
@@ -638,7 +630,5 @@ body {
 	padding: 2px 0px 2px 15px;
 	margin-left: -13px;
 	margin-right: -13px;
-	display: block;
-	position: inherit;
-	margin-top: 26px;
+	position: all;
 }

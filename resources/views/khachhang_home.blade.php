@@ -174,21 +174,7 @@ $('#ndGioHang').html(ndGioHang);
 		<div class="container">
 			<div class="row">
 				<ul class="submenu nav nav-pills col-md-9 col-sm-9 pull-right">
-					<li><a href="{{asset('nguoiban/dangnhap')}}" target="_blank"><span class="fa fa-handshake-o"></span>&nbsp;&nbsp;Bán hàng cùng Mobile Store</a></li>
-					<li>
-						<button class="btndrop dropdown-toggle" data-toggle="dropdown">
-							<span class="fa fa-phone-square"></span>
-							&nbsp;Chăm sóc khách hàng&nbsp;
-							<span class="fa fa-angle-down"></span>
-						</button>
-						<ul class="dropdown-menu dropdown-menu-left" role="menu">
-							<li><a href="#"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;&nbsp;Trung tâm hỗ trợ</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;&nbsp;Đơn hàng và thanh toán</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;&nbsp;Giao hàng và nhận hàng</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;&nbsp;Đổi trả và hoàn tiền</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;&nbsp;Liên hệ Mobile Store</a></li>
-						</ul>
-					</li>
+					<li><a href="{{asset('nguoiban/dangnhap')}}" target="_blank"><span class="fa fa-handshake-o"></span>&nbsp;&nbsp;Bán hàng cùng Mobile Store</a></li>			
 					<li>
 						<button class="btndrop dropdown-toggle" data-toggle="dropdown">
 							<span class="fa fa-list-alt"></span>&nbsp;&nbsp;Kiểm tra đơn hàng&nbsp;
@@ -458,12 +444,6 @@ $('#ndGioHang').html(ndGioHang);
 					          	</span>
 					        </button> 
 				        </li>
-				        <li>
-				          	<button class="btn-yeuthich navbar-btn">
-				       	  		<span class="fa fa-heart-o"></span>&nbsp;&nbsp;Yêu thích&nbsp;&nbsp;
-				       	  		<span class="badge">9</span>
-				        	</button>
-				        </li>
 				      </ul>	      
 				    </div><!-- /.navbar-collapse -->
 
@@ -516,7 +496,7 @@ $('#ndGioHang').html(ndGioHang);
 				<div class="col-md-3 col-sm-3">
 					<h4>Hỗ trợ thanh toán online</h4>
 					<div>
-						<img src="{{asset('public/img/nganluong.png')}}" alt="logonganluong" style="width: 190px; height: 45px;">
+						<img src="{{asset('public/img/stripe.png')}}" alt="logonganluong" style="width: 190px; height: 45px;">
 					</div>
 					<h4>Đối tác vận chuyển</h4>
 					<img src="{{asset('public/img/vietnampost.png')}}" alt="logovnpost">

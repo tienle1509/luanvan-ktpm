@@ -8,7 +8,7 @@ header {
 
 /* Sub nav, menu */
 .submenu {
-	width: 808px;
+	width: 624px;
 	background-color: #FBF6FB;
 }
 
@@ -121,7 +121,7 @@ header {
 
 /* Main Nav */
 #top-nav{
-	height: 70px;
+	height: 60px;
 	background-color: #FBF6FB;
 	border-radius: 0px;
 	margin-bottom: 0px;
@@ -130,20 +130,20 @@ header {
 #top-nav #logo {
 	height: 50px;
 	width: 160px;
-	margin-top: -5px;
+	margin-top: -10px;
 	margin-left: 20px;
 	position: relative;
 }
 
 /* Input group Search */
 #mainnav{
-	padding-top: 10px;
-	padding-left: 205px;
+	padding-top: 5px;
+	padding-left: 225px;
 	margin-left: 40px;
 }
 
 #mainnav input {
-	width: 395px;
+	width: 410px;
 	height: 37px;
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
@@ -186,7 +186,7 @@ header {
 /* Nav Right bao gồm Cart, yêu thích */
 /* Button Cart */
 .nav-right .btn-cart{
-	margin-right: 30px;
+	margin-right: 90px;
 	outline: none;
 	border: none;
 	font-size: 14px;
@@ -194,6 +194,7 @@ header {
 	padding: 6px;
 	background-color: #A633D7;
 	color: #FFFFFF;
+	margin-bottom: 3px;
 }
 
 .nav-right .btn-cart:hover {
@@ -210,33 +211,6 @@ header {
 	margin-left: -10px;
 	color: #8523AC;
 	background-color: #FFFFFF;
-}
-
-/* Button Yêu thích */
-.nav-right .btn-yeuthich{
-	background-color: #FBF6FB;
-	border: 1px solid #D5CDD5;
-	outline: none;
-	font-size: 14px;
-	padding: 6px;
-	border-radius: 3px;
-	outline: none;
-	margin-right: 5px;
-}
-
-.btn-yeuthich:hover {
-	background-color: #FF9FFF;
-	border: 1px solid #A633D7;
-}
-
-.btn-yeuthich .fa-heart-o {
-	font-size: 18px;
-}
-
-.btn-yeuthich .badge {
-	background-color: #8523AC;
-	border-color: #A633D7;
-	margin-top: -5px;
 }
 
 

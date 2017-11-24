@@ -103,8 +103,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 						<span class="fa fa-gift"></span>&nbsp;&nbsp;&nbsp;KHUYẾN MÃI
 						</a>
 					</li>
-					<li><a class="nav-bottom-banchay" href="#"><span class="fa fa-tags"></span>&nbsp;&nbsp;&nbsp;BÁN CHẠY</a></li>
-					<li><a class="nav-bottom-hangmoi" href="#"><span class="fa fa-tag"></span>&nbsp;&nbsp;&nbsp;HÀNG MỚI</a></li>	
+					<li><a class="nav-bottom-banchay" href="#"><span class="fa fa-tags"></span>&nbsp;&nbsp;&nbsp;BÁN CHẠY</a></li>	
 				</ul>
 			</div>
 		</div>
@@ -133,9 +132,9 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 				<!-- panel right -->
 				<div class="col-md-9 col-sm-9">
 					<!-- Carousel -->
-					<div id="myCarousel" class="carousel slide row" data-rice="carousel" >
+					<div id="myCarousel" class="carousel slide row" data-rice="carousel">
 						<!-- Indicators -->
-						<ol class="carousel-indicators">
+						<ol class="carousel-indicators" style="z-index: 1">
 							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 							<li data-target="#myCarousel" data-slide-to="1"></li>
 							<li data-target="#myCarousel" data-slide-to="2"></li>
@@ -198,93 +197,94 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 						<!-- Slick slider -->
 				    	<div class="slider-fastPro">
 				    		<?php
-				    			for ($i=0; $i <10 ; $i++) { 
-				    				foreach ($list_sp as $val) {
-				    					if($val->masp == $ma_giam[$i]){
-				    						//Kiểm tra sản phẩm có khuyến mãi hay không
-				    						$listKM = DB::table('khuyen_mai as km')
-		                                    			->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-		                                    			->where('ctkm.masp', $val->masp)
-		                                    			->get(); ?>
-
-		                                    <div>
-											    <a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
-											    	<div class="thumbnail">
-												      	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-												      	<?php 
-												      		if(count($listKM) != 0){
-													      		foreach ($listKM as $valkm) {
-													      			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
-													      				<div class="chietkhau">
-														      				{{$valkm->chietkhau}}%
-														      			</div>
-													      			<?php }
-													      		}
-													      	}
-												      	?>
-												      	<div class="caption">
-												      		<?php 
-												      		if(count($listKM) != 0){
-												      			$t = 0;
-													      		foreach ($listKM as $valkm) {
-													      			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
-													      				echo '<div class="gia">
-														      			<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
-														      			</label>
-														      			<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ</del>
-														      		</div>';
-													      				break;
-													      			} else {
-													      				$t +=1;
-													      			}
-													      		}
-													      		if($t == count($listKM)){ ?>
-												        			<div class="gia">
-														      			<label class="giakm">
-														      				{{number_format($val->dongia,0,'.','.')}} đ
-														      			</label>
-														      		</div>
-												        		<?php }
-													      	} else { ?>
-													      		<div class="gia">
-													      			<label class="giakm">
-													      				{{number_format($val->dongia,0,'.','.')}} đ
+				    			$sosp = 0;
+				    			foreach ($list_sp as $val) {
+				    				$sosp += 1;
+				    				if($sosp == 11){
+				    					break;
+				    				}else{
+				    					//Kiểm tra sản phẩm có khuyến mãi hay không
+				    					$listKM = DB::table('khuyen_mai as km')
+		                                   			->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+		                                   			->where('ctkm.masp', $val->masp)
+		                                   			->get(); ?>
+		                                <div>
+										    <a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+									    	<div class="thumbnail">
+										      	<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+										      	<?php 
+										      		if(count($listKM) != 0){
+											      		foreach ($listKM as $valkm) {
+											      			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
+											      				<div class="chietkhau">
+												      				{{$valkm->chietkhau}}%
+												      			</div>
+											      			<?php }
+											      		}
+											      	}
+										      	?>
+										      	<div class="caption">
+									      		<?php 
+										      		if(count($listKM) != 0){
+										      			$t = 0;
+											      		foreach ($listKM as $valkm) {
+											      			if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
+											      				echo '<div class="gia">
+													      			<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
 													      			</label>
-													      		</div>
-													      	<?php }
-												      	?>								
-													      	<div class="tendt">
-												      			<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+													      			<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ</del>
+														      		</div>';
+											      				break;
+											      			} else {
+											      				$t +=1;
+											      			}
+											      		}
+											      		if($t == count($listKM)){ ?>
+											       			<div class="gia">
+												      			<label class="giakm">
+												      				{{number_format($val->dongia,0,'.','.')}} đ
+												      			</label>
 												      		</div>
-												      		<div class="luotvote row">
-												      			<?php
-																	$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
-																?>
-												      			@if($luotmua != 0)
-																	<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
-																	    <span class="fa fa-tag"> {{$luotmua}}</span>
-																	</a>
-																@endif
-															<form action="{{action('GioHangController@getMuaHang')}}" method="get">
-																<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
-												      		</form>
-												      		</div>
-				  											<div class="ten-shop row">
-				  												<?php
-								  									$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
-								  									echo $nguoiban->tengianhang;
-								  								?>
-				  											</div>
+											       		<?php }
+												    } else { ?>
+												      	<div class="gia">
+												      		<label class="giakm">
+												      			{{number_format($val->dongia,0,'.','.')}} đ
+												      		</label>
 												      	</div>
-												    </div>
-											    </a>
-											</div>
-
-				    					<?php }
-				    				}
-				    				unset($ma_giam[$i]);//Xóa mã sản phẩm
-				    			}
-				    		?>
+											      	<?php }
+											   	?>								
+											   	<div class="tendt">
+										    		<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+										    	</div>
+										    	<div class="luotvote row">
+									     			<?php
+														$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+													?>
+									      			@if($luotmua != 0)
+														<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+														    <span class="fa fa-tag"> {{$luotmua}}</span>
+														</a>
+													@endif
+													<form action="{{action('GioHangController@getMuaHang')}}" method="get">
+														<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
+										      		</form>
+									      		</div>
+				  								<div class="ten-shop row">
+				  									<?php
+								  						$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+								  							echo $nguoiban->tengianhang;
+								  					?>
+				  								</div>
+									      	</div>
+									    </div>
+									</a>
+									<?php }
+									?>
+								</div>
+				   			<?php
+				   			}
+				   		?>
 				    	</div><!-- Slick slider -->
 					</div>
 				</div>
@@ -292,230 +292,24 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 		</div> <!-- Panel sản phẩm mới nổi bật -->
 
 
-		<!-- Panel Sản phẩm bán chạy -->
-	<!--	<div class="container">
-			<div class="row panel-product">
-				<div class="panel-title col-md-12 col-sm-12">
-					<h4>Sản phẩm bán chạy</h4>
-				</div>
-				<div class="col-md-12 col-sm-12">
-					<div class="row">
-						
-				    	<div class="slider-fastPro">
-				    		<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-							
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-
-
-							<div>
-							     <a id="sanpham" href="detailpro.php">
-							    	<div class="thumbnail">
-								      	<img src="{{asset('public/anh-sanpham/iphone4s.jpg')}}">
-								      	<div class="chietkhau">15%</div>
-								      	<div class="caption">
-								      		<div class="gia">
-								      			<label class="giakm">1.700.000 đ</label>
-								      			<del class="giagoc">2.500.000 đ</del>
-								      		</div>
-								      		<div class="tendt">
-								      			<a href="detailpro.php">ĐIỆN THOẠI IPHONE 4S-16GB CHÍNH HÃNG</a>
-								      		</div>
-								      		<div class="luotvote row">
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>1</b> lượt mua" data-html="true" data-placement="top">
-								      				<span class="fa fa-tag">1</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-								      				<span class="fa fa-eye">5</span>
-								      			</a>
-								      			<a href="#" data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-								      				<span class="fa fa-comment">0</span>
-								      			</a>
-								      			<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static"">Mua ngay</button>
-								      		</div>
-  											<div class="ten-shop row">ANHDUY</div>
-								      	</div>
-								    </div>
-							    </a>
-							</div>
-				    	</div>
-					</div>
-				</div>
-			</div>
-		</div> --> <!-- Panel sản bán chạy-->
-
-
 		<!-- Các sản phẩm đặc trưng -->
 		<div class="container">
 			<div class="row panel-product">
 				<div class="panel-list col-md-12 col-sm-12">
 					<?php
+						$sosp_dt = 0;
 						foreach ($list_sp as $val) {
-							if(in_array($val->masp, $ma_giam)){
-								//Kiểm tra sản phẩm có khuyến mãi hay không
-		                        $dskm = DB::table('khuyen_mai as km')
-		                                    ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-		                                    ->where('ctkm.masp', $val->masp)
-		                                    ->get(); ?>
-
-		                        <div class="list-pro">
-									<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
-									<div class="thumbnail">
-										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+							$sosp_dt += 1;
+							if($sosp_dt >= 11){
+							//Kiểm tra sản phẩm có khuyến mãi hay không
+		                    $dskm = DB::table('khuyen_mai as km')
+		                                ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+		                                ->where('ctkm.masp', $val->masp)
+		                                ->get(); ?>
+	                        <div class="list-pro">
+								<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+								<div class="thumbnail">
+									<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
 										<?php
 											if(count($dskm) != 0){
 												foreach ($dskm as $valkm) {
@@ -533,62 +327,59 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 												$t = 0;
 												foreach ($dskm as $valkm) {
 													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
-
 														echo '<div class="gia">
 															<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
 															</label>
 															<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ
 															</del>
 														</div>';
-															break; 
-														} else {
-															$t +=1;
+														break; 
+													} else {
+														$t +=1;
 													}
 												}
 												if($t == count($dskm)){ ?>
-												        			<div class="gia">
-														      			<label class="giakm">
-														      				{{number_format($val->dongia,0,'.','.')}} đ
-														      			</label>
-														      		</div>
-												        		<?php }
-											} else { ?>
-												<div class="gia">
-													<label class="giakm">
-														{{number_format($val->dongia,0,'.','.')}} đ
-													</label>
-												</div>
-											<?php }
-										?>							
-										<div class="tendt">
-											<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+								        			<div class="gia">
+										      			<label class="giakm">
+										      				{{number_format($val->dongia,0,'.','.')}} đ
+										      			</label>
+										      		</div>
+								        		<?php }
+												} else { ?>
+													<div class="gia">
+														<label class="giakm">
+															{{number_format($val->dongia,0,'.','.')}} đ
+														</label>
+													</div>
+												<?php }
+											?>							
+											<div class="tendt">
+												<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+											</div>
+											<div class="luotvote row">
+												<?php
+													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+												?>
+												@if($luotmua != 0)
+													<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+													<span class="fa fa-tag"> {{$luotmua}}</span>
+													</a>
+												@endif
+											<form action="{{action('GioHangController@getMuaHang')}}" method="get">
+												<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
+											</form>
+											</div>
+					  						<div class="ten-shop row">
+					  							<?php
+									  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+									  					echo $nguoiban->tengianhang;
+									  				?>
+					  						</div>
 										</div>
-										<div class="luotvote row">
-											<?php
-												$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
-											?>
-											@if($luotmua != 0)
-												<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
-												<span class="fa fa-tag"> {{$luotmua}}</span>
-												</a>
-											@endif
-										<form action="{{action('GioHangController@getMuaHang')}}" method="get">
-											<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
-										</form>
-										</div>
-				  						<div class="ten-shop row">
-				  							<?php
-								  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
-								  					echo $nguoiban->tengianhang;
-								  				?>
-				  						</div>
 									</div>
-								</div>
-							</a>
-						</div>
-
-		                                   
-							<?php }
+								</a>
+							</div>		                                   
+						<?php }
 						}
 					?>		
 					

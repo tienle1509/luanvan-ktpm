@@ -64,7 +64,6 @@
 						</a>
 					</li>
 					<li><a class="nav-bottom-banchay" href="#"><span class="fa fa-tags"></span>&nbsp;&nbsp;&nbsp;BÁN CHẠY</a></li>
-					<li><a class="nav-bottom-hangmoi" href="#"><span class="fa fa-tag"></span>&nbsp;&nbsp;&nbsp;HÀNG MỚI</a></li>	
 				</ul>
 			</div>
 		</div>
@@ -113,7 +112,6 @@
 					  	}
 				  	?>	
 				  </div>
-				  <a href="{{asset('')}}"><span class="fa fa-heart-o">&nbsp;&nbsp;Tôi thích sản phẩm này !</span></a>
 				</div>
 
 
@@ -121,13 +119,13 @@
 					<h4><b>{{$chitietsp->tensp}}</b></h4>
 					<div class="row">
 						<?php
-							$luotmua = DB::table('chitiet_donhang')->where('masp',$chitietsp->masp)->count('soluongct');
+							$luotmua = DB::table('chitiet_donhang')
+										->where('masp',$chitietsp->masp)
+										->count('soluongct');
 						?>
 						@if($luotmua != 0)
 							<label class="number-buy" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có {{$luotmua}} lượt mua"><span class="fa fa-tag">{{$luotmua}}</span></label>
 						@endif
-					<!--	<label class="number-view" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 5 lượt xem"><span class="fa fa-eye">5</span></label>
-						<label class="number-cmt" data-toggle="tooltip" data-html="true" data-placement="top" title="Đã có 0 hỏi đáp"><span class="fa fa-comments">0</span></label> -->
 					</div>
 					<div class="clearfix"></div>
 					<hr>
@@ -159,7 +157,7 @@
 							<option value="4">4</option>
 							<option value="5">5</option>
 
-						</select>(Còn lại {{$chitietsp->soluongct}} sản phẩm)
+						</select>(Còn lại {{$chitietsp->soluong}} sản phẩm)
 					</div>
 					<hr>
 					<?php 
@@ -167,105 +165,42 @@
 		                $checkKM = DB::table('khuyen_mai as km')
 		                                ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 		                                ->where('ctkm.masp', $chitietsp->masp)
-		                                ->first();
+		                                ->get();
 		                if(count($checkKM) != 0){
-		                	if((strtotime($ngayht) > strtotime($checkKM->ngaybd)) && (strtotime($ngayht) < strtotime($checkKM->ngaykt))){ ?>
+		                	$t = 0;
+		                	foreach ($checkKM as $valkm) {
+		                		if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
+			                		<div class="row label-gia">
+										<h3>{{number_format($chitietsp->dongia-($chitietsp->dongia*$valkm->chietkhau*0.01),0,'.','.')}} đ</h3>
+										<div class="col-md-8 col-sm-8">Giá trước đây: <del>{{number_format($chitietsp->dongia,0,'.','.')}} đ</del></div>
+									</div>
+								<?php 
+									break;
+								}else{
+									$t +=1;
+								}
+		                	}
+		                	if($t == count($checkKM)){ ?>
 		                		<div class="row label-gia">
-									<h3>{{number_format($chitietsp->dongia-($chitietsp->dongia*$checkKM->chietkhau*0.01),0,'.','.')}} đ</h3>
-									<div class="col-md-8 col-sm-8">Giá trước đây: <del>{{number_format($chitietsp->dongia,0,'.','.')}} đ</del></div>
+									<h3>{{number_format($chitietsp->dongia,0,'.','.')}} đ</h3>
 								</div>
 		                	<?php }
-		                } else { ?>
+		                }else{ ?>
 		                	<div class="row label-gia">
 								<h3>{{number_format($chitietsp->dongia,0,'.','.')}} đ</h3>
 							</div>
 		                <?php }
 					?>
 					
-					<div class="row time-ship">
-						<div class="col-md-3 col-sm-3">Giao hàng: </div>
-						<label>Thời gian giao hàng trong vòng 6-7 ngày.</label>
-					</div>
+					<div class="row time-ship"></div> 
 					<div class="row list-btn">
 						<button type="button" class="btn btn-addCart" data-toggle="modal" data-target="#modalCart"><span class="fa fa-shopping-cart"></span>&nbsp;&nbsp;Thêm vào giỏ hàng</button>
-					</div>
-					<div class="row label-huongdanmua">
-						<a href="huongdanmuahang"><img src="{{asset('public/img/iconhuongdanmua.png')}}"><label>Hướng dẫn<br>mua hàng</label></a>
 					</div>
 				</div>
 
 
 
 				<div class="ship-product col-md-3 col-sm-3">
-					<h5><span class="fa fa-map-marker"></span>&nbsp;&nbsp;<b>Kiểm tra thời gian giao hàng</b></h5>
-					<select class="selectpicker dropup" data-live-search="true" data-width="215px">
-				    	<option value="0"> Tỉnh/Thành phố</option>
-				    	<option value="1">Hồ Chí Minh</option>
-				    	<option value="2">Hà Nội</option>
-				    	<option value="3">An Giang</option>
-				    	<option value="5">Bắc Kạn</option>
-				    	<option value="6">Bắc Giang</option>
-				    	<option value="7">Bạc Liêu</option>
-				    	<option value="8">Bắc Ninh</option>
-				    	<option value="9">Bến Tre</option>
-				    	<option value="11">Bình Định</option>
-				    	<option value="12">Bình Phước</option>
-				    	<option value="13">Bình Thuận</option>
-				    	<option value="14">Cà Mau</option>
-				    	<option value="15">Cần Thơ</option>
-				    	<option value="16">Cao Bằng</option>
-				    	<option value="17">Đà Nẵng</option>
-				    	<option value="18">Đắk Lắk</option>
-				    	<option value="19">Điện Biên</option>
-				    	<option value="20">Đồng Nai</option>
-				    	<option value="21">Gia Lai</option>
-				    	<option value="22">Hà Giang</option>
-				    	<option value="23">Hà Nam</option>
-				    	<option value="24">Hậu Giang</option>
-				    	<option value="25">Hà Tĩnh</option>
-				    	<option value="26">Hải Dương</option>
-				    	<option value="27">Hải Phòng</option>
-				    	<option value="28">Hòa Bình</option>
-				    	
-				    	<option value="32">Lai Châu</option>
-				    	<option value="33">Lâm Đồng</option>
-				    	<option value="34">Lạng Sơn</option>
-				    	<option value="35">Lào Cai</option>
-				    	<option value="36">Long An</option>
-				    	<option value="37">Nam Định</option>
-				    	<option value="38">Nghệ An</option>
-				    	<option value="39">Ninh Thuận</option>
-				    	<option value="40">Phú Thọ</option>
-				    	<option value="41">Phú Yên</option>
-				    	<option value="42">Quảng Bình</option>
-				    	<option value="43">Quảng Nam</option>
-				    	<option value="44">Quảng Ngãi</option>
-				    	<option value="45">Quảng Ninh</option>
-				    	<option value="46">Quảng Trị</option>
-				    	<option value="47">Sóc Trăng</option>
-				    	<option value="48">Tây Ninh</option>
-				    	<option value="49">Thái Bình</option>
-				    	<option value="50">Thái Nguyên</option>
-				    	<option value="51">Thanh Hóa</option>
-				    	<option value="52">Huế</option>
-				    	<option value="53">Tiền Giang</option>
-				    	<option value="54">Trà Vinh</option>
-				    	<option value="55">Tuyên Quang</option>
-				    	<option value="56">Kiên Giang</option>
-				    	<option value="57">Vĩnh Phúc</option>
-				    	<option value="58">Bà Rịa-Vũng Tàu</option>
-				    	<option value="59">Yên Bái</option>
-				    	<option value="60">Vĩnh Long</option>
-				    	<option value="61">Bình Dương</option>
-				    	<option value="62">Đắk Nông</option>
-				    	<option value="63">Đồng Tháp</option>
-				    	<option value="64">Hưng Yên</option>
-				    	<option value="65">Kon Tum</option>
-				    	<option value="66">Ninh Bình</option>
-				    	<option value="67">Sơn La</option>
-				    </select>
-				    <button id="btn-diadiem" type="submit" class="btn btn-danger btn-md" disabled>CHỌN</button>
-					<hr>
 					<div class="row"><span class="fa fa-map-marker"></span>&nbsp;&nbsp;Giao hàng toàn quốc</div>
 					<div class="row"><span class="fa fa-file-text-o"></span>&nbsp;&nbsp;Nhà cung cấp xuất hóa đơn cho sản phẩm này</div>
 					<div class="row"><img src="{{asset('public/img/iconship.png')}}">&nbsp;&nbsp;Giao hàng bởi đối tác của Mobile Store</div>
@@ -284,14 +219,8 @@
 				<div class="row">
 					<ul class="nav navbar-nav col-md-9 col-sm-8">
 						<li><a id="link-mota" href="#mota">Mô tả</a></li>
-						<li><a href="#thongso">Thông số kĩ thuật</a></li>
-						<li><a href="#cauhoi">Câu hỏi</a></li>
+						<li><a href="#thongso">Thông số kĩ thuật</a></li>						
 						<li><a href="#danhgia">Đánh giá & nhận xét</a></li>					
-					</ul>
-					<ul class="col-md-2 col-sm-3">
-						<div class="row">
-						<button type="button" class="btn btn-addCart" data-toggle="modal" data-target="#modalCart"><span class="fa fa-shopping-cart"></span>&nbsp;&nbsp;Thêm vào giỏ hàng</button>
-						</div>
 					</ul>
 				</div>
 			</div>
@@ -302,7 +231,7 @@
 			<div class="row">
 				<div class="col-md-9 col-sm-9">	
 					<div id="mota" class="row">
-						<div class="tieude"><h4>Mô tả sản phẩm</h4></div>
+						<div class="tieude"><h3>Mô tả sản phẩm</h3></div>
 						<div id="ndMota" class="col-md-12 col-sm-12" style="overflow: hidden; height: 600px;">
 							{!!$chitietsp->mota!!}
 						</div>
@@ -317,7 +246,7 @@
 
 
 					<div class="row" id="thongso">
-						<div class="tieude"><h4>Thông số kĩ thuật</h4></div>
+						<div class="tieude"><h3>Thông số kĩ thuật</h3></div>
 						<div class="label-dacdiem">
 							<label>Đặc điểm chính:</label>
 						</div>
@@ -352,80 +281,10 @@
 							    </tbody>
 							</table>
 						</div>
-					</div>
-
-
-					<div class="row" id="cauhoi">
-						<div class="tieude"><h4>Câu hỏi về sản phẩm này</h4></div>
-						<div class="dndk">
-							<p>Vui lòng 
-								<a href="#" data-toggle="modal" data-target="#modalLogin" data-backdrop="static">Đăng nhập</a>
-								hoặc 
-								<a href="#" data-toggle="modal" data-target="#modalRegister" data-backdrop="static">Đăng ký ngay !</a> để đặt câu hỏi cho nhà bán hàng
-							</p>
-							<hr>
-						</div>
-						<div class="list-cauhoi">
-							<div class="col-md-1 col-sm-1">
-								<span class="fa fa-user-circle"></span>
-							</div>
-							<div class="col-md-11 col-sm-11">
-								<div class="ndHoi">Máy tốt không nhỉ ?</div>
-								<div class="tgHoi">KenT - ngày 20 tháng 9 năm 2017</div>
-							</div>
-							<div class="col-md-1 col-sm-1">
-								<img src="{{asset('public/img/marketplace_small.png')}}">
-							</div>
-							<div class="col-md-11 col-sm-11">
-								<div class="repHoi">Tốt em nhé ?</div>
-								<div class="tgRep">Tên shop - đã trả lời ngày 21 tháng 9 năm 2017</div>
-							</div>
-							<div class="clearfix"></div>
-							<hr>
-						</div>
-
-						<div class="list-cauhoi">
-							<div class="col-md-1 col-sm-1">
-								<span class="fa fa-user-circle"></span>
-							</div>
-							<div class="col-md-11 col-sm-11">
-								<div class="ndHoi">Cho em hỏi thời gian và cách thức đặt hàng như thế nào ?</div>
-								<div class="tgHoi">Ahihi T - ngày 10 tháng 9 năm 2017</div>
-							</div>
-							<div class="col-md-1 col-sm-1">
-								
-							</div>
-							<div class="col-md-11 col-sm-11">
-								<div class="repHoi">Chưa có câu trả lời</div>
-							</div>
-							<div class="clearfix"></div>
-							<hr>
-						</div>
-
-						<div class="list-cauhoi">
-							<div class="col-md-1 col-sm-1">
-								<span class="fa fa-user-circle"></span>
-							</div>
-							<div class="col-md-11 col-sm-11">
-								<div class="ndHoi">Mình ở hải phòng muốn mua sp này mà ko được ?</div>
-								<div class="tgHoi">KenT - ngày 20 tháng 9 năm 2017</div>
-							</div>
-							<div class="col-md-1 col-sm-1">
-								<img src="{{asset('public/img/marketplace_small.png')}}">
-							</div>
-							<div class="col-md-11 col-sm-11">
-								<div class="repHoi">Chào bạn, hiện tại sản phẩm đang set mua hàng ở khu vực nội thành. Bạn vui lòng chờ 2-3 ngày để mua sản phẩm ở khu vực tỉnh thành nhé. Thank bạn!</div>
-								<div class="tgRep">Tên shop - đã trả lời ngày 21 tháng 9 năm 2017</div>
-							</div>
-							<div class="clearfix"></div>
-							<hr>
-						</div>						
-					</div> <!-- end hoi -->
-
-
+					</div>			
 
 					<div class="row" id="danhgia">
-						<div class="tieude"><h4>Đánh giá & nhận xét cho sản phẩm Điện thoại HOTWAV tặng ốp lưng dán màn hình nhập khẩu</h4></div>
+						<div class="tieude"><h3>Đánh giá & nhận xét cho sản phẩm Điện thoại HOTWAV tặng ốp lưng dán màn hình nhập khẩu</h3></div>
 						<div class="label-diem"><p>Điểm đánh giá trung bình của sản phẩm</p></div>					
 						<div class="table-danhgia">
 							<table class="table table-bordered tbdanhgia">
@@ -605,7 +464,7 @@
 
 				<!-- panel phải các sản phẩm gợi ý-->
 				<div id="panel-goiy" class="col-md-3 col-sm-3">
-					<div class="tieude"><h4>Sản phẩm tương tự</h4></div>
+					<div class="tieude"><h3>Sản phẩm tương tự</h3></div>
 					<div class="list-spgoiy">
 						<?php
 							$i = 0;
@@ -622,59 +481,77 @@
 		                    	$kmtuongtu = DB::table('khuyen_mai as km')
 		                                    ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
 		                                    ->where('ctkm.masp', $val->masp)
-		                                    ->first(); ?>
+		                                    ->get(); ?>
 
 		                        <a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
-									<div class="thumbnail">
-										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-										@if(count($kmtuongtu) != 0)
-										@if((strtotime($ngayht) > strtotime($kmtuongtu->ngaybd)) && (strtotime($ngayht) < strtotime($kmtuongtu->ngaykt)))
-												<div class="chietkhau">
-												    {{$kmtuongtu->chietkhau}}%
-												</div>
-											@endif
-										@endif
+								<div class="thumbnail">
+									<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+										<?php
+											if(count($kmtuongtu) != 0){
+												foreach ($kmtuongtu as $valkm) {
+													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
+														<div class="chietkhau">
+															{{$valkm->chietkhau}}%
+														</div>
+													<?php }
+												}
+											} 
+										?>
 										<div class="caption">
-											@if(count($kmtuongtu) != 0)
-												@if((strtotime($ngayht) > strtotime($kmtuongtu->ngaybd)) && (strtotime($ngayht) < strtotime($kmtuongtu->ngaykt)))
+										<?php
+											if(count($kmtuongtu) != 0){
+												$t = 0;
+												foreach ($kmtuongtu as $valkm) {
+													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
+														echo '<div class="gia">
+															<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
+															</label>
+															<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ
+															</del>
+														</div>';
+														break; 
+													} else {
+														$t +=1;
+													}
+												}
+												if($t == count($kmtuongtu)){ ?>
+								        			<div class="gia">
+										      			<label class="giakm">
+										      				{{number_format($val->dongia,0,'.','.')}} đ
+										      			</label>
+										      		</div>
+								        		<?php }
+												} else { ?>
 													<div class="gia">
-														<label class="giakm">{{number_format($val->dongia-($val->dongia*0.01*$kmtuongtu->chietkhau),0,'.','.')}} đ
+														<label class="giakm">
+															{{number_format($val->dongia,0,'.','.')}} đ
 														</label>
-														<del class="giagoc">{{number_format($val->dongia,0,'.','.')}} đ</del>
 													</div>
-												@endif
-											@else
-												<div class="gia">
-													<label class="giakm">
-													    {{number_format($val->dongia,0,'.','.')}} đ
-													</label>
-												</div>
-											@endif		
+												<?php }
+											?>							
 											<div class="tendt">
 												<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
 											</div>
-											
+											<div class="luotvote row">
 												<?php
-													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluongct');
-																?>
-												      	@if($luotmua != 0)
-												      	<div class="luotvote" style="margin-bottom: -28px;">
-															<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
-																<span class="fa fa-tag"> {{$luotmua}}</span>
-															</a>
-														</div>
-														@endif
-							  				<div class="ten-shop row">
-							  					<?php
-								  					$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
-								  						echo $nguoiban->tengianhang;
-								  				?>
-							  				</div>
+													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+												?>
+												@if($luotmua != 0)
+													<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+													<span class="fa fa-tag"> {{$luotmua}}</span>
+													</a>
+												@endif
+											</div>
+					  						<div class="ten-shop row">
+					  							<?php
+									  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+									  					echo $nguoiban->tengianhang;
+									  				?>
+					  						</div>
 										</div>
 									</div>
 								</a>
-		                    <?php }
-		                    
+		                    <?php }		                    
 						?>
 					</div>
 				</div> <!-- end panel phải các sản phẩm gợi ý-->

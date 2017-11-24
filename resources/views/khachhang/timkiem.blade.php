@@ -88,7 +88,7 @@
 				</div>
 			<!--	<div class="col-md-6 col-sm-6 text-right">
 					<select id="selectSapXep" name="sapXep">
-						<option value="">-- Sắp xếp theo --</option>
+						<option value=""> Sắp xếp theo </option>
 						<option value="1">Giá giảm dần</option>
 						<option value="2">Giá tăng dần</option>
 					</select>
@@ -150,7 +150,7 @@
 												<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
 											</div>
 											<div class="luotvote">										<?php
-													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluong');
+													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->count('soluongct');
 												?>
 												@if($luotmua != 0)
 													<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
@@ -158,12 +158,6 @@
 													</a>
 												@endif
 												<button type="button" class="pull-right" data-toggle="modal" data-target="#modalCart" data-backdrop="static">Mua ngay</button>
-											<!--	<a data-toggle="tooltip" title="Đã có <b>5</b> lượt xem" data-html="true" data-placement="top">
-												    <span class="fa fa-eye">5</span>
-												</a>
-												<a data-toggle="tooltip" title="Đã có <b>0</b> bình luận" data-html="true" data-placement="top">
-												    <span class="fa fa-comment">0</span>
-												</a> -->
 											</div>
 				  							<div class="ten-shop row">
 				  								<?php
