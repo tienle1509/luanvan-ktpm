@@ -173,6 +173,15 @@ Route::group(['prefix'=>'nguoiban'], function(){
 Route::get('home', ['uses'=>'HomeKhachHangController@getHomeKhachHang']);
 Route::get('timkiem',['uses'=>'HomeKhachHangController@getTimKiemSanPham']);
 
+//Kiểm tra đơn hàng
+Route::get('kiemtra-donhang', ['uses'=>'KiemTraDonHangController@getKiemTraDonHang']);
+Route::get('thongtin-donhang', ['uses'=>'KiemTraDonHangController@getThongTinDonHang']);
+
+
+//Đăng kí tài khoản
+Route::post('dangki-taikhoan',['uses'=>'TaiKhoanKhachHangController@postDangKi']);
+
+
 Route::get('chitiet-sanpham/{masp}',['uses'=>'HomeKhachHangController@getChiTietSanPham']);
 
 //Thêm sản phẩm vào giỏ hàng
@@ -197,19 +206,3 @@ Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanh
 Route::get('chitiet-danhmuc',function(){
 	return view('khachhang.chitiet_danhmuc');
 });
-Route::get('donhang',function(){
-	return view('khachhang.donhang');
-});
-//-------------------------------------------------------------------------------------
-use Carbon\Carbon;
-Route::get('demo', function(){
-	$d = Carbon::now();
-	echo $d.'<br>';
-	echo date('Y-m-d H:i:s').'<br>';
-
-	
-	echo 'The time is ' . date('Y-m-d H:i:s');
-});
-
-
-

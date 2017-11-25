@@ -33,13 +33,14 @@
 	    $(document).ready(function(){
 	    	$('.btnMuaNgay').click(function(){
 	    		var url = "http://localhost/luanvan-ktpm/muahang";
+	    		var sl = 1;
 	    		var masp = $(this).attr("id");
 
 	    		$.ajax({
 	    			url : url,
 	    			type : "GET",
 	    			dataType : "JSON",
-	    			data : {"masp":masp},
+	    			data : {"masp":masp, "sl":sl},
 	    			success : function(result){
 	    				if(result.success){
 	    					$('#numCart').html(result.soluong);

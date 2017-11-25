@@ -11,8 +11,7 @@
 
 
 
-	<script language="javascript">
-	  
+	<script language="javascript">	  
 	    /* Show hide nội dung mô tả */
 	    $(document).ready(function(){
 	    	$('#showhiddenMota').click(function(){
@@ -33,6 +32,61 @@
 	    $(document).ready(function(){
 	    	$('#btn-danhgia').click(function(){
 	    		$('#panel-danhgia').collapse('show');
+	    	});
+	    });
+
+
+
+	    //Bấm button thêm sản phẩm vào giỏ hàng
+	    $(document).ready(function(){
+	    	$('.btn-addCart').click(function(){
+	    		var url = "http://localhost/luanvan-ktpm/muahang";
+	    		var sl = $('input[name="soluong"]').val();
+	    		var masp = $(this).attr('id');
+
+	    		$.ajax({
+	    			url : url,
+	    			type : "GET",
+	    			dataType : "JSON",
+	    			data : {"masp":masp, "sl":sl},
+	    			success : function(result){
+	    				if(result.success){
+	    					$('#numCart').html(result.soluong);
+	    					$('#btnCart').html(result.soluong);
+	    					var box = '';
+	    					var duongdan = '';
+	    					var ten = '';
+	    					var gia = '';
+	    					var soluong = '';
+	    					var tongtien = '';
+	    					var ndGioHang = '';
+	    					var rowid = '';
+	    					var masp = '';
+
+	    					for (var i in result.content) {
+	    						//console.log(result.content[i]);
+	    						masp = result.content[i]['id'];
+	    						rowid = result.content[i]['rowid'];
+	    						duongdan = '../public/anh-sanpham/'+result.content[i]['options']['img'];
+	    						ten = result.content[i]['name'];
+	    						gia = result.content[i]['price'];
+	    						soluong = result.content[i]['qty']
+	    						tongtien = result.tongtien;
+
+box += '<div class="row detail-cart"><div class="col-md-6"><img id="imageProduct" src="'+ duongdan +'" alt="imageProduct"><div class="ten-sp"><label>'+ ten +'</label><div class="xoasp-cart"><button class="XoaSP" id="'+ rowid +'"><span class="fa fa-trash-o"></span>&nbsp;Bỏ sản phẩm</button></div></div></div><div class="col-md-2 gia-cart"><label>'+ gia.toLocaleString('de-DE') +' đ</label></div><div class="col-md-2 sl-cart" id="'+ masp +'"><input type="number" id="'+ rowid +'" class="inputSL" min="1" max="100" value="'+ soluong +'"></div><div class="col-md-2 tong-cart"><label>'+ (gia*soluong).toLocaleString('de-DE') +' đ</label></div></div>';
+
+
+
+
+	    					}
+
+ndGioHang = '<div class="modal-header"><button type="button" class="close1" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h5 class="modal-title"><span class="fa fa-shopping-cart"></span>&nbsp;<b style="font-size: 14px; text-align: center; color: blue">GIỎ HÀNG </b>( <b style="color: #DA0000" id="numCart">'+ result.soluong +'</b> sản phẩm )</h5></div><div id="erroCart" class="alert alert-danger hide" style="margin:15px;"></div><div class="modal-body"><div class="container-fluid list-cart"><div class="title-cart"><div class="row"><div class="col-md-6">Sản phẩm</div><div class="col-md-2" style="text-align: center;">Giá thành</div><div class="col-md-2" style="text-align: center;">Số lượng</div><div class="col-md-2">Thành tiền</div></div></div><div class="box-scroll">'+ box +'</div></div></div><div class="modal-footer"><label class="label-thanhtien">Thành tiền:</label><label class="label-tong">'+ tongtien.toLocaleString('de-DE') +' VND</label><div class="label-vat">(Đã bao gồm VAT)</div><div class="footer-cart"><a class="tieptuc-cart" data-dismiss="modal" class="btn" type="button" style="cursor: pointer;"><span class="fa fa-long-arrow-left">&nbsp;&nbsp;Tiếp tục mua hàng</span></a><form action="{{url("nhap-thongtin-donhang")}}" method="get"><button class="thanhtoan-cart btn btn-danger" type="submit">TIẾN HÀNH THANH TOÁN</button></form></div></div>';
+							
+							$('#ndGioHang').html(ndGioHang);
+	    					
+	    				}
+	    			}
+	    		});
 	    	});
 	    });
 
@@ -150,14 +204,8 @@
 					<hr>
 					<div class="row label-soluong">
 						<div class="col-md-3 col-sm-3">Số lượng:</div>
-						<select name="soluong">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-
-						</select>(Còn lại {{$chitietsp->soluong}} sản phẩm)
+						<input type="number" name="soluong" value="1" min="1" style="width: 60px;">
+						(Còn lại {{$chitietsp->soluong}} sản phẩm)
 					</div>
 					<hr>
 					<?php 
@@ -194,7 +242,7 @@
 					
 					<div class="row time-ship"></div> 
 					<div class="row list-btn">
-						<button type="button" class="btn btn-addCart" data-toggle="modal" data-target="#modalCart"><span class="fa fa-shopping-cart"></span>&nbsp;&nbsp;Thêm vào giỏ hàng</button>
+						<button id="{{$chitietsp->masp}}" type="button" class="btn btn-addCart"><span class="fa fa-shopping-cart"></span>&nbsp;&nbsp;Thêm vào giỏ hàng</button>
 					</div>
 				</div>
 
@@ -284,13 +332,16 @@
 					</div>			
 
 					<div class="row" id="danhgia">
-						<div class="tieude"><h3>Đánh giá & nhận xét cho sản phẩm Điện thoại HOTWAV tặng ốp lưng dán màn hình nhập khẩu</h3></div>
+						<div class="tieude"><h3>Đánh giá & nhận xét cho sản phẩm {{$chitietsp->tensp}}</h3></div>
 						<div class="label-diem"><p>Điểm đánh giá trung bình của sản phẩm</p></div>					
 						<div class="table-danhgia">
 							<table class="table table-bordered tbdanhgia">
 							    <tbody>
 							      <tr>
 							        <td class="col-1">
+							        	<?php
+							        		
+							        	?>
 							        	<input class="rating rating-loading" data-star="5" data-show-clear="false" data-show-caption="false" data-readonly="true" data-size="xs" value="1.4">
 										<p>1.4 trên 5</p>
 										<p>Có 32 nhận xét & đánh giá</p>

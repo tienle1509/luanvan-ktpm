@@ -16,6 +16,7 @@ class GioHangController extends Controller
     public function getMuaHang(){
     	if(Request::ajax()){
     		$masp = Request::get('masp');
+            $sl_nhan = Request::get('sl');
 
     		$ngayht = Carbon::now();
 			$sp_mua = DB::table('san_pham')->where('masp',$masp)->first();
@@ -33,7 +34,7 @@ class GioHangController extends Controller
 					$giasp = $sp_mua->dongia-($sp_mua->dongia*$val->chietkhau*0.01);
 				}
 			}
-			Cart::add(array('id'=>$masp, 'name'=>$sp_mua->tensp, 'qty'=>1, 'price'=>$giasp, 'options'=>array('img'=>$sp_mua->anh)));
+			Cart::add(array('id'=>$masp, 'name'=>$sp_mua->tensp, 'qty'=>$sl_nhan, 'price'=>$giasp, 'options'=>array('img'=>$sp_mua->anh)));
 			//Thay đổi khi sử dụng script
 			$content = Cart::content();
 			$sl = Cart::count();

@@ -96,20 +96,9 @@ body {
 	margin-bottom: 20px;
 }
 
-.trangthai {
-	margin-left: 100px;
-}
-
-.trangthai .label-xacnhan, .trangthai .label-vanchuyen, .trangthai .label-dagiao, .trangthai .label-hoantat {
+.trangthai .label-tinhtrang{
 	margin-right: 5px;
 	background-color: #E1E1E1;
-	padding: 10px;
-	border-radius: 3px;
-}
-
-.trangthai .label-cho {
-	background-color: #28A502;
-	color: #FFFFFF;
 	padding: 10px;
 	border-radius: 3px;
 }

@@ -76,7 +76,7 @@ $('#ndGioHang').html(ndGioHang);
 	   //console.log(result.content[i]['qty']);
 	   	masp = result.content[i]['id'];
 	    rowid = result.content[i]['rowid'];
-	    duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    duongdan = '/luanvan-ktpm/public/anh-sanpham/'+result.content[i]['options']['img'];
 	    ten = result.content[i]['name'];
 	    gia = result.content[i]['price'];
 	    soluong = result.content[i]['qty']
@@ -140,7 +140,7 @@ for (var i in result.content) {
 	   //console.log(result.content[i]['qty']);
 	   	masp = result.content[i]['id'];
 	    rowid = result.content[i]['rowid'];
-	    duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    duongdan = '/luanvan-ktpm/public/anh-sanpham/'+result.content[i]['options']['img'];
 	    ten = result.content[i]['name'];
 	    gia = result.content[i]['price'];
 	    soluong = result.content[i]['qty']
@@ -161,7 +161,71 @@ $('#ndGioHang').html(ndGioHang);
 	});
 });
 
+	
+	//Kiểm tra đơn hàng
+	$(document).ready(function(){
+		$('#btnKTDonHang').click(function(){
+			var url = "http://localhost/luanvan-ktpm/kiemtra-donhang";
+			var madh = $('form[name="form-ktdonhang"]').find('input[name="madonhang"]').val();
+			var email = $('form[name="form-ktdonhang"]').find('input[name="email"]').val();
 
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : "JSON",
+				data : {"madh":madh, "email":email},
+				success : function(result){
+					if(!result.success){
+						var madh = '';
+						var email = '';
+						var tt_sai = '';
+						$.each(result.errors, function(key, item){
+							if(key == 'madh'){
+								madh += item;			
+							}
+							if(key == 'email'){
+								email += item;
+							}
+							if(key == 'tt_sai'){
+								tt_sai += item;
+							}
+						});
+						$('.error_madh').html(madh);
+						$('.error_email').html(email);
+						$('.tt_sai').html(tt_sai);
+					}else{
+						window.location="http://localhost/luanvan-ktpm/thongtin-donhang";
+					}
+				}
+			});
+		});
+	});
+
+	//Đăng kí tài khoản
+	$(document).ready(function(){
+		$('#btnDangKi').click(function(){
+			var url = "http://localhost/luanvan-ktpm/dangki-taikhoan";
+			var hoten = $('form[name="form-dangki"]').find('input[name="hoten"]').val();
+			var email = $('form[name="form-dangki"]').find('input[name="email"]').val();
+			var matkhau1 = $('form[name="form-dangki"]').find('input[name="matkhau1"]').val();
+			var matkhau2 = $('form[name="form-dangki"]').find('input[name="matkhau2"]').val();
+			var _token = $('form[name="form-dangki"]').find('input[name="_token"]').val();
+
+			$.ajax({
+				url : url,
+				type : "POST", 
+				dataType : "JSON",
+				data : {"hoten":hoten, "email":email, "matkhau1":matkhau1, "matkhau2":matkhau2, "_token":_token},
+				success : function(result){
+					if(!result.success){
+
+					}else{
+
+					}
+				}
+			});
+		});
+	});
 
 	</script>
 
@@ -176,21 +240,9 @@ $('#ndGioHang').html(ndGioHang);
 				<ul class="submenu nav nav-pills col-md-9 col-sm-9 pull-right">
 					<li><a href="{{asset('nguoiban/dangnhap')}}" target="_blank"><span class="fa fa-handshake-o"></span>&nbsp;&nbsp;Bán hàng cùng Mobile Store</a></li>			
 					<li>
-						<button class="btndrop dropdown-toggle" data-toggle="dropdown">
+						<button class="btndrop" data-toggle="modal" data-target="#modalCheckOrder">
 							<span class="fa fa-list-alt"></span>&nbsp;&nbsp;Kiểm tra đơn hàng&nbsp;
-							<span class="fa fa-angle-down"></span>
 						</button>
-						<ul class="dropdown-menu dropdown-menu-left" role="menu">
-							<form id="form-ktdonhang">
-								<div class="form-group form-group-sm">
-									<input type="text" name="madonhang" class="form-control " placeholder="Vui lòng nhập mã đơn hàng">
-								</div>
-								<div class="form-group form-group-sm">
-									<input type="text" name="email" class="form-control"  placeholder="Vui lòng nhập địa chỉ email">
-								</div>
-								<button type="submit" class="btntim btn btn-sm btn-block">KIỂM TRA</button>
-							</form>
-						</ul>
 					</li>
 					<li>
 						<button class="btndrop btnmodal" data-toggle="modal" data-target="#modalLogin" data-backdrop="static">
@@ -202,6 +254,41 @@ $('#ndGioHang').html(ndGioHang);
 							<span class="fa fa-user-plus"></span>&nbsp;&nbsp;Đăng ký
 						</button>
 					</li>
+
+					<!-- Modal kiểm tra đơn hàng -->
+					<div class="modal" id="modalCheckOrder" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close1" data-dismiss="modal">
+										<span aria-hidden="true">&times;</span>
+										<span class="sr-only">Close</span>
+									</button>
+									<h4 class="modal-title">KIỂM TRA ĐƠN HÀNG</h4>
+								</div>
+
+								<div class="tt_sai" style="color: red; margin-left: 10px;"></div>
+
+								<div class="modal-body">
+									<form name="form-ktdonhang" method="get" action="{{ action('KiemTraDonHangController@getKiemTraDonHang') }}">
+										<div class="form-group form-group-sm">
+											<label>Mã đơn hàng<b style="color: red;"> *</b></label>
+											<input type="text" name="madonhang" class="form-control" placeholder="Nhập mã đơn hàng">
+											<div class="error_madh" style="color: red; margin-bottom: -10px;"></div>
+										</div>
+										<div class="form-group form-group-sm">
+											<label>Email<b style="color: red;"> *</b></label>
+											<input type="text" name="email" class="form-control" placeholder="Nhập email">
+											<div class="error_email" style="color: red; margin-bottom: -15px;"></div>
+										</div>
+									</form>						
+								</div>
+								<div class="modal-footer">
+									<button id="btnKTDonHang" type="button" class="btntim btn btn-block">KIỂM TRA</button>
+								</div>
+							</div>
+						</div>
+					</div> <!-- end modal kiểm tra đơn hàng -->
 
 
 					<!-- Modal Đăng nhập -->
@@ -219,7 +306,7 @@ $('#ndGioHang').html(ndGioHang);
 									<form id="form-dangki">
 										<div class="form-group form-group-sm">
 											<label>Email<b style="color: red;"> *</b></label>
-											<input type="text" name="" class="form-control" placeholder="Nhập địa chỉ email">
+											<input type="text" name="email" class="form-control" placeholder="Nhập địa chỉ email">
 										</div>
 										<div class="form-group form-group-sm">
 											<label>Mật khẩu<b style="color: red;"> *</b></label>
@@ -246,27 +333,30 @@ $('#ndGioHang').html(ndGioHang);
 									<h4 class="modal-title">ĐĂNG KÍ TÀI KHOẢN</h4>
 								</div>
 								<div class="modal-body">
-									<form id="form-dangki">
+									<form id="form-dangki" name="form-dangki" method="post" action="{{ action('TaiKhoanKhachHangController@postDangKi') }}">
+
+										<input type="hidden" name="_token" value="{{csrf_token()}}">
+
 										<div class="form-group form-group-sm">
 											<label>Họ và Tên<b style="color: red;"> *</b></label>
-											<input type="text" name="" class="form-control" placeholder="Nhập họ tên">
+											<input type="text" name="hoten" class="form-control" placeholder="Nhập họ tên">
 										</div>
 										<div class="form-group form-group-sm">
 											<label>Email<b style="color: red;"> *</b></label>
-											<input type="text" name="" class="form-control" placeholder="Nhập địa chỉ email muốn đăng kí">
+											<input type="text" name="email" class="form-control" placeholder="Nhập địa chỉ email muốn đăng kí">
 										</div>
 										<div class="form-group form-group-sm">
 											<label>Mật khẩu<b style="color: red;"> *</b></label>
-											<input type="text" name="" class="form-control" placeholder="Vui lòng nhập mật khẩu">
+											<input type="password" name="matkhau1" class="form-control" placeholder="Vui lòng nhập mật khẩu">
 										</div>
 										<div class="form-group form-group-sm">
 											<label>Nhập lại mật khẩu<b style="color: red;"> *</b></label>
-											<input type="text" name="" class="form-control" placeholder="Vui lòng nhập lại mật khẩu">
+											<input type="password" name="matkhau2" class="form-control" placeholder="Vui lòng nhập lại mật khẩu">
 										</div>
 									</form>						
 								</div>
 								<div class="modal-footer">
-									<button type="submit" class="btntim btn btn-block">ĐĂNG KÍ</button>
+									<button id="btnDangKi" type="button" class="btntim btn btn-block">ĐĂNG KÍ</button>
 								</div>
 							</div>
 						</div>

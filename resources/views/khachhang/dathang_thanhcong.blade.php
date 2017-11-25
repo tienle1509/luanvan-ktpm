@@ -68,7 +68,7 @@
 			.</label>
 		</p>
 		<div class="link-btn">
-			<a href="{{asset('donhang')}}">Chi tiết đơn hàng</a>
+			<a href="{{asset('thongtin-donhang')}}">Chi tiết đơn hàng</a>
 			<a href="{{asset('home')}}">Tiếp tục mua sắm</a>
 		</div>
 		<p>Nếu có nhu cầu xem lại thông tin mua hàng, vui lòng chọn click chọn kiểm tra đơn hàng và thực hiện các bước.</p>
