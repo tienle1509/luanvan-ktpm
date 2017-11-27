@@ -180,6 +180,20 @@ Route::get('thongtin-donhang', ['uses'=>'KiemTraDonHangController@getThongTinDon
 
 //Đăng kí tài khoản
 Route::post('dangki-taikhoan',['uses'=>'TaiKhoanKhachHangController@postDangKi']);
+Route::get('quanli-taikhoan', ['uses'=>'TaiKhoanKhachHangController@getQuanLiTaiKhoan']);
+Route::get('thaydoi-email', ['uses'=>'EditAccountThanhVienController@getThayDoiEmail']);
+Route::post('luu-thaydoi-email', ['uses'=>'EditAccountThanhVienController@postThayDoiEmail']);
+Route::get('thaydoi-diachi-giaohang', 
+		['uses'=>'EditAccountThanhVienController@getThayDoiDiaChiGiaoHang']);
+Route::post('luu-thaydoi-diachi',
+		['uses'=>'EditAccountThanhVienController@postThayDoiDiaChiGiaoHang']);
+Route::get('thaydoi-matkhau', ['uses'=>'EditAccountThanhVienController@getThayDoiMatKhau']);
+Route::post('luu-thaydoi-matkhau', ['uses'=>'EditAccountThanhVienController@postThayDoiMatKhau']);
+
+
+//Đăng nhập, đăng xuất
+Route::post('dangnhap',['uses'=>'TaiKhoanKhachHangController@postDangNhap']);
+Route::get('dangxuat', ['uses'=>'TaiKhoanKhachHangController@getDangXuat']);
 
 
 Route::get('chitiet-sanpham/{masp}',['uses'=>'HomeKhachHangController@getChiTietSanPham']);

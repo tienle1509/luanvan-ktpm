@@ -8,8 +8,11 @@ header {
 
 /* Sub nav, menu */
 .submenu {
-	width: 624px;
 	background-color: #FBF6FB;
+}
+
+.submenu li {
+	float: right;
 }
 
 .submenu>li>a {
@@ -29,7 +32,7 @@ header {
 	font-size: 16px;
 }
 
- .submenu .fa-user, .submenu .fa-user-plus {
+ .submenu .fa-user, .submenu .fa-user-plus, .submenu .fa-user-o {
  	color: #2930FF;
 	font-size: 15px;
  }
@@ -49,6 +52,8 @@ header {
 	text-indent: -7px;
 	font-size: 12px;
 	margin: 3px;
+	float: left;
+	width: 150px;
 }
 
 .dropdown-menu>li>a:hover{

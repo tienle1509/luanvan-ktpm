@@ -1,0 +1,125 @@
+/* Nav bottom */
+.nav-bottom, .nav-bottom .nav-pills {
+	background-color: #A633D7;
+}
+
+
+/* Tùy chỉnh button danh mục */
+.nav-bottom .btn-danhmuc {
+	color: #FFFFFF;
+	background-color: #9030BA;
+	padding: 10px 30px 9px 20px;
+	border: none;
+	font-weight: bold;
+	font-size: 13px;
+	outline: none;
+	margin-right: 5px;
+}
+
+.nav-bottom .danhmuc {
+	position: relative;
+    display: inline;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 256px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.nav-bottom .dropdown-content a {
+    display: block;
+    overflow: hidden;
+    color:  #282528;
+	padding: 4px;
+	border-bottom: 1px solid #EDECEE;
+	text-decoration: none;
+	width: 256px;
+	padding-left: 30px;
+}
+
+.nav-bottom .dropdown-content a:hover {
+	background-color: #A633D7;
+	color: #FFFFFF;
+}
+
+.nav-bottom .danhmuc:hover .dropdown-content {
+    display: block;
+}
+
+
+.nav-bottom .btn-danhmuc .fa-navicon, .nav-bottom .btn-danhmuc .fa-angle-down {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+
+
+
+/* Tùy chỉnh khuyến mãi, bán chạy, hàng mới */
+.nav-bottom .nav-bottom-km, .nav-bottom .nav-bottom-banchay, .nav-bottom .nav-bottom-hangmoi {
+	font-weight: bold;
+	font-size: 12px;
+	color: #FFFFFF;
+	padding-left: 30px;
+	padding-right:30px;
+	border-radius: 0px;
+	border-right: 1px solid #B329EE;
+}
+
+.nav-bottom .nav-bottom-km:hover, .nav-bottom .nav-bottom-banchay:hover, .nav-bottom .nav-bottom-hangmoi:hover {
+	background-color: #9030BA;
+}
+
+.nav-bottom .nav-bottom-km:focus, .nav-bottom .nav-bottom-banchay:focus, .nav-bottom .nav-bottom-hangmoi:focus {
+	background-color: #A633D7;
+}
+
+.nav-bottom .fa-gift, .nav-bottom .fa-tag, .nav-bottom .fa-tags {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+
+
+/* Tùy chỉnh Body */
+body {
+	background-color: #FBF6FB;
+}
+
+.panel-left {
+	line-height: 30px;
+	padding-top: 20px;
+	width: 240px;
+}
+
+.panel-right{
+	margin-top: 60px;
+	width: 940px;
+}
+
+.panel-tt, .panel-cd {
+	background-color: #FFFFFF;
+	height: 190px;
+	line-height: 30px;
+}
+
+/* Sửa thông tin */
+.panel-sua-thongtin {
+	margin-top: 60px;	
+}
+
+#form-suathongtin{
+	background-color: #FFFFFF;
+	padding-top: 30px;
+	padding-bottom: 30px;	
+	font-weight: normal;
+}
+
+#form-suathongtin .form-group {
+	width: 700px;
+	padding: 3px 0px 3px 20px;
+}

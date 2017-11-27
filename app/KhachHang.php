@@ -11,6 +11,6 @@ class KhachHang extends Model
 
     protected $fillable = [
     	'makh', 'tennguoidung', 'tenkh', 'email', 'matkhau', 'sodienthoai',
-    	'diachithanhtoan', 'diachigiaohang', 'thanhvien'
+    	'diachigiaohang', 'thanhvien', 'ngaytao'
     ];
 }

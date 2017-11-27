@@ -234,7 +234,7 @@ class HomeKhachHangController extends Controller
         return $madh;
 	}
 
-/*---------------------------Nhập thông tin đặt hàng-------------------------------*/
+/*---------------------------Mã khách hàng tự tăng-------------------------------*/
 	public function maKhachHang(){
 		$kh = DB::table('khach_hang')->select('makh')->get();
 		$max = 0;
@@ -286,7 +286,6 @@ class HomeKhachHangController extends Controller
 			$kh->email = $_SESSION['mailkh'];
 			$kh->matkhau = '';
 			$kh->sodienthoai = $_SESSION['sdt'];
-			$kh->diachithanhtoan = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
 			$kh->diachigiaohang = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
 			$kh->thanhvien = 0;
 			$kh->save();
@@ -393,7 +392,6 @@ class HomeKhachHangController extends Controller
 		$kh->email = $_SESSION['mailkh'];
 		$kh->matkhau = '';
 		$kh->sodienthoai = $_SESSION['sdt'];
-		$kh->diachithanhtoan = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
 		$kh->diachigiaohang = $_SESSION['diachi'].', '.$_SESSION['tentinh'];
 		$kh->thanhvien = 0;
 		$kh->save();
