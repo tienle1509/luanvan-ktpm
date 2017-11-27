@@ -57,9 +57,9 @@
 					  <li><a href="home">TRANG CHỦ</a></li>
 					  <li class="active">
 					  	@if(isset($searchdm))
-							{{strtoupper($searchdm->tendanhmuc)}}
+							{{mb_strtoupper($searchdm->tendanhmuc)}}
 						@else
-							CÁC SẢN PHẨM LIÊN QUAN ĐẾN {{strtoupper($keynhap)}}
+							CÁC SẢN PHẨM LIÊN QUAN ĐẾN {{mb_strtoupper($keynhap)}}
 						@endif
 					  </li>
 					</ol>
@@ -81,7 +81,7 @@
 						@if(isset($searchdm))
 							{{$searchdm->tendanhmuc}}
 						@else
-							"{{strtoupper($keynhap)}}"
+							"{{mb_strtoupper($keynhap)}}"
 						@endif
 					</label>
 					<label class="label-numPro"> | Tìm thấy {{count($result_search)}} sản phẩm</label>

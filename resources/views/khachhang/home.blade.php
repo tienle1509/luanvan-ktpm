@@ -42,7 +42,13 @@
 	    			dataType : "JSON",
 	    			data : {"masp":masp, "sl":sl},
 	    			success : function(result){
-	    				if(result.success){
+	    				if(!result.success){
+	    					var loi_soluong = '';
+	    					$.each(result.errors, function(key, item){
+	    						loi_soluong += item;
+	    					});
+	    					alert(loi_soluong);
+	    				}else{
 	    					$('#numCart').html(result.soluong);
 	    					$('#btnCart').html(result.soluong);
 	    					var box = '';
@@ -86,6 +92,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 	    
 
     </script>
+
 
 
 <!-- Nav bottom -->

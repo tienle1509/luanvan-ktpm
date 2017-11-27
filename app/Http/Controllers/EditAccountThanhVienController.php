@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Validator;
+use Hash;
 
 class EditAccountThanhVienController extends Controller
 {
@@ -103,10 +104,23 @@ class EditAccountThanhVienController extends Controller
 				'txtMK2.same'=>'Không khớp mật khẩu'
 			]);
 		if($v->fails()){
-			return redirect()->back()->withErrors($v->errors());
+			return redirect()->back()->withInput()->withErrors($v->errors());
 		}else{
-			$check_mkht = DB::tableDF
+			$check_mkht = DB::table('khach_hang')
+							->where('makh',$_SESSION['makh'])
+							->where('thanhvien',1)
+							->first();
+
+			if(Hash::check($request->txtMKHT, $check_mkht->matkhau)){
+	            DB::table('khach_hang')->where('makh',$_SESSION['makh'])->where('thanhvien',1)->update(['matkhau'=>Hash::make($request->txtMK1)]);
+	            return redirect('quanli-taikhoan');
+	        } else {
+	            $errors['txtMKHT'] = 'Mật khẩu hiện tại không chính xác';
+	            return redirect()->back()->withInput()->withErrors($errors);
+	        }
 		}
 	}
 
 }
+
+

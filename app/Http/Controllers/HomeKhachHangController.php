@@ -73,9 +73,22 @@ class HomeKhachHangController extends Controller
 						->join('nguoi_ban as nb', 'nb.manb', '=', 'sp.manb')
 						->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
 						->where('sp.masp', $masp)
+						->where('sp.soluong','>',0)
 						->first();
+		if(count($chitietsp) == 0){
+			header("Location: http://localhost/luanvan-ktpm/home");	
+			exit;
+		}
+
+		$nhanxet = DB::table('nhanxet_danhgia')
+					->where('masp', $chitietsp->masp)
+					->orderBy('thoigiannxdg', 'desc')
+					->paginate(10);
 		
-		return view('khachhang.chitiet_sanpham')->with('chitietsp',$chitietsp)->with('ngayht',$ngayht);
+		return view('khachhang.chitiet_sanpham')
+				->with('chitietsp',$chitietsp)
+				->with('ngayht',$ngayht)
+				->with('nhanxet',$nhanxet);
 	}
 
 

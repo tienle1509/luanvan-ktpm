@@ -189,6 +189,10 @@ Route::post('luu-thaydoi-diachi',
 		['uses'=>'EditAccountThanhVienController@postThayDoiDiaChiGiaoHang']);
 Route::get('thaydoi-matkhau', ['uses'=>'EditAccountThanhVienController@getThayDoiMatKhau']);
 Route::post('luu-thaydoi-matkhau', ['uses'=>'EditAccountThanhVienController@postThayDoiMatKhau']);
+Route::get('quanli-donhang', ['uses'=>'LichSuDonHangController@getQuanLiDonHang']);
+Route::group(['prefix'=>'quanli-donhang'], function(){
+	Route::get('chitiet-donhang/{madh}', ['uses'=>'LichSuDonHangController@getChiTietDonHang']);
+});
 
 
 //Đăng nhập, đăng xuất
@@ -197,6 +201,7 @@ Route::get('dangxuat', ['uses'=>'TaiKhoanKhachHangController@getDangXuat']);
 
 
 Route::get('chitiet-sanpham/{masp}',['uses'=>'HomeKhachHangController@getChiTietSanPham']);
+Route::post('gui-nhanxet', ['uses'=>'NhanXetDanhGiaController@postNhanXet']);
 
 //Thêm sản phẩm vào giỏ hàng
 Route::get('muahang', ['uses'=>'GioHangController@getMuaHang']);
@@ -220,3 +225,4 @@ Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanh
 Route::get('chitiet-danhmuc',function(){
 	return view('khachhang.chitiet_danhmuc');
 });
+

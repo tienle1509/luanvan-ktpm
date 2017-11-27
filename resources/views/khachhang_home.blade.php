@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="{{asset('public/js/bootstrap-select.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/jquery.elevatezoom.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/star-rating.js')}}"></script>
+	<script type="text/javascript" src="{{asset('public/js/bootstrap-notify.js')}}"></script>
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">
@@ -309,7 +310,7 @@ $('#ndGioHang').html(ndGioHang);
 								</button>
 								<ul class="dropdown-menu">
 									<li><a href="{{asset('quanli-taikhoan')}}"><span class="fa fa-smile-o"></span>&nbsp;&nbsp;Quản lí tài khoản</a></li>
-						            <li><a href="#"><span class="fa fa-bars"></span>&nbsp;&nbsp;Đơn hàng của tôi</a></li>
+						            <li><a href="{{asset('quanli-donhang')}}"><span class="fa fa-bars"></span>&nbsp;&nbsp;Đơn hàng của tôi</a></li>
 						            <li class="divider"></li>
 						           	<li><a href="{{ asset('dangxuat') }}"><span class="fa fa-power-off"></span>&nbsp;&nbsp;Đăng xuất</a></li>
 						        </ul>

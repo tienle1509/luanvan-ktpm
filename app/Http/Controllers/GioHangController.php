@@ -21,30 +21,41 @@ class GioHangController extends Controller
     		$ngayht = Carbon::now();
 			$sp_mua = DB::table('san_pham')->where('masp',$masp)->first();
 
-            
-			//Kiểm tra sản phẩm có đang khuyến mãi hay không
-			$checkKM = DB::table('khuyen_mai as km')
-							->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-							->where('ctkm.masp',$masp)
-							->get();
+            //Kiểm tra số lượng khi bấm nút mua ngay
+            $con = Cart::content();
+            foreach ($con as $item) {
+                if($item['id'] == $sp_mua->masp){
+                    if($item['qty'] >= $sp_mua->soluong){
+                        $errors[] = 'Chỉ còn lại '.$sp_mua->soluong.' sản phẩm';
+                        return Response::json(['success'=>false, 'errors'=>$errors]);
+                    }
+                }
+            }
 
-			$giasp = $sp_mua->dongia;
-			foreach ($checkKM as $val) {
-				if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($val->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($val->ngaykt))){
-					$giasp = $sp_mua->dongia-($sp_mua->dongia*$val->chietkhau*0.01);
-				}
-			}
-			Cart::add(array('id'=>$masp, 'name'=>$sp_mua->tensp, 'qty'=>$sl_nhan, 'price'=>$giasp, 'options'=>array('img'=>$sp_mua->anh)));
-			//Thay đổi khi sử dụng script
-			$content = Cart::content();
-			$sl = Cart::count();
-			$tong = Cart::total();
 
-			//Lấy giá trị khi load lại trang
-    		$_SESSION['content'] = $content;
-    		$_SESSION['soluong'] = $sl;
-    		$_SESSION['tongtien'] = $tong;
-    		return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
+            //Kiểm tra sản phẩm có đang khuyến mãi hay không
+            $checkKM = DB::table('khuyen_mai as km')
+                        ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+                        ->where('ctkm.masp',$masp)
+                        ->get();
+
+            $giasp = $sp_mua->dongia;
+            foreach ($checkKM as $val) {
+                if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($val->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($val->ngaykt))){
+                    $giasp = $sp_mua->dongia-($sp_mua->dongia*$val->chietkhau*0.01);
+                }
+            }
+            Cart::add(array('id'=>$masp, 'name'=>$sp_mua->tensp, 'qty'=>$sl_nhan, 'price'=>$giasp, 'options'=>array('img'=>$sp_mua->anh)));
+            //Thay đổi khi sử dụng script
+            $content = Cart::content();
+            $sl = Cart::count();
+            $tong = Cart::total();
+
+            //Lấy giá trị khi load lại trang
+            $_SESSION['content'] = $content;
+            $_SESSION['soluong'] = $sl;
+            $_SESSION['tongtien'] = $tong;
+            return Response::json(['success'=>true, 'soluong'=>$sl, 'content'=>$content, 'tongtien'=>$tong]); 
     	}
     }
 

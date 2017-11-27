@@ -64,21 +64,21 @@
 			  <div class="form-group">
 			    <label class="col-sm-4 control-label">Mật khẩu hiện tại <b style="color: red">*</b></label>
 			    <div class="col-sm-8">
-			      <input type="password" name="txtMKHT" class="form-control">
+			      <input type="password" name="txtMKHT" class="form-control" value="{{old('txtMKHT')}}">
 			      <div style="color: red; margin-bottom: -10px;">{{$errors->first('txtMKHT')}}</div>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="col-sm-4 control-label">Mật khẩu mới <b style="color: red">*</b></label>
 			    <div class="col-sm-8">
-			      <input type="password" name="txtMK1" class="form-control">
+			      <input type="password" name="txtMK1" class="form-control" value="{{old('txtMK1')}}">
 			      <div style="color: red; margin-bottom: -10px;">{{$errors->first('txtMK1')}}</div>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label class="col-sm-4 control-label">Nhập lại mật khẩu <b style="color: red">*</b></label>
 			    <div class="col-sm-8">
-			      <input type="password" name="txtMK2" class="form-control">
+			      <input type="password" name="txtMK2" class="form-control" value="{{old('txtMK2')}}">
 			      <div style="color: red; margin-bottom: -10px;">{{$errors->first('txtMK2')}}</div>
 			    </div>
 			  </div>

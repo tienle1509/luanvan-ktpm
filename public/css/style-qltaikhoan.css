@@ -123,3 +123,73 @@ body {
 	width: 700px;
 	padding: 3px 0px 3px 20px;
 }
+
+/* Lịch sử đơn hàng*/
+.panel-donhang{
+	margin-top: 60px;
+}
+
+.panel-donhang #table-donhang{
+	background-color: #FFFFFF;
+	text-align: center;
+}
+
+.panel-donhang #table-donhang th{
+	text-align: center;
+	background-color: #E7E8FF;
+}
+
+.panel-chitietdonhang{
+	background-color: #FFFFFF;
+	padding: 30px 30px 60px 20px;
+}
+
+#table-detailOrder {
+	font-size: 14px;
+}
+
+#table-detailOrder .img-detailOrder {
+	width: 12%;
+}
+
+#table-detailOrder img {
+	width: 100px;
+	height: 100px;
+}
+
+#table-detailOrder .name-detailOrder {
+	width: 30%;
+}
+
+#table-detailOrder .num-detailOrder {
+	width: 8%;
+	text-align: center;
+}
+
+#table-detailOrder .price-detailOrder {
+	color: red;
+	width: 15%;
+}
+
+#table-detailOrder .tong-detailOrder {
+	color: red;
+	width: 10%;
+}
+
+.tongtien-detailOrder {
+	font-size: 15px;
+}
+
+.tongtien-detailOrder b {
+	color: red;
+}
+
+.detailOrderRow2 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.detailOrderRow2 a {
+	text-decoration: none;
+	width: 200px;
+}
