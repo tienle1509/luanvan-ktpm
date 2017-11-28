@@ -223,3 +223,6 @@ Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanh
 //Chi tiết danh mục
 Route::get('chitiet-danhmuc/{madm}', ['uses'=>'HomeKhachHangController@getChiTietDanhMuc']);
 
+//Sắp xếp tăng giảm theo giá
+Route::get('sapxep-gia',['uses'=>'SapXepTheoGiaController@getSapXep']);
+Route::get('ketqua-sapxep', ['uses'=>'SapXepTheoGiaController@getKetQuaSapXep']);

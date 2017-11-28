@@ -47,7 +47,25 @@
 	    					$.each(result.errors, function(key, item){
 	    						loi_soluong += item;
 	    					});
-	    					alert(loi_soluong);
+	    					$.notify({
+								// options
+								message: loi_soluong
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 100,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 	    				}else{
 	    					$('#numCart').html(result.soluong);
 	    					$('#btnCart').html(result.soluong);

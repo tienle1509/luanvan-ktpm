@@ -2,12 +2,19 @@
 
 @section('title-page')
 	<?php
-		$dm = DB::table('danhmuc_sanpham')->where('madm',$madm)->first();
+		$dm = DB::table('danhmuc_sanpham')->where('madm',$_SESSION['madm'])->first();
 		echo $dm->tendanhmuc;		
 	?>
 @stop
 
 @section('noidung')
+
+<?php 
+	if(!isset($_SESSION['madm'])){
+		header("Location: http://localhost/luanvan-ktpm/home");	
+		exit;
+	}
+?>
 
 <link rel="stylesheet" type="text/css" href="{{asset('public/css/style-chitiet-danhmuc.css')}}">
 
@@ -30,25 +37,7 @@
 	    					$.each(result.errors, function(key, item){
 	    						loi_soluong += item;
 	    					});
-	    					$.notify({
-								// options
-								message: loi_soluong
-							},{
-								// settings
-								element: 'body',
-								position: null,
-								type: "success",
-								allow_dismiss: true,
-								placement: {
-									from: "top",
-									align: "right"
-								},
-								offset: 100,
-								spacing: 10,
-								z_index: 1031,
-								delay: 1000,
-								timer: 800,
-							});
+	    					alert(loi_soluong);
 	    				}else{
 	    					$('#numCart').html(result.soluong);
 	    					$('#btnCart').html(result.soluong);
@@ -128,9 +117,9 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 								delay: 1000,
 								timer: 800,
 							});
-	    				}else{
+	    				}else{	
 	    					window.location = "http://localhost/luanvan-ktpm/ketqua-sapxep";
-	    				}	
+	    				}	    	
 	    			}
 	    		});
 	    	});
@@ -187,34 +176,49 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 		</div>
 
 		<?php 
-			$sp_danhmuc = DB::table('danhmuc_sanpham as dm')
+			if($_SESSION['sapxep'] == 1){
+				$sp_danhmuc = DB::table('danhmuc_sanpham as dm')
 							->join('san_pham as sp', 'sp.madm', '=', 'dm.madm')
-							->where('dm.madm',$madm)
+							->where('dm.madm',$_SESSION['madm'])
 							->where('sp.soluong','>',0)
 							->where('sp.trangthai',1)
+							->orderBy('dongia','desc')
 							->paginate(20);
+			}else{
+				$sp_danhmuc = DB::table('danhmuc_sanpham as dm')
+							->join('san_pham as sp', 'sp.madm', '=', 'dm.madm')
+							->where('dm.madm',$_SESSION['madm'])
+							->where('sp.soluong','>',0)
+							->where('sp.trangthai',1)
+							->orderBy('dongia','asc')
+							->paginate(20);
+			}
 		?>
 
 
-		@if(count($sp_danhmuc) == 0)
-			<div class="container" style="margin-top: 40px;">
-				<div class="alert alert-warning" role="alert">
-					Rất tiếc ! Chúng tôi không tìm thấy sản phẩm. Có thể do danh mục chưa phục vụ tại khu vực của bạn hoặc không có sản phẩm phù hợp với điều kiện lọc. Vui lòng thử điều kiện lọc mới hoặc dùng công cụ tìm kiếm.
-				</div>
-			</div>
-		@else
-			<div class="panel-category container">
+		<div class="panel-category container">
 				<div class="row title-panelCate">
 					<div class="col-md-6 col-sm-6">
 						<label>{{mb_strtoupper($dm->tendanhmuc)}}</label>
 						<label class="label-numPro"> | Tìm thấy {{count($sp_danhmuc)}} sản phẩm</label>
 					</div>
 					<div class="col-md-6 col-sm-6 text-right">
-						<select class="cbxSapXep" id="{{$madm}}">
-							<option value="">-- Sắp xếp theo --</option>
-							<option value="1">Giá giảm dần</option>
-							<option value="2">Giá tăng dần</option>
-						</select>
+						<?php
+							if($_SESSION['sapxep'] == 1){ ?>
+								<select class="cbxSapXep" id="{{$dm->madm}}">
+									<option value="">-- Sắp xếp theo --</option>
+									<option value="1" selected="">Giá giảm dần</option>
+									<option value="2">Giá tăng dần</option>
+								</select>
+							<?php }
+							if($_SESSION['sapxep'] == 2){ ?>
+								<select class="cbxSapXep" id="{{$dm->madm}}">
+									<option value="">-- Sắp xếp theo --</option>
+									<option value="1">Giá giảm dần</option>
+									<option value="2" selected="">Giá tăng dần</option>
+								</select>
+							<?php }
+						?>						
 					</div>
 				</div>
 
@@ -303,8 +307,7 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 						?>	
 					</div> <!-- panel list -->
 				</div>
-			</div>
-		@endif
+		</div>
 	</div>
 
 
