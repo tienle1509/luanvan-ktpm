@@ -96,6 +96,24 @@ body {
 	margin-bottom: 20px;
 }
 
+.tieude h3{
+	color: #117315;
+	padding-bottom: 20px;
+}
+
+.tieude .label-lienhe {
+	margin-top: 15px;
+}
+
+.tieude .label-lienhe .label-sdt {
+	font-size: 20px;
+	color:  #D30808;
+}
+
+.tieude p{
+	font-size: 15px;
+}
+
 .trangthai .label-tinhtrang{
 	margin-right: 5px;
 	background-color: #E1E1E1;
@@ -164,3 +182,5 @@ body {
 	margin-top: 10px;
 	font-size: 16px;
 }
+
+

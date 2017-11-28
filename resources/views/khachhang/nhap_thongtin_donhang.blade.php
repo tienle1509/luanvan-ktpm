@@ -61,6 +61,47 @@
 			});
 		});
 
+
+		//Đăng nhập tài khoản
+	$(document).ready(function(){
+		$('#btnDangNhap').click(function(){
+			var url = "http://localhost/luanvan-ktpm/dangnhap";
+			var email = $('form[name="form-dangnhap"]').find('input[name="email"]').val();
+			var matkhau = $('form[name="form-dangnhap"]').find('input[name="matkhau"]').val();
+			var _token = $('form[name="form-dangnhap"]').find('input[name="_token"]').val();
+
+			$.ajax({
+				url : url,
+				type : "POST",
+				dataType : "JSON",
+				data : {"email":email, "matkhau":matkhau, "_token":_token},
+				success : function(result){
+					if(!result.success){
+						var email = '';
+						var mk = '';
+						var sai_dl = '';
+						$.each(result.errors, function(key, item){
+							if(key == 'email'){
+								email += item;
+							}
+							if(key == 'matkhau'){
+								mk += item;
+							}
+							if(key == 'sai_dl'){
+								sai_dl += item;
+							}
+						});
+						$('.sai_dl').html(sai_dl);
+						$('.mail_dn').html(email);
+						$('.mk_dn').html(mk);
+					}else{
+						window.location="http://localhost/luanvan-ktpm/quanli-taikhoan";
+					}
+				}
+			});
+		});
+	});
+
 	</script>
 
 </head>
@@ -72,40 +113,48 @@
 				<img src="{{asset('public/img/logo2.png')}}" alt="logoMobileStore">
 			</a>
 			<div class="text-right">
-			    <a href="#" data-toggle="modal" data-target="#modalLogin" data-backdrop="static">Đăng nhập</a> để thanh toán tiện lợi hơn
+				@if(!isset($_SESSION['makh']))
+			    	<a href="#" data-toggle="modal" data-target="#modalLogin" data-backdrop="static">Đăng nhập</a> để thanh toán tiện lợi hơn
+			    @endif
 			    <div><span class="fa fa-question-circle"></span>&nbsp;19008088 (8h-21h hằng ngày)</div>
 			</div>
 
 
 			<!-- Modal Đăng nhập -->
-			<div class="modal" id="modalLogin" tabindex="-1" role="dialog">
-				<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close1" data-dismiss="modal">
-								<span aria-hidden="true">&times;</span>
-								<span class="sr-only">Close</span>
-							</button>
-							<h4 class="modal-title">ĐĂNG NHẬP TÀI KHOẢN</h4>
-						</div>
-						<div class="modal-body">
-							<form id="form-dangki">
-								<div class="form-group form-group-sm">
-									<label>Email<b style="color: red;"> *</b></label>
-									<input type="text" name="" class="form-control" placeholder="Nhập địa chỉ email">
+					<div class="modal" id="modalLogin" tabindex="-1" role="dialog">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close1" data-dismiss="modal">
+										<span aria-hidden="true">&times;</span>
+										<span class="sr-only">Close</span>
+									</button>
+									<h4 class="modal-title">ĐĂNG NHẬP TÀI KHOẢN</h4>
 								</div>
-								<div class="form-group form-group-sm">
-									<label>Mật khẩu<b style="color: red;"> *</b></label>
-									<input type="text" name="" class="form-control" placeholder="Vui lòng nhập mật khẩu">
+
+								<div class="sai_dl" style="color: red; margin-bottom: -10px; margin-left: 20px;"></div>
+
+								<div class="modal-body">
+									<form id="form-dangnhap" name="form-dangnhap" method="post" action="{{ action('TaiKhoanKhachHangController@postDangNhap')}}">
+										<input type="hidden" name="_token" value="{{csrf_token()}}">
+										<div class="form-group form-group-sm">
+											<label>Email<b style="color: red;"> *</b></label>
+											<input type="text" name="email" class="form-control" placeholder="Nhập địa chỉ email">
+											<div class="mail_dn" style="color: red; margin-bottom: -10px;"></div>
+										</div>
+										<div class="form-group form-group-sm">
+											<label>Mật khẩu<b style="color: red;"> *</b></label>
+											<input type="password" name="matkhau" class="form-control" placeholder="Vui lòng nhập mật khẩu">
+											<div class="mk_dn" style="color: red; margin-bottom: -10px;"></div>
+										</div>
+									</form>						
 								</div>
-							</form>						
+								<div class="modal-footer">
+									<button id="btnDangNhap" type="button" class="btntim btn btn-block">ĐĂNG NHẬP</button>
+								</div>
+							</div>
 						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btntim btn btn-block">ĐĂNG NHẬP</button>
-						</div>
-					</div>
-				</div>
-			</div> <!-- end modal đăng nhập -->
+					</div> <!-- end modal đăng nhập -->
 		</div>
 	</div> <!-- end header -->
 

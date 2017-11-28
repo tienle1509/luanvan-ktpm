@@ -32,6 +32,11 @@ class GioHangController extends Controller
                 }
             }
 
+            if($sl_nhan > $sp_mua->soluong){
+                $errors[] = 'Chỉ còn lại '.$sp_mua->soluong.' sản phẩm';
+                return Response::json(['success'=>false, 'errors'=>$errors]);
+            }
+
 
             //Kiểm tra sản phẩm có đang khuyến mãi hay không
             $checkKM = DB::table('khuyen_mai as km')

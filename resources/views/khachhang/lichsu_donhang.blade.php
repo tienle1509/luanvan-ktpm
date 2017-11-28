@@ -63,6 +63,7 @@
 			  			->where('dh.makh', $_SESSION['makh'])
 			  			->where('kh.thanhvien',1)
 			  			->where('dh.trangthai',1)
+			  			->orderBy('dh.madh','desc')
 			  			->get();
 			  	if(count($dh) == 0){ ?>
 			  		<tr>

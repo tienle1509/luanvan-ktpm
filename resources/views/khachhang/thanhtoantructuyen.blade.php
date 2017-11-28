@@ -1,8 +1,8 @@
 <?php
-	if(!isset($_SESSION['tenkh'])){
-		header("Location: http://localhost/luanvan-ktpm/home");	
-		exit;
-	}	
+	// if(!isset($_SESSION['tenkh'])){
+	// 	header("Location: http://localhost/luanvan-ktpm/home");	
+	// 	exit;
+	// }	
 ?>
 
 

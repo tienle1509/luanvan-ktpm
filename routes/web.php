@@ -220,9 +220,6 @@ Route::get('thanhtoan-tructuyen', ['uses'=>'HomeKhachHangController@getThanhToan
 Route::post('thanhtoan-tructuyen',['uses'=>'HomeKhachHangController@postThanhToanTrucTuyen']);
 Route::get('dathang-thanhcong',['uses'=>'HomeKhachHangController@getDatHangThanhCong']);
 
-
-/*---------------GIAO DIỆN KHÁCH HÀNG---------------------------------*/
-Route::get('chitiet-danhmuc',function(){
-	return view('khachhang.chitiet_danhmuc');
-});
+//Chi tiết danh mục
+Route::get('chitiet-danhmuc/{madm}', ['uses'=>'HomeKhachHangController@getChiTietDanhMuc']);
 
