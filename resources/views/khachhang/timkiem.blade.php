@@ -39,13 +39,13 @@
 								// settings
 								element: 'body',
 								position: null,
-								type: "success",
+								type: "danger",
 								allow_dismiss: true,
 								placement: {
 									from: "top",
 									align: "right"
 								},
-								offset: 100,
+								offset: 80,
 								spacing: 10,
 								z_index: 1031,
 								delay: 1000,

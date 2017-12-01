@@ -43,10 +43,29 @@
 				data : {"madh":madh, "mattdh":mattdh},
 				success : function(result){
 					if(result.success){
-						alert('Cập nhật tình trạng đơn hàng thành công !');
+						//alert('Cập nhật tình trạng đơn hàng thành công !');
+						$.notify({
+								// options
+								message: 'Cập nhật tình trạng đơn hàng thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 80,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 						setTimeout(function(){
 							location.reload();
-						}, 900);
+						}, 1500);
 					}
 				}
 			});
@@ -174,7 +193,7 @@
 								        <td class="tongtien">{{number_format($val->tongtien,0,'.','.')}}</td>
 								        <td>
 								        	<button type="button" class="btn btn-success btnCapNhat">Cập nhật</button>
-								        	<button type="button" class="btn btn-danger btn-block btnXoa" style="margin-top: 5px;">Xóa</button>
+								        	<!-- <button type="button" class="btn btn-danger btn-block btnXoa" style="margin-top: 5px;">Xóa</button> -->
 								        </td>
 								    </tr>
 				    			<?php }

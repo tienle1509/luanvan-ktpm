@@ -64,17 +64,31 @@ Route::group(['prefix'=>'quanli'],function(){
 		Route::get('chitiet-donhang/{madh}',['uses'=>'DonHangQuanLiController@getChiTietDonHang']);
 	});
 
-	//Thống kê nhà bán hàng, khách hàng
+	//Quản lí nhà bán hàng
 	Route::get('nhabanhang', ['uses'=>'QuanLiNguoiBanController@getNhaBanHang']);
 	Route::group(['prefix'=>'nhabanhang'], function(){
 		Route::get('sua/{manb}', ['uses'=>'QuanLiNguoiBanController@getSuaNhaBanHang']);
 		Route::post('luu-thongtin', ['uses'=>'QuanLiNguoiBanController@postLuuThongTin']);
 		Route::post('luu-matkhau', ['uses'=>'QuanLiNguoiBanController@postLuuMatKhau']);
 		Route::get('thongke-doanhthu/{manb}', ['uses'=>'QuanLiNguoiBanController@getThongKeDoanhSo']);
+		Route::get('xoa-nhabanhang', ['uses'=>'XoaTaiKhoanController@getXoaNguoiBan']);
+
+		//Tìm kiếm nhà bán hàng
+		Route::get('tim-kiem', ['uses'=>'QuanLiNguoiBanController@getTimKiemNguoiBan']);
 	});
 
+	//Quản lí khách hàng
+	Route::get('khachhang', ['uses'=>'QuanLiKhachHangController@getKhachHang']);
+	Route::group(['prefix'=>'khachhang'], function(){
+		Route::get('sua/{makh}', ['uses'=>'QuanLiKhachHangController@getSuaKhachHang']);
+		Route::post('luu-thongtin', ['uses'=>'QuanLiKhachHangController@postLuuThongTin']);
+		Route::post('luu-matkhau', ['uses'=>'QuanLiKhachHangController@postLuuMatKhau']);
+		Route::get('xoa-khachhang', ['uses'=>'XoaTaiKhoanController@getXoaKhachHang']);
 
-	Route::get('khachhang', ['uses'=>'ThongKeQuanLiController@getThongKeKhachHang']);
+		//Tìm kiếm khách hàng
+		Route::get('tim-kiem', ['uses'=>'QuanLiKhachHangController@getTimKiemKhachHang']);
+	});
+
 
 	Route::get('thongke-taikhoan', ['uses'=>'ThongKeQuanLiController@getThongKeTaiKhoan']);
 	
@@ -226,3 +240,16 @@ Route::get('chitiet-danhmuc/{madm}', ['uses'=>'HomeKhachHangController@getChiTie
 //Sắp xếp tăng giảm theo giá
 Route::get('sapxep-gia',['uses'=>'SapXepTheoGiaController@getSapXep']);
 Route::get('ketqua-sapxep', ['uses'=>'SapXepTheoGiaController@getKetQuaSapXep']);
+
+//Sản phẩm bán chạy
+Route::get('sanpham-banchay', ['uses'=>'HomeKhachHangController@getSanPhamBanChay']);
+Route::get('sapxep-banchay',['uses'=>'SapXepTheoGiaController@getSapXepBanChay']);
+Route::get('kq-sapxep-banchay', ['uses'=>'SapXepTheoGiaController@getKetQuaSapXepBanChay']);
+
+
+//Khuyến mãi
+Route::get('khuyenmai', function(){
+
+});
+
+

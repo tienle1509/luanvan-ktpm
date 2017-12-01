@@ -35,6 +35,7 @@
 	<script type="text/javascript" src="{{asset('public/ckeditor/ckeditor.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/fileinput.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/jquery-ui.js')}}"></script>
+	<script type="text/javascript" src="{{asset('public/js/bootstrap-notify.js')}}"></script>
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">

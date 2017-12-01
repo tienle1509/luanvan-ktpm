@@ -89,7 +89,7 @@
 										        	<img src="{{asset('public/anh-sanpham/'.$valSearch->anh)}}">
 										        </td>
 										        <td class="tensp">{{$valSearch->tensp}}</td>
-										        <td class="dongia">{{number_format($valSearch->dongia)}}</td>
+										        <td class="dongia">{{number_format($valSearch->dongia,0, '.','.')}}</td>
 										        <td>
 										        	<?php
 										        		$t = 0;

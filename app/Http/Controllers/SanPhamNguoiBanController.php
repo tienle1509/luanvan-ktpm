@@ -479,9 +479,23 @@ class SanPhamNguoiBanController extends Controller
 
 	public function getSPBanChay(){
 		$ngayht = Carbon::now();
-		
 
-		return view('nguoiban.sanpham.sanpham_banchay')->with('ngayht',$ngayht);
+		$sp_banchay = DB::table('san_pham as sp')->select('sp.masp')
+							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+							// ->where('sp.soluong', '>', 0)
+							->where('sp.trangthai',1)
+							->where('sp.manb',$_SESSION['manb'])
+							->get();
+
+		$mang_masp = array(); 
+		foreach ($sp_banchay as $val) {
+			$sl_ma = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+			$mang_masp[$val->masp] = $sl_ma;
+		}
+
+		arsort($mang_masp);	
+
+		return view('nguoiban.sanpham.sanpham_banchay')->with('ngayht',$ngayht)->with('mang_masp',$mang_masp);
 	}
 
 }

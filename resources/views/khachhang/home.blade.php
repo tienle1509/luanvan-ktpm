@@ -54,13 +54,13 @@
 								// settings
 								element: 'body',
 								position: null,
-								type: "success",
+								type: "danger",
 								allow_dismiss: true,
 								placement: {
 									from: "top",
 									align: "right"
 								},
-								offset: 100,
+								offset: 80,
 								spacing: 10,
 								z_index: 1031,
 								delay: 1000,
@@ -125,11 +125,11 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 						</button>
 					</li>
 					<li>
-						<a class="nav-bottom-km" href="#">
+						<a class="nav-bottom-km" href="{{asset('khuyenmai')}}">
 						<span class="fa fa-gift"></span>&nbsp;&nbsp;&nbsp;KHUYẾN MÃI
 						</a>
 					</li>
-					<li><a class="nav-bottom-banchay" href="#"><span class="fa fa-tags"></span>&nbsp;&nbsp;&nbsp;BÁN CHẠY</a></li>	
+					<li><a class="nav-bottom-banchay" href="{{asset('sanpham-banchay')}}"><span class="fa fa-tags"></span>&nbsp;&nbsp;&nbsp;BÁN CHẠY</a></li>	
 				</ul>
 			</div>
 		</div>

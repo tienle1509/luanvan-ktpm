@@ -20,9 +20,26 @@
 				data : {"masp": masp, "makm":makm},
 				success : function(result){
 					if(result.success){
-						$('#successXoaSP').removeClass('hide');
-						$('#successXoaSP').html('Xóa sản phẩm thành công !');
-						setTimeout("location.reload()",1000);						
+						$.notify({
+								// options
+								message: 'Xóa sản phẩm thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 80,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
+						setTimeout("location.reload()",1500);						
 					}
 				}
 			});
@@ -44,9 +61,6 @@
 					</div>
 				</div>
 
-				<div class="alert alert-success hide" role="alert" id="successXoaSP">
-					
-				</div>
 
 				<h3>{{$km->tenkm}}</h3><div class="hide" id="idMaKM">{{$km->makm}}</div>
 
@@ -65,7 +79,7 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				    	@if(count($sp) == 0)
+				    	@if(count($spkm) == 0)
 				    		<tr>
 				    			<td align="center" colspan="8" style="color: red"><h4>Nhà bán hàng chưa có sản phẩm, vui lòng thêm sản phẩm để tham gia khuyến mãi !</h4></td>
 				    		</tr>

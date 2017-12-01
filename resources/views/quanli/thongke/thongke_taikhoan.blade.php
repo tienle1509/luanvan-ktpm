@@ -29,7 +29,7 @@
 	<h1>Thống kê khách hàng năm {{date('Y')}}</h1>
 	<hr style="border: 1px solid #F9F9FF">	
 
-	@if(count($nguoiban) == 0)
+	@if(count($khachhang) == 0)
 		<div class="alert alert-warning" role="alert" style="margin-top: 30px;">
 			Chưa có dữ liệu để thống kê !
 		</div>

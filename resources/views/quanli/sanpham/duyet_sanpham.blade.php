@@ -17,8 +17,25 @@
 				data : {"masp":masp},
 				success : function(result){
 					if(result.success){
-						$('.alert-success').removeClass('hide');
-						$('.alert-success').html('Duyệt sản phẩm thành công !');
+						$.notify({
+								// options
+								message: 'Duyệt sản phẩm thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 100,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 						setTimeout("location.reload(true);",1500);	
 					}
 				}
@@ -40,9 +57,7 @@
 					</div>
 				</div>
 
-				<div class="alert alert-success hide" role="alert">
-					
-				</div>
+				
 
 				<h2>Sản phẩm đang chờ duyệt</h2>				
 

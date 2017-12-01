@@ -112,7 +112,7 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12">
 			<div class="row">
-				<form id="form-searchProduct" class="form-horizontal" role="form" action="{{url('quanli/nhabanhang/tim-kiem')}}" method="get">
+				<form id="form-searchProduct" class="form-horizontal" role="form" action="{{url('quanli/nhabanhang/timkiem')}}" method="get">
 					<div class="col-sm-5">
 					  	<input type="text" class="form-control" name="key" placeholder="Nhập mã, tên nhà bán hàng, email cần tìm ...">
 					</div>
@@ -122,53 +122,44 @@
 		</div>
 	</div>
 
-	<div style="margin-top: 10px; font-size: 15px;">Có : <b>{{$sonb}}</b> nhà bán hàng</div>
+	<div style="margin-top: 10px; font-size: 15px;">Tìm thấy : <b>{{count($kq_timkiem)}}</b> nhà bán hàng</div>
 	
-	<table class="table table-bordered table-hover">
-		<thead>
-			<tr>
-				<th>Mã NB</th>
-				<th>Tên người bán</th>
-				<th>Tên gian hàng</th>
-				<th>Email</th>
-				<th>Số điện thoại</th>
-				<th class="diachi">Địa chỉ</th>
-				<th>Ngày mở shop</th>
-				<th>Hành động</th>
-			</tr>
-		</thead>
-		<tbody>
-			@if($sonb == 0)
-				<tr>
-					<td align="center" colspan="8" style="color: red"><h4>Không có nhà bán hàng nào !</h4></td>
-			   	</tr>
-			@else
-				@foreach($ds_nguoiban as $val)
-					<tr>
-						<td>{{$val->manb}}</td>
-						<td>{{$val->tennb}}</td>
-						<td style="color: red">{{$val->tengianhang}}</td>
-						<td>{{$val->email}}</td>
-						<td>{{$val->sodienthoai}}</td>
-						<td>{{$val->diachi}}</td>
-						<td>{{date('d/m/Y',strtotime($val->ngaytao))}}</td>
-						<td>
-							<a href="{{asset('quanli/nhabanhang/sua/'.$val->manb)}}">Sửa</a>&nbsp;&nbsp;|&nbsp;
-							<a class="Xoa" style="cursor: pointer;">Xóa</a>
-							<br>
-							<a href="{{asset('quanli/nhabanhang/thongke-doanhthu/'.$val->manb)}}">Xem doanh thu</a>
-						</td>
-					</tr>
-				@endforeach
-			@endif			
-		</tbody>
-		<tfoot>
-		   	<tr>
-		   		<td align="center" colspan="8">{!! $ds_nguoiban->render() !!}</td>
-		   	</tr>
-		</tfoot>
-	</table>
 
+	@if(count($kq_timkiem) != 0)
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>Mã NB</th>
+					<th>Tên người bán</th>
+					<th>Tên gian hàng</th>
+					<th>Email</th>
+					<th>Số điện thoại</th>
+					<th class="diachi">Địa chỉ</th>
+					<th>Ngày mở shop</th>
+					<th>Hành động</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($kq_timkiem as $val)
+						<tr>
+							<td>{{$val->manb}}</td>
+							<td>{{$val->tennb}}</td>
+							<td style="color: red">{{$val->tengianhang}}</td>
+							<td>{{$val->email}}</td>
+							<td>{{$val->sodienthoai}}</td>
+							<td>{{$val->diachi}}</td>
+							<td>{{date('d/m/Y',strtotime($val->ngaytao))}}</td>
+							<td>
+								<a href="{{asset('quanli/nhabanhang/sua/'.$val->manb)}}">Sửa</a>&nbsp;&nbsp;|&nbsp;
+								<a class="Xoa" style="cursor: pointer;">Xóa</a>
+								<br>
+								<a href="{{asset('quanli/nhabanhang/thongke-doanhthu/'.$val->manb)}}">Xem doanh thu</a>
+							</td>
+						</tr>
+					@endforeach		
+			</tbody>
+		</table>
+	@endif
 
 </div>
 

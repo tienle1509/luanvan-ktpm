@@ -78,16 +78,39 @@
 				var _token = $('form[name="InfoPro"]').find('input[name="_token"]').val();
 				var masp = $('form[name="InfoPro"]').find('input[name="txtMaSP"]').val();
 
-				$.ajax({
-					url : url,
-					type : "POST",
-					dataType : "JSON",
-					data : {"masp":masp, "_token":_token},
-					success : function(result){
-						alert('Xóa sản phẩm thành công !');
-						location = "http://localhost/luanvan-ktpm/nguoiban/ql-sanpham/tatca-sanpham";
-					}
-				});
+				if(confirm('Bạn có chắc chắn xóa sản phẩm không ?')){
+					$.ajax({
+						url : url,
+						type : "POST",
+						dataType : "JSON",
+						data : {"masp":masp, "_token":_token},
+						success : function(result){
+							$.notify({
+									// options
+									message: 'Xóa sản phẩm thành công !'
+								},{
+									// settings
+									element: 'body',
+									position: null,
+									type: "success",
+									allow_dismiss: true,
+									placement: {
+										from: "top",
+										align: "right"
+									},
+									offset: 80,
+									spacing: 10,
+									z_index: 1031,
+									delay: 1000,
+									timer: 800,
+								});
+
+							setTimeout(function(){
+								location = "http://localhost/luanvan-ktpm/nguoiban/ql-sanpham/tatca-sanpham";
+							}, 1500);						
+						}
+					});
+				}
 			});
 		});
 

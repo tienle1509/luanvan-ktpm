@@ -818,6 +818,26 @@ class HomeKhachHangController extends Controller
 		return view('khachhang.chitiet_danhmuc')->with('madm',$madm)->with('ngayht',$ngayht);
 	}
 
+/*-----------------------Sản phẩm bán chạy-----------------------------*/
+	public function getSanPhamBanChay(){
+		$ngayht = Carbon::now();
+
+		$sp_banchay = DB::table('san_pham as sp')->select('sp.masp')
+							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+							 ->where('sp.soluong', '>', 0)
+							->where('sp.trangthai',1)
+							->get();
+
+		$mang_masp = array(); 
+		foreach ($sp_banchay as $val) {
+			$sl_ma = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+			$mang_masp[$val->masp] = $sl_ma;
+		}
+
+		arsort($mang_masp);	
+
+		return view('khachhang.sanpham_banchay')->with('ngayht',$ngayht)->with('mang_masp',$mang_masp);
+	}
 
 
 }

@@ -19,9 +19,26 @@
 				data : {"masp":masp, "makm":makm},
 				success : function(result){
 					if(result.success){
-						$('#successThemSP').removeClass('hide');
-						$('#successThemSP').html('Thêm sản phẩm thành công !');
-						setTimeout("location.reload()",1900);
+						$.notify({
+								// options
+								message: 'Thêm sản phẩm khuyến mãi thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 80,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
+						setTimeout("location.reload()",1500);
 					}
 				}
 			}); 
@@ -43,9 +60,7 @@
 					</div>
 				</div>
 
-				<div class="alert alert-success hide" role="alert" id="successThemSP">
-					
-				</div>
+				
 
 				<div class="row" style="margin-bottom: 15px;">
 					<div class="col-md-8 col-sm-8">

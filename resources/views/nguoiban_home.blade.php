@@ -35,6 +35,7 @@
 	<script type="text/javascript" src="{{asset('public/ckeditor/ckeditor.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/fileinput.js')}}"></script>
 	<script type="text/javascript" src="{{asset('public/js/jquery-ui.js')}}"></script>
+	<script type="text/javascript" src="{{asset('public/js/bootstrap-notify.js')}}"></script>
 
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="{{asset('public/font-awesome/css/font-awesome.min.css')}}">
@@ -291,9 +292,6 @@
 		     		</li>
 		     		<li><a class="@yield('donhang')" href="{{asset('nguoiban/donhang')}}">
 		     			<span class="fa fa-list-alt"></span>&nbsp;&nbsp;Đơn hàng</a>
-		     		</li>
-		     		<li><a class="@yield('cauhoi')" href="">
-		     			<span class="fa fa-comments-o"></span>&nbsp;&nbsp;Phản hồi câu hỏi</a>
 		     		</li>
 		     		<li><a class="@yield('khuyenmai')" href="{{asset('nguoiban/khuyenmai')}}">
 		     			<span class="fa fa-bullhorn"></span>&nbsp;&nbsp;Khuyến mãi</a>

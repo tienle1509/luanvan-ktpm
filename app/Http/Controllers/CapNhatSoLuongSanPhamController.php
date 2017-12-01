@@ -32,6 +32,11 @@ class CapNhatSoLuongSanPhamController extends Controller
     			]);
     		}
     		else {
+                if($soluong == 0){
+                    $errors[] = 'Số lượng phải lớn hơn không';
+                    return Response::json(['success'=>false, 'errors'=>$errors]);
+                }
+
     			DB::table('san_pham')->where('masp',$masp)->update(['soluong'=>$soluong]);
 
     			return Response::json(['success'=>true]);

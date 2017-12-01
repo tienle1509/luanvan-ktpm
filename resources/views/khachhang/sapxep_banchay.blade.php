@@ -1,14 +1,9 @@
 @extends('khachhang_home')
 
-@section('title-page')
-	<?php
-		$dm = DB::table('danhmuc_sanpham')->where('madm',$_SESSION['madm'])->first();
-		echo $dm->tendanhmuc;		
-	?>
-@stop
+@section('title-page', 'Sản phẩm bán chạy')
+
 
 @section('noidung')
-
 
 <link rel="stylesheet" type="text/css" href="{{asset('public/css/style-chitiet-danhmuc.css')}}">
 
@@ -67,7 +62,7 @@
 	    						//console.log(result.content[i]);
 	    						masp = result.content[i]['id'];
 	    						rowid = result.content[i]['rowid'];
-	    						duongdan = '../public/anh-sanpham/'+result.content[i]['options']['img'];
+	    						duongdan = './public/anh-sanpham/'+result.content[i]['options']['img'];
 	    						ten = result.content[i]['name'];
 	    						gia = result.content[i]['price'];
 	    						soluong = result.content[i]['qty']
@@ -94,15 +89,14 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 	    //Sắp xếp sản phẩm theo giá
 	    $(document).ready(function(){
 	    	$('.cbxSapXep').change(function(){
-	    		var url = "http://localhost/luanvan-ktpm/sapxep-gia";
-	    		var madm = $(this).attr('id');
+	    		var url = "http://localhost/luanvan-ktpm/sapxep-banchay";
 	    		var sapxep = $(this).val();
 
 	    		$.ajax({
 	    			url : url,
 	    			type : "GET",
 	    			dataType : "JSON",
-	    			data : {"madm":madm, "sapxep":sapxep},
+	    			data : {"sapxep":sapxep},
 	    			success : function(result){
 	    				if(!result.success){
 	    					var loi_sapxep = '';
@@ -123,15 +117,15 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 									from: "top",
 									align: "right"
 								},
-								offset: 80,
+								offset: 100,
 								spacing: 10,
 								z_index: 1031,
 								delay: 1000,
 								timer: 800,
 							});
-	    				}else{	
-	    					window.location = "http://localhost/luanvan-ktpm/ketqua-sapxep";
-	    				}	    	
+	    				}else{
+	    					window.location = "http://localhost/luanvan-ktpm/kq-sapxep-banchay";
+	    				}	
 	    			}
 	    		});
 	    	});
@@ -181,71 +175,109 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 				<div class="row">
 					<ol class="breadcrumb">
 					  <li><a href="{{asset('home')}}">TRANG CHỦ</a></li>
-					  <li class="active">{{mb_strtoupper($dm->tendanhmuc)}}</li>
+					  <li class="active">SẢN PHẨM BÁN CHẠY</li>
 					</ol>
 				</div>
 			</div>
 		</div>
 
 		<?php 
-			if($_SESSION['sapxep'] == 1){
-				$sp_danhmuc = DB::table('danhmuc_sanpham as dm')
-							->join('san_pham as sp', 'sp.madm', '=', 'dm.madm')
-							->where('dm.madm',$_SESSION['madm'])
-							->where('sp.soluong','>',0)
+			//Lấy ra danh sách sản phẩm bán chạy
+			$sp_banchay = DB::table('san_pham as sp')->select('sp.masp')
+							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+							 ->where('sp.soluong', '>', 0)
+							->where('sp.trangthai',1)
+							->get();
+
+			$mang_masp = array(); 
+				foreach ($sp_banchay as $val) {
+					$sl_ma = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+					$mang_masp[$val->masp] = $sl_ma;
+				}
+			//Sắp xếp sản phẩm bán chạy
+			arsort($mang_masp);
+
+			$mang_ma = array();
+			$i = 0;
+			foreach ($mang_masp as $masp => $luotban) {
+				$i += 1;
+				if($i > 30){
+					break;
+				}
+				$mang_ma[] = $masp;
+			}
+
+			if($_SESSION['sapxep_banchay'] == 1){
+				$sapxep_gia = DB::table('san_pham as sp')->select('sp.masp')
+							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+							 ->where('sp.soluong', '>', 0)
 							->where('sp.trangthai',1)
 							->orderBy('dongia','desc')
-							->paginate(20);
+							->get();
+				$kq_sapxep = array();
+				foreach ($sapxep_gia as $val) {
+					if(in_array($val->masp, $mang_ma)){
+						$kq_sapxep[] = $val->masp;
+					}
+				}				
 			}else{
-				$sp_danhmuc = DB::table('danhmuc_sanpham as dm')
-							->join('san_pham as sp', 'sp.madm', '=', 'dm.madm')
-							->where('dm.madm',$_SESSION['madm'])
-							->where('sp.soluong','>',0)
+				$sapxep_gia = DB::table('san_pham as sp')->select('sp.masp')
+							->join('danhmuc_sanpham as dm', 'dm.madm', '=', 'sp.madm')
+							 ->where('sp.soluong', '>', 0)
 							->where('sp.trangthai',1)
 							->orderBy('dongia','asc')
-							->paginate(20);
+							->get();
+				$kq_sapxep = array();
+				foreach ($sapxep_gia as $val) {
+					if(in_array($val->masp, $mang_ma)){
+						$kq_sapxep[] = $val->masp;
+					}
+				}
 			}
+
+
 		?>
 
 
 		<div class="panel-category container">
 				<div class="row title-panelCate">
 					<div class="col-md-6 col-sm-6">
-						<label>{{mb_strtoupper($dm->tendanhmuc)}}</label>
-						<label class="label-numPro"> | Tìm thấy {{count($sp_danhmuc)}} sản phẩm</label>
+						<label class="label-numPro"> TOP 30 SẢN PHẨM BÁN CHẠY</label>
 					</div>
 					<div class="col-md-6 col-sm-6 text-right">
 						<?php
-							if($_SESSION['sapxep'] == 1){ ?>
-								<select class="cbxSapXep" id="{{$dm->madm}}">
+							if($_SESSION['sapxep_banchay'] == 1){ ?>
+								<select class="cbxSapXep">
 									<option value="">-- Sắp xếp theo --</option>
 									<option value="1" selected="">Giá giảm dần</option>
 									<option value="2">Giá tăng dần</option>
 								</select>
 							<?php }
-							if($_SESSION['sapxep'] == 2){ ?>
-								<select class="cbxSapXep" id="{{$dm->madm}}">
+							if($_SESSION['sapxep_banchay'] == 2){ ?>
+								<select class="cbxSapXep">
 									<option value="">-- Sắp xếp theo --</option>
 									<option value="1">Giá giảm dần</option>
 									<option value="2" selected="">Giá tăng dần</option>
 								</select>
 							<?php }
-						?>						
+						?>			
 					</div>
 				</div>
 
 				<div class="row panel-product">
 					<div class="panel-list col-md-12 col-sm-12">
 						<?php
-							foreach ($sp_danhmuc as $val) {
+							foreach ($kq_sapxep as $masp) {
+								$sp = DB::table('san_pham')->where('masp',$masp)->first();
+
 								$dskm = DB::table('khuyen_mai as km')
 			                                ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-			                                ->where('ctkm.masp', $val->masp)
+			                                ->where('ctkm.masp', $masp)
 			                                ->get(); ?>
 		                        <div class="list-pro">
-									<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+									<a id="sanpham" href="{{asset('chitiet-sanpham/'.$sp->masp)}}">
 									<div class="thumbnail">
-										<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+										<img src="{{asset('public/anh-sanpham/'.$sp->anh)}}">
 											<?php
 												if(count($dskm) != 0){
 													foreach ($dskm as $valkm) {
@@ -264,9 +296,9 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 													foreach ($dskm as $valkm) {
 														if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
 															echo '<div class="gia">
-																<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
+																<label class="giakm">'.number_format($sp->dongia-($sp->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
 																</label>
-																<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ
+																<del class="giagoc">'.number_format($sp->dongia,0,'.','.').' đ
 																</del>
 															</div>';
 															break; 
@@ -277,24 +309,24 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 													if($t == count($dskm)){ ?>
 									        			<div class="gia">
 											      			<label class="giakm">
-											      				{{number_format($val->dongia,0,'.','.')}} đ
+											      				{{number_format($sp->dongia,0,'.','.')}} đ
 											      			</label>
 											      		</div>
 									        		<?php }
 													} else { ?>
 														<div class="gia">
 															<label class="giakm">
-																{{number_format($val->dongia,0,'.','.')}} đ
+																{{number_format($sp->dongia,0,'.','.')}} đ
 															</label>
 														</div>
 													<?php }
 												?>							
 												<div class="tendt">
-													<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+													<a href="{{asset('chitiet-sanpham/'.$sp->masp)}}">{{$sp->tensp}}</a>
 												</div>
 												<div class="luotvote row">
 													<?php
-														$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+														$luotmua = DB::table('chitiet_donhang')->where('masp',$sp->masp)->sum('soluongct');
 													?>
 													@if($luotmua != 0)
 														<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
@@ -302,12 +334,12 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 														</a>
 													@endif
 												<form action="{{action('GioHangController@getMuaHang')}}" method="get">
-													<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
+													<button id="{{$sp->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
 												</form>
 												</div>
 						  						<div class="ten-shop row">
 						  							<?php
-										  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+										  				$nguoiban = DB::table('nguoi_ban')->where('manb',$sp->manb)->first();
 										  					echo $nguoiban->tengianhang;
 										  				?>
 						  						</div>

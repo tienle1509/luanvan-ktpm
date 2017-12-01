@@ -1,6 +1,6 @@
 @extends('quanli_home')
 
-@section('qlnguoiban', 'active')
+@section('qlkhachhang', 'active')
 
 @section('noidung')
 
@@ -14,7 +14,7 @@
 		background-color: #C0C2FF;
 	}
 	.table .diachi {
-		width: 15%;
+		width: 20%;
 	}
 	.table td>a {
 		text-decoration: none;
@@ -27,20 +27,20 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('.Xoa').click(function(){
-			var url = "http://localhost/luanvan-ktpm/quanli/nhabanhang/xoa-nhabanhang";
-			var manb = $(this).closest('tr').find('td:nth-child(1)').text();
+			var url = "http://localhost/luanvan-ktpm/quanli/khachhang/xoa-khachhang";
+			var makh = $(this).closest('tr').find('td:nth-child(1)').text();
 			
 			if(confirm('Bạn có chắc chắn xóa không ?')){
 				$.ajax({
 					url : url,
 					type : "GET",
 					dataType : "JSON",
-					data : {"manb":manb},
+					data : {"makh":makh},
 					success : function(result){
 						if(result.success){
 							$.notify({
 								// options
-								message: 'Xóa tài khoản người bán thành công !'
+								message: 'Xóa tài khoản khách thành công !'
 							},{
 								// settings
 								element: 'body',
@@ -70,12 +70,12 @@
 
 
 <div class="container-fluid">
-	<h1>Quản lí nhà bán hàng</h1>
+	<h1>Quản lí khách hàng</h1>
 	<hr style="border: 1px solid #F9F9FF">
 	<div class="row">
 		<div class="col-md-12 col-sm-12">
 			<ol class="breadcrumb">
-			  <li><a href="{{asset('quanli/nhabanhang')}}">Quản lí nhà bán hàng</a></li>
+			  <li><a href="{{asset('quanli/khachhang')}}">Quản lí khách hàng</a></li>
 			  <li class="active"></li>
 			</ol>
 		</div>
@@ -112,9 +112,9 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12">
 			<div class="row">
-				<form id="form-searchProduct" class="form-horizontal" role="form" action="{{url('quanli/nhabanhang/tim-kiem')}}" method="get">
+				<form id="form-searchProduct" class="form-horizontal" role="form" action="{{url('quanli/khachhang/tim-kiem')}}" method="get">
 					<div class="col-sm-5">
-					  	<input type="text" class="form-control" name="key" placeholder="Nhập mã, tên nhà bán hàng, email cần tìm ...">
+					  	<input type="text" class="form-control" name="key" placeholder="Nhập mã, tên khách hàng, email cần tìm ...">
 					</div>
 					<button type="submit" class="btn btn-default"><span class="fa fa-search"></span>&nbsp;Tìm kiếm</button>
 				</form>
@@ -122,41 +122,47 @@
 		</div>
 	</div>
 
-	<div style="margin-top: 10px; font-size: 15px;">Có : <b>{{$sonb}}</b> nhà bán hàng</div>
+	<div style="margin-top: 10px; font-size: 15px;">Có : <b>{{$sokh}}</b> nhà bán hàng</div>
 	
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th>Mã NB</th>
-				<th>Tên người bán</th>
-				<th>Tên gian hàng</th>
+				<th>Mã KH</th>
+				<!-- <th>Tên người dùng</th> -->
+				<th>Tên khách hàng</th>
 				<th>Email</th>
 				<th>Số điện thoại</th>
-				<th class="diachi">Địa chỉ</th>
-				<th>Ngày mở shop</th>
+				<th class="diachi">Địa chỉ giao hàng</th>
+				<th>Thành viên</th>
+				<th>Ngày tạo</th>
 				<th>Hành động</th>
 			</tr>
 		</thead>
 		<tbody>
-			@if($sonb == 0)
+			@if($sokh == 0)
 				<tr>
 					<td align="center" colspan="8" style="color: red"><h4>Không có nhà bán hàng nào !</h4></td>
 			   	</tr>
 			@else
-				@foreach($ds_nguoiban as $val)
+				@foreach($ds_kh as $val)
 					<tr>
-						<td>{{$val->manb}}</td>
-						<td>{{$val->tennb}}</td>
-						<td style="color: red">{{$val->tengianhang}}</td>
+						<td>{{$val->makh}}</td>
+						<!-- <td>{{$val->tennguoidung}}</td> -->
+						<td style="color: red">{{$val->tenkh}}</td>
 						<td>{{$val->email}}</td>
 						<td>{{$val->sodienthoai}}</td>
-						<td>{{$val->diachi}}</td>
+						<td>{{$val->diachigiaohang}}</td>
+						<td style="text-align: center;">
+							@if($val->thanhvien == 0)
+								-
+							@else
+								<span class="fa fa-check" style="color: #069F0E; font-size: 18px;"></span>
+							@endif
+						</td>
 						<td>{{date('d/m/Y',strtotime($val->ngaytao))}}</td>
 						<td>
-							<a href="{{asset('quanli/nhabanhang/sua/'.$val->manb)}}">Sửa</a>&nbsp;&nbsp;|&nbsp;
+							<a href="{{asset('quanli/khachhang/sua/'.$val->makh)}}">Sửa</a>&nbsp;&nbsp;|&nbsp;
 							<a class="Xoa" style="cursor: pointer;">Xóa</a>
-							<br>
-							<a href="{{asset('quanli/nhabanhang/thongke-doanhthu/'.$val->manb)}}">Xem doanh thu</a>
 						</td>
 					</tr>
 				@endforeach
@@ -164,7 +170,7 @@
 		</tbody>
 		<tfoot>
 		   	<tr>
-		   		<td align="center" colspan="8">{!! $ds_nguoiban->render() !!}</td>
+		   		<td align="center" colspan="8">{!! $ds_kh->render() !!}</td>
 		   	</tr>
 		</tfoot>
 	</table>

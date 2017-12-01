@@ -20,19 +20,53 @@
 					if(!result.success){
 						var errorSL = '';
 						$.each(result.errors, function(index, item){
-							errorSL += '<li>'+item+'</li>';
+							errorSL = item;
 						});
 						//Hiện lỗi ra
-						$('#alert-danger').removeClass('hide');
-						$('#errorSoLuong').html(errorSL);
+						$.notify({
+								// options
+								title: 'Lỗi: ',
+								message: errorSL
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "danger",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 100,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 					} else { //Thành công
-						$('#alert-danger').addClass('hide');
-						$('#alert-success').removeClass('hide');
-						$('#successSoLuong').html('Cập nhật số lượng sản phẩm thành công !');
+						$.notify({
+								// options
+								message: 'Cập nhật số lượng sản phẩm thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 100,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 
 						setTimeout(function(){
 							location.reload();
-						}, 900);						
+						}, 1500);						
 					}
 				}
 			}); 
@@ -46,15 +80,7 @@
 						<strong>Lỗi ! </strong>{{$errors->first('key')}}	
 					</div>
 				@endif
-				<div class="alert alert-danger hide" id="alert-danger" role="alert">
-					<strong>Lỗi ! </strong>Đã xảy ra vui lòng kiểm tra lại<br>
-					<ul>
-						<div id="errorSoLuong"></div>
-					</ul>
-				</div>
-				<div class="alert alert-success hide" id="alert-success" role="alert">
-					<div id="successSoLuong"></div>
-				</div>
+				
 				<div class="row">
 					<div class="col-md-12 col-sm-12">
 						<div class="row">

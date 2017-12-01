@@ -57,7 +57,7 @@
 				$ttdh = DB::table('tinhtrang_donhang')->get();
 				$t = 0;
 				foreach ($ttdh as $valttdh) {
-					if($ctdh->mattdh == 1){
+					if($ctdh->mattdh == 1 || $ctdh->trangthai == 0){
 						echo '<div class="col-md-3 col-sm-3">				
 								<div class="label-tinhtrang" style="background-color: #28A502; color: #FFFFFF;">
 								<span class="fa fa-check-circle"></span>

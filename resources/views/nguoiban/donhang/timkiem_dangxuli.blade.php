@@ -34,10 +34,29 @@
 				data : {"madh":madh},
 				success : function(result){
 					if(result.success){
-						alert('Xóa đơn hàng thành công !');
+						//alert('Xóa đơn hàng thành công !');
+						$.notify({
+								// options
+								message: 'Xóa đơn hàng thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 80,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 						setTimeout(function(){
 							location.reload();
-						}, 900);
+						}, 1500);
 					}
 				}
 			});
@@ -59,10 +78,29 @@
 				data : {"madh":madh, "mattdh":mattdh},
 				success : function(result){
 					if(result.success){
-						alert('Cập nhật tình trạng đơn hàng thành công !');
+						//alert('Cập nhật tình trạng đơn hàng thành công !');
+						$.notify({
+								// options
+								message: 'Cập nhật tình trạng đơn hàng thành công !'
+							},{
+								// settings
+								element: 'body',
+								position: null,
+								type: "success",
+								allow_dismiss: true,
+								placement: {
+									from: "top",
+									align: "right"
+								},
+								offset: 80,
+								spacing: 10,
+								z_index: 1031,
+								delay: 1000,
+								timer: 800,
+							});
 						setTimeout(function(){
 							location.reload();
-						}, 900);
+						},1500);
 					}
 				}
 			});

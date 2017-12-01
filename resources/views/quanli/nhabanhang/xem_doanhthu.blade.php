@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12">
 			<ol class="breadcrumb">
-			  <li><a href="{{asset('quanli/nhabanhang')}}">Quản lí bán hàng</a></li>
+			  <li><a href="{{asset('quanli/nhabanhang')}}">Quản lí nhà bán hàng</a></li>
 			  <li class="active">Doanh thu</li>
 			</ol>
 		</div>

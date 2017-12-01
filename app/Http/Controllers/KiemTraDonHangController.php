@@ -48,7 +48,6 @@ class KiemTraDonHangController extends Controller
 	    			]);
     			}else{
 	    			$_SESSION['ctdh'] = $ctdh;
-	    			$_SESSION['ngayht'] = $ngayht;
 
 	    			return Response::json(['success'=>true]);
 	    		}

@@ -14,8 +14,9 @@ class QuanLiNguoiBanController extends Controller
 /*---------------------------Nhà bán hàng------------------------------*/
 	public function getNhaBanHang(){
 		$ds_nguoiban = DB::table('nguoi_ban')->orderBy('manb', 'desc')->paginate(10);
+		$sonb = DB::table('nguoi_ban')->count('manb');
 		
-		return view('quanli.nhabanhang.nguoiban')->with('ds_nguoiban', $ds_nguoiban);
+		return view('quanli.nhabanhang.nguoiban')->with('ds_nguoiban', $ds_nguoiban)->with('sonb',$sonb);
 	}
 
 /*---------------------------Sửa thông tin nhà bán hàng------------------------------*/
@@ -157,6 +158,29 @@ class QuanLiNguoiBanController extends Controller
 		return view('quanli.nhabanhang.xem_doanhthu')->with('chart',$chart)->with('dh_manb', $dh_manb)->with('tennb', $tennb->tengianhang);
 	}
 		
+/*--------------------Tìm kiếm nhà bán hàng------------------------*/
+	public function getTimKiemNguoiBan(Request $request){
+		$v = Validator::make($request->all(), 
+			[
+				'key'=>'required'
+			],
+			[
+				'key.required'=>'Bạn chưa nhập dữ liệu tìm kiếm'
+			]);
+		if($v->fails()){
+			return redirect()->back()->withErrors($v->errors());
+		}else{
+			$kq_timkiem = DB::table('nguoi_ban')
+							->where('manb', 'like', '%'.$request->key.'%')
+							->orwhere('tennb', 'like', '%'.$request->key.'%')
+							->orwhere('email', 'like', '%'.$request->key.'%')
+							->orderBy('manb', 'desc')
+							->get();
+
+			return view('quanli.nhabanhang.timkiem')->with('kq_timkiem',$kq_timkiem);
+		}
+	}
 
 
-}
+
+}	
