@@ -37,17 +37,19 @@
 			var url = "http://localhost/luanvan-ktpm/quanli/khuyenmai/xoa-khuyenmai";
 			var makm = $('#idMaKM').val();
 
-			$.ajax({
-				url : url,
-				type : "GET",
-				dataType : "JSON",
-				data : {"makm":makm},
-				success : function(resutl){
-					if(resutl.success){
-						location ="http://localhost/luanvan-ktpm/quanli/khuyenmai";
+			if(confirm('Bạn có chắc chắn xóa khuyến mãi này ?')){
+				$.ajax({
+					url : url,
+					type : "GET",
+					dataType : "JSON",
+					data : {"makm":makm},
+					success : function(resutl){
+						if(resutl.success){
+							location ="http://localhost/luanvan-ktpm/quanli/khuyenmai";
+						}
 					}
-				}
-			});
+				});
+			}
 		});
 	});
 </script>

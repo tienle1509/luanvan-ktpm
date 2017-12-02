@@ -1,17 +1,14 @@
 @extends('khachhang_home')
 
 @section('title-page')
-	@if(isset($searchdm))
-		{{$searchdm->tendanhmuc}}
-	@else
-		Tìm kiếm
-	@endif
+	<?php
+		echo $tenkm->tenkm;		
+	?>
 @stop
 
 @section('noidung')
 
 <link rel="stylesheet" type="text/css" href="{{asset('public/css/style-chitiet-danhmuc.css')}}">
-
 
 <script type="text/javascript">
 	//Bấm mua ngay thêm sản phẩm vào giỏ hàng
@@ -68,7 +65,7 @@
 	    						//console.log(result.content[i]);
 	    						masp = result.content[i]['id'];
 	    						rowid = result.content[i]['rowid'];
-	    						duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    						duongdan = '../public/anh-sanpham/'+result.content[i]['options']['img'];
 	    						ten = result.content[i]['name'];
 	    						gia = result.content[i]['price'];
 	    						soluong = result.content[i]['qty']
@@ -134,125 +131,73 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 			<div class="container">
 				<div class="row">
 					<ol class="breadcrumb">
-					  <li><a href="home">TRANG CHỦ</a></li>
-					  <li class="active">
-					  	@if(isset($searchdm))
-							{{mb_strtoupper($searchdm->tendanhmuc)}}
-						@else
-							CÁC SẢN PHẨM LIÊN QUAN ĐẾN {{mb_strtoupper($keynhap)}}
-						@endif
-					  </li>
+					  <li><a href="{{asset('home')}}">TRANG CHỦ</a></li>
+					  <li><a href="{{asset('khuyenmai')}}">KHUYẾN MÃI</a></li>
+					  <li class="active">{{mb_strtoupper($tenkm->tenkm)}}</li>
 					</ol>
 				</div>
 			</div>
 		</div>
 
-		@if(count($result_search) == 0)
+		@if(count($dsspkm) == 0)
 			<div class="container" style="margin-top: 40px;">
 				<div class="alert alert-warning" role="alert">
-					Rất tiếc ! Chúng tôi không tìm thấy sản phẩm. Có thể do danh mục chưa phục vụ tại khu vực của bạn hoặc không có sản phẩm phù hợp với điều kiện lọc. Vui lòng thử điều kiện lọc mới hoặc dùng công cụ tìm kiếm.
+					Không có sản phẩm tham gia khuyến mãi.
 				</div>
 			</div>
 		@else
-		<div class="panel-category container">
-			<div class="row title-panelCate">
-				<div class="col-md-6 col-sm-6">
-					<label>
-						@if(isset($searchdm))
-							{{$searchdm->tendanhmuc}}
-						@else
-							"{{mb_strtoupper($keynhap)}}"
-						@endif
-					</label>
-					<label class="label-numPro"> | Tìm thấy {{count($result_search)}} sản phẩm</label>
-				</div>
-			</div>
-
-			<div class="row panel-product">
-				<div class="panel-list col-md-12 col-sm-12">
-					@foreach($result_search as $val)
+			<div class="panel-category container">
+				<div class="row panel-product">
+					<div class="panel-list col-md-12 col-sm-12">
 						<?php
-						$dskm = DB::table('khuyen_mai as km')
-		                            ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-		                            ->where('ctkm.masp', $val->masp)
-		                            ->get(); ?>
-						<div class="list-pro">
-								<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
-								<div class="thumbnail">
-									<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-										<?php
-											if(count($dskm) != 0){
-												foreach ($dskm as $valkm) {
-													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
-														<div class="chietkhau">
-															{{$valkm->chietkhau}}%
-														</div>
-													<?php }
-												}
-											} 
-										?>
-										<div class="caption">
-										<?php
-											if(count($dskm) != 0){
-												$t = 0;
-												foreach ($dskm as $valkm) {
-													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
-														echo '<div class="gia">
-															<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
-															</label>
-															<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ
-															</del>
-														</div>';
-														break; 
-													} else {
-														$t +=1;
-													}
-												}
-												if($t == count($dskm)){ ?>
-								        			<div class="gia">
-										      			<label class="giakm">
-										      				{{number_format($val->dongia,0,'.','.')}} đ
-										      			</label>
-										      		</div>
-								        		<?php }
-												} else { ?>
-													<div class="gia">
-														<label class="giakm">
-															{{number_format($val->dongia,0,'.','.')}} đ
-														</label>
-													</div>
-												<?php }
-											?>							
-											<div class="tendt">
-												<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+							foreach ($dsspkm as $val) { ?>
+								<div class="list-pro">
+									<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
+										<div class="thumbnail">
+											<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
+											<div class="chietkhau">
+												{{$val->chietkhau}}%
 											</div>
-											<div class="luotvote row">
-												<?php
-													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
-												?>
-												@if($luotmua != 0)
-													<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
-													<span class="fa fa-tag"> {{$luotmua}}</span>
-													</a>
-												@endif
-											<form action="{{action('GioHangController@getMuaHang')}}" method="get">
-												<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
-											</form>
+											<div class="caption">
+												<div class="gia">
+													<label class="giakm">{{number_format($val->dongia-($val->dongia*0.01*$val->chietkhau),0,'.','.')}} đ
+													</label>
+													<del class="giagoc">{{number_format($val->dongia,0,'.','.')}} đ
+													</del>
+												</div>					
+												<div class="tendt">
+													<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
+												</div>
+												<div class="luotvote row">
+													<?php
+														$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
+													?>
+													@if($luotmua != 0)
+														<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
+															<span class="fa fa-tag"> {{$luotmua}}</span>
+														</a>
+													@endif
+													<form action="{{action('GioHangController@getMuaHang')}}" method="get">
+														<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
+													</form>
+												</div>
+								  				<div class="ten-shop row">
+								  					<?php
+														$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
+														echo $nguoiban->tengianhang;
+													?>
+								  				</div>
 											</div>
-					  						<div class="ten-shop row">
-					  							<?php
-									  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
-									  					echo $nguoiban->tengianhang;
-									  				?>
-					  						</div>
 										</div>
-									</div>
-								</a>
-							</div>
-					@endforeach
-				</div> <!-- panel list -->
-			</div>
-		</div>
+									</a>								
+								</div>
+							<?php }
+						?>	
+					</div> <!-- panel list -->
+
+					<div class="text-right" style="margin-right: 30px;">{!! $dsspkm->render() !!}</div>
+				</div>				
+			</div>			
 		@endif
 	</div>
 

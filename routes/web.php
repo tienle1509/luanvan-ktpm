@@ -248,8 +248,5 @@ Route::get('kq-sapxep-banchay', ['uses'=>'SapXepTheoGiaController@getKetQuaSapXe
 
 
 //Khuyến mãi
-Route::get('khuyenmai', function(){
-
-});
-
-
+Route::get('khuyenmai', ['uses'=>'HomeKhachHangController@getKhuyenMai']);
+Route::get('chitiet-khuyenmai/{makm}', ['uses'=>'HomeKhachHangController@getChiTietKhuyenMai']);

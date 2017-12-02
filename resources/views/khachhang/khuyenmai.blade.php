@@ -1,17 +1,34 @@
 @extends('khachhang_home')
 
-@section('title-page')
-	@if(isset($searchdm))
-		{{$searchdm->tendanhmuc}}
-	@else
-		Tìm kiếm
-	@endif
-@stop
+@section('title-page', 'Khuyến mãi')
 
 @section('noidung')
 
 <link rel="stylesheet" type="text/css" href="{{asset('public/css/style-chitiet-danhmuc.css')}}">
 
+<style type="text/css">
+	.panel-promotion {
+		border: 2px solid #949494;
+		line-height: 26px;
+		font-size: 15px;
+		box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+		padding-bottom: 5px;
+		margin: 0px 9px 5px 0px;
+		height: 355px;
+		margin-top: 40px;
+		color: #000000;
+		width: 575px;
+	}
+
+	.panel-promotion img{
+		width: 571px;
+		height: 256px;
+	}
+
+	.title{
+		border-bottom: 3px solid blue;
+	}
+</style>
 
 <script type="text/javascript">
 	//Bấm mua ngay thêm sản phẩm vào giỏ hàng
@@ -68,7 +85,7 @@
 	    						//console.log(result.content[i]);
 	    						masp = result.content[i]['id'];
 	    						rowid = result.content[i]['rowid'];
-	    						duongdan = 'public/anh-sanpham/'+result.content[i]['options']['img'];
+	    						duongdan = './public/anh-sanpham/'+result.content[i]['options']['img'];
 	    						ten = result.content[i]['name'];
 	    						gia = result.content[i]['price'];
 	    						soluong = result.content[i]['qty']
@@ -134,125 +151,81 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 			<div class="container">
 				<div class="row">
 					<ol class="breadcrumb">
-					  <li><a href="home">TRANG CHỦ</a></li>
-					  <li class="active">
-					  	@if(isset($searchdm))
-							{{mb_strtoupper($searchdm->tendanhmuc)}}
-						@else
-							CÁC SẢN PHẨM LIÊN QUAN ĐẾN {{mb_strtoupper($keynhap)}}
-						@endif
-					  </li>
+					  <li><a href="{{asset('home')}}">TRANG CHỦ</a></li>
+					  <li class="active">KHUYẾN MÃI</li>
 					</ol>
 				</div>
 			</div>
 		</div>
 
-		@if(count($result_search) == 0)
+		
+		@if(count($ds_khuyenmai) == 0)
 			<div class="container" style="margin-top: 40px;">
 				<div class="alert alert-warning" role="alert">
-					Rất tiếc ! Chúng tôi không tìm thấy sản phẩm. Có thể do danh mục chưa phục vụ tại khu vực của bạn hoặc không có sản phẩm phù hợp với điều kiện lọc. Vui lòng thử điều kiện lọc mới hoặc dùng công cụ tìm kiếm.
+					Chưa có chương trình khuyến mãi trên hệ thống.
 				</div>
 			</div>
 		@else
-		<div class="panel-category container">
-			<div class="row title-panelCate">
-				<div class="col-md-6 col-sm-6">
-					<label>
-						@if(isset($searchdm))
-							{{$searchdm->tendanhmuc}}
-						@else
-							"{{mb_strtoupper($keynhap)}}"
-						@endif
-					</label>
-					<label class="label-numPro"> | Tìm thấy {{count($result_search)}} sản phẩm</label>
-				</div>
+			<div class="container" style="margin-top: 40px;">
+			<div class="title" style="color: red; font-weight: bold;">
+				<h3><span class="fa fa-clock-o"></span>&nbsp;&nbsp;CHƯƠNG TRÌNH KHUYẾN MÃI</h3>
+			</div>
+			<?php
+				$t = 0;
+				foreach ($ds_khuyenmai as $val) {
+					if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($val->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($val->ngaykt))){
+						$t += 1;
+						?>
+							<!-- panel khuyến mãi -->	
+							<a href="{{asset('chitiet-khuyenmai/'.$val->makm)}}">
+								<div class="col-md-6 col-sm-6 panel-promotion">
+									<div class="row">
+										<img src="{{asset('public/anh-khuyenmai/'.$val->anhkm)}}" width="351" height="156">
+									</div>					
+									<h4><b>{{$val->tenkm}}</b></h4>
+									<div>
+										<b>Thời gian:</b> {{date('d/m/Y', strtotime($val->ngaybd))}} -  {{date('d/m/Y', strtotime($val->ngaykt))}}
+									</div>
+									<div>Giảm giá: {{$val->chietkhau}}%.</div>
+								</div>
+							</a>
+					<?php }					
+				}				
+			?>
+
+
+			<div class="clearfix"></div>
+			<div class="title" style="color: blue; font-weight: bold;">
+				<h3><span class="fa fa-tags"></span>&nbsp;&nbsp;KHUYẾN MÃI SẮP TỚI</h3>
+			</div>
+			<?php 
+				foreach ($ds_khuyenmai as $val) {
+					if((strtotime(date('Y-m-d',strtotime($ngayht))) < strtotime($val->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) < strtotime($val->ngaykt))){ 
+							$t += 1;
+						?>
+						<!-- panel khuyến mãi -->	
+							<div class="col-md-6 col-sm-6 panel-promotion">
+								<div class="row">
+									<img src="{{asset('public/anh-khuyenmai/'.$val->anhkm)}}" width="351" height="156">
+								</div>					
+								<h4><b>{{$val->tenkm}}</b></h4>
+								<div><b>Thời gian:</b> {{date('d/m/Y', strtotime($val->ngaybd))}} -  {{date('d/m/Y', strtotime($val->ngaykt))}}</div>
+								<div>Giảm giá: {{$val->chietkhau}}%.</div>						
+							</div>
+					<?php }
+				}
+			?>
 			</div>
 
-			<div class="row panel-product">
-				<div class="panel-list col-md-12 col-sm-12">
-					@foreach($result_search as $val)
-						<?php
-						$dskm = DB::table('khuyen_mai as km')
-		                            ->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
-		                            ->where('ctkm.masp', $val->masp)
-		                            ->get(); ?>
-						<div class="list-pro">
-								<a id="sanpham" href="{{asset('chitiet-sanpham/'.$val->masp)}}">
-								<div class="thumbnail">
-									<img src="{{asset('public/anh-sanpham/'.$val->anh)}}">
-										<?php
-											if(count($dskm) != 0){
-												foreach ($dskm as $valkm) {
-													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ ?>
-														<div class="chietkhau">
-															{{$valkm->chietkhau}}%
-														</div>
-													<?php }
-												}
-											} 
-										?>
-										<div class="caption">
-										<?php
-											if(count($dskm) != 0){
-												$t = 0;
-												foreach ($dskm as $valkm) {
-													if((strtotime(date('Y-m-d',strtotime($ngayht))) >= strtotime($valkm->ngaybd)) && (strtotime(date('Y-m-d',strtotime($ngayht))) <= strtotime($valkm->ngaykt))){ 
-														echo '<div class="gia">
-															<label class="giakm">'.number_format($val->dongia-($val->dongia*0.01*$valkm->chietkhau),0,'.','.').' đ
-															</label>
-															<del class="giagoc">'.number_format($val->dongia,0,'.','.').' đ
-															</del>
-														</div>';
-														break; 
-													} else {
-														$t +=1;
-													}
-												}
-												if($t == count($dskm)){ ?>
-								        			<div class="gia">
-										      			<label class="giakm">
-										      				{{number_format($val->dongia,0,'.','.')}} đ
-										      			</label>
-										      		</div>
-								        		<?php }
-												} else { ?>
-													<div class="gia">
-														<label class="giakm">
-															{{number_format($val->dongia,0,'.','.')}} đ
-														</label>
-													</div>
-												<?php }
-											?>							
-											<div class="tendt">
-												<a href="{{asset('chitiet-sanpham/'.$val->masp)}}">{{$val->tensp}}</a>
-											</div>
-											<div class="luotvote row">
-												<?php
-													$luotmua = DB::table('chitiet_donhang')->where('masp',$val->masp)->sum('soluongct');
-												?>
-												@if($luotmua != 0)
-													<a data-toggle="tooltip" title="Đã có <b>{{$luotmua}}</b> lượt mua" data-html="true" data-placement="top">
-													<span class="fa fa-tag"> {{$luotmua}}</span>
-													</a>
-												@endif
-											<form action="{{action('GioHangController@getMuaHang')}}" method="get">
-												<button id="{{$val->masp}}" type="button" class="pull-right btnMuaNgay">Mua ngay</button>
-											</form>
-											</div>
-					  						<div class="ten-shop row">
-					  							<?php
-									  				$nguoiban = DB::table('nguoi_ban')->where('manb',$val->manb)->first();
-									  					echo $nguoiban->tengianhang;
-									  				?>
-					  						</div>
-										</div>
-									</div>
-								</a>
-							</div>
-					@endforeach
-				</div> <!-- panel list -->
-			</div>
-		</div>
+			<?php 
+				if($t == 0){ ?>
+					<div class="container" style="margin-top: 40px;">
+						<div class="alert alert-warning" role="alert">
+							Tại thời điểm này trên hệ thống không có chương trình khuyến mãi phù hợp.
+						</div>
+					</div>
+				<?php }
+			?>
 		@endif
 	</div>
 

@@ -839,6 +839,26 @@ class HomeKhachHangController extends Controller
 		return view('khachhang.sanpham_banchay')->with('ngayht',$ngayht)->with('mang_masp',$mang_masp);
 	}
 
+/*-----------------------Khuyến mãi----------------------------*/
+	public function getKhuyenMai(){
+		$ngayht = Carbon::now();
+		$ds_khuyenmai = DB::table('khuyen_mai')->get();
+
+		return view('khachhang.khuyenmai')->with('ds_khuyenmai',$ds_khuyenmai)->with('ngayht',$ngayht);
+	}
+
+	public function getChiTietKhuyenMai($makm){
+		$tenkm = DB::table('khuyen_mai')->where('makm',$makm)->first();
+
+		$dsspkm = DB::table('khuyen_mai as km')
+						->join('chitiet_khuyenmai as ctkm', 'ctkm.makm', '=', 'km.makm')
+						->join('san_pham as sp', 'sp.masp', '=', 'ctkm.masp')
+						->where('km.makm',$makm)
+						->where('sp.soluong', '>',0)
+						->paginate(20);
+
+		return view('khachhang.chitiet_khuyenmai')->with('tenkm', $tenkm)->with('dsspkm', $dsspkm);
+	}	
 
 }
 
