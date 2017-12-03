@@ -682,7 +682,7 @@ $('#ndGioHang').html(ndGioHang);
 				<div class="col-md-3 col-sm-3">
 					<h4>Hỗ trợ thanh toán online</h4>
 					<div>
-						<img src="{{asset('public/img/stripe.png')}}" alt="logonganluong" style="width: 190px; height: 45px;">
+						<img src="{{asset('public/img/card.jpg')}}" alt="logonganluong" style="width: 190px; height: 45px;">
 					</div>
 					<h4>Đối tác vận chuyển</h4>
 					<img src="{{asset('public/img/vietnampost.png')}}" alt="logovnpost">

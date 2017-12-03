@@ -12,7 +12,7 @@
 		exit;
 	}
 	$ctdh = $_SESSION['ctdh'];
-	$ngayht = $_SESSION['ngayht'];
+
 ?>
 
 <div class="nav-bottom ">

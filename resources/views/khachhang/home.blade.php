@@ -326,6 +326,9 @@ ndGioHang = '<div class="modal-header"><button type="button" class="close1" data
 						$sosp_dt = 0;
 						foreach ($list_sp as $val) {
 							$sosp_dt += 1;
+							if($sosp_dt == 21){
+								break;
+							}
 							if($sosp_dt >= 11){
 							//Kiểm tra sản phẩm có khuyến mãi hay không
 		                    $dskm = DB::table('khuyen_mai as km')
