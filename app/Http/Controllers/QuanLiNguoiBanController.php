@@ -174,7 +174,7 @@ class QuanLiNguoiBanController extends Controller
 							->where('manb', 'like', '%'.$request->key.'%')
 							->orwhere('tennb', 'like', '%'.$request->key.'%')
 							->orwhere('email', 'like', '%'.$request->key.'%')
-							->orderBy('manb', 'desc')
+							//->orderBy('manb', 'desc')
 							->get();
 
 			return view('quanli.nhabanhang.timkiem')->with('kq_timkiem',$kq_timkiem);

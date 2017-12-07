@@ -112,7 +112,7 @@
 	<div class="row">
 		<div class="col-md-12 col-sm-12">
 			<div class="row">
-				<form id="form-searchProduct" class="form-horizontal" role="form" action="{{url('quanli/nhabanhang/timkiem')}}" method="get">
+				<form id="form-searchProduct" class="form-horizontal" role="form" action="{{url('quanli/nhabanhang/tim-kiem')}}" method="get">
 					<div class="col-sm-5">
 					  	<input type="text" class="form-control" name="key" placeholder="Nhập mã, tên nhà bán hàng, email cần tìm ...">
 					</div>

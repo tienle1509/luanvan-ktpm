@@ -5,7 +5,7 @@
 @section('chitiet')
 
 
-<h2>Top 10 sản phẩm bán chạy của shop</h2>
+<h2>Top 5 sản phẩm bán chạy của shop</h2>
 				
 	<table id="table-listProduct" class="table table-bordered table-hover">
 				    <thead>
@@ -36,7 +36,7 @@
 											->where('sp.masp', $masp)
 											->first();
 									$count_sosp += 1;
-									if($count_sosp > 10){
+									if($count_sosp > 5){
 										break;
 									}
 				    			?>
